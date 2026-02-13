@@ -14,92 +14,80 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-    min-height: 100vh;
-    padding: 40px 20px;
+    background: #f4f6f8;
 }
 
+/* CONTAINER */
 .container {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    background: #fff;
+    min-height: 100vh;
 }
 
-/* NAV */
-.nav-links {
-    background: #fff;
-    padding: 15px 40px;
-    border-bottom: 1px solid #e9ecef;
+/* NAVBAR */
+.navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
+    padding: 18px 40px;
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
 }
 
-.nav-left {
+.logo img {
+    height: 36px;
+}
+
+.nav-links {
     display: flex;
-    align-items: center;
     gap: 30px;
 }
 
-.nav-logo {
-    height: 35px;
-}
-
-.nav-menu {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-menu a {
-    color: #dc2626;
+.nav-links a {
     text-decoration: none;
     font-weight: 600;
-    padding: 8px 16px;
+    color: #333;
+    padding: 8px 14px;
     border-radius: 6px;
     transition: 0.3s;
 }
 
-.nav-menu a:hover {
-    background: #fef2f2;
+.nav-links a:hover {
+    background: #f2f2f2;
 }
 
-.nav-menu a.active {
-    background: #dc2626;
+.nav-links .active {
+    background: #d71920;
     color: white;
 }
 
-/* HEADER */
-.header {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+/* HERO */
+.hero {
+    background: linear-gradient(135deg, #d71920 0%, #b31217 100%);
     color: white;
-    padding: 60px 40px;
     text-align: center;
+    padding: 80px 20px;
 }
 
-.header-logo {
-    max-width: 220px;
-    margin-bottom: 25px;
+.hero h1 {
+    font-size: 2.7em;
+    margin-bottom: 20px;
 }
 
-.header h1 {
-    font-size: 2.3em;
-    margin-bottom: 15px;
-}
-
-.header p {
-    font-size: 1.1em;
-    opacity: 0.95;
-    max-width: 700px;
+.hero p {
+    max-width: 650px;
     margin: 0 auto;
+    font-size: 1.1em;
+    line-height: 1.6;
+    opacity: 0.95;
 }
 
 /* FORM */
 .form-section {
-    padding: 60px 40px;
+    padding: 70px 40px;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 .form-section h2 {
@@ -109,7 +97,7 @@ body {
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
 label {
@@ -121,7 +109,7 @@ label {
 input, textarea {
     width: 100%;
     padding: 14px;
-    border: 2px solid #e9ecef;
+    border: 2px solid #e5e5e5;
     border-radius: 8px;
     font-size: 1em;
     transition: 0.3s;
@@ -129,51 +117,55 @@ input, textarea {
 
 input:focus, textarea:focus {
     outline: none;
-    border-color: #dc2626;
-    box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+    border-color: #d71920;
+    box-shadow: 0 0 0 3px rgba(215,25,32,0.1);
 }
 
 textarea {
+    min-height: 110px;
     resize: vertical;
-    min-height: 100px;
 }
 
+/* BUTTON */
 .submit-btn {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    background: #d71920;
     color: white;
-    border: none;
-    border-radius: 8px;
     font-size: 1.1em;
     font-weight: 600;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .submit-btn:hover {
+    background: #b31217;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(220,38,38,0.3);
 }
 
 /* FOOTER */
 .footer {
     text-align: center;
     padding: 25px;
-    background: #f8f9fa;
+    background: #f9f9f9;
     font-size: 0.9em;
-    color: #666;
+    color: #777;
+    border-top: 1px solid #eee;
 }
 
-.footer img {
-    height: 25px;
-    margin-bottom: 10px;
-}
-
+/* MOBILE */
 @media (max-width: 768px) {
-    .header {
-        padding: 40px 20px;
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
     }
+
+    .hero h1 {
+        font-size: 2em;
+    }
+
     .form-section {
         padding: 40px 20px;
     }
@@ -186,50 +178,55 @@ textarea {
 <div class="container">
 
     <!-- NAVBAR -->
-    <div class="nav-links">
-        <div class="nav-left">
-            <img src="inbody-logo.png" class="nav-logo" alt="InBody Logo">
-            <div class="nav-menu">
-                <a href="members.html">Üye Merkezler</a>
-                <a href="index.html" class="active">Kayıt Ol</a>
-                <a href="admin.html">Yönetici Paneli</a>
-            </div>
+    <div class="navbar">
+        <div class="logo">
+            <img src="inbody-logo.png" alt="InBody Logo">
+        </div>
+
+        <div class="nav-links">
+            <a href="members.html">Üye Merkezler</a>
+            <a href="index.html" class="active">Kayıt Ol</a>
+            <a href="admin.html">Yönetici Paneli</a>
         </div>
     </div>
 
-    <!-- HEADER -->
-    <div class="header">
-        <img src="inbody-logo.png" class="header-logo" alt="InBody Logo">
+    <!-- HERO -->
+    <div class="hero">
         <h1>İşletmenizi InBody'de Tanıtın</h1>
         <p>
             Vücut kompozisyonu takibi ve sağlık yolculuğu için InBody'ye güvenen 
-            milyonlarca kullanıcıya ulaşın.
+            milyonlarca kullanıcıya ulaşın ve tesisinizi görünür hale getirin.
         </p>
     </div>
 
     <!-- FORM -->
     <div class="form-section">
-        <h2>İşletmenizi Kaydedin</h2>
+        <h2>Merkez Kaydı</h2>
 
         <form id="registrationForm">
 
             <div class="form-group">
-                <label>Cep Telefonu</label>
+                <label>Cep Telefonu *</label>
                 <input type="tel" required>
             </div>
 
             <div class="form-group">
-                <label>E-posta</label>
+                <label>E-posta *</label>
                 <input type="email" required>
             </div>
 
             <div class="form-group">
-                <label>Tesis Adı</label>
+                <label>Tesis Adı *</label>
                 <input type="text" required>
             </div>
 
             <div class="form-group">
-                <label>Tesis Tanıtımı</label>
+                <label>Adres *</label>
+                <input type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label>Tesis Tanıtımı *</label>
                 <textarea required></textarea>
             </div>
 
@@ -240,11 +237,18 @@ textarea {
 
     <!-- FOOTER -->
     <div class="footer">
-        <img src="inbody-logo.png" alt="InBody Logo">
-        <div>© 2026 InBody Türkiye – Tüm hakları saklıdır.</div>
+        © 2026 InBody Türkiye – Tüm hakları saklıdır.
     </div>
 
 </div>
+
+<script>
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert("Kaydınız başarıyla alındı. 2-3 iş günü içinde sizinle iletişime geçilecektir.");
+    this.reset();
+});
+</script>
 
 </body>
 </html>
