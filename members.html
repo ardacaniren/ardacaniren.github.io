@@ -376,7 +376,7 @@
                     <div class="member-image ${!member.facilityPhoto ? 'no-photo' : ''}">
                         ${member.facilityPhoto 
                             ? `<img src="${member.facilityPhoto}" alt="${member.facilityName}">`
-                            : '🏢'
+                            : `<img src="noname.png" alt="${member.facilityName}" onerror="this.parentElement.innerHTML='🏢'">`
                         }
                     </div>
                     <div class="member-content">
@@ -423,6 +423,7 @@
                         email: "info@peakperformance.com",
                         introduction: "Premium fitness merkezi olarak, en son teknoloji InBody cihazlarıyla vücut analizi hizmeti sunuyoruz. Uzman antrenörlerimiz eşliğinde kişiselleştirilmiş fitness programları ile hedeflerinize ulaşın.",
                         hours: "Pazartesi - Cuma: 06:00 - 23:00\nCumartesi - Pazar: 08:00 - 21:00",
+                        facilityPhoto: "data:image/svg+xml,%3Csvg width='400' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='300' fill='%23dc2626'/%3E%3Ctext x='50%25' y='50%25' font-size='48' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EFitness Center%3C/text%3E%3C/svg%3E",
                         status: 'approved',
                         submittedDate: new Date().toISOString()
                     },
@@ -434,6 +435,7 @@
                         email: "contact@vitalwellness.com",
                         introduction: "Spa ve wellness merkezimizde InBody vücut analizi ile sağlığınızı izleyin. Beslenme danışmanlığı, masaj terapileri ve yoga dersleri ile bütünsel sağlık yaklaşımı sunuyoruz.",
                         hours: "Her Gün: 09:00 - 22:00",
+                        facilityPhoto: "data:image/svg+xml,%3Csvg width='400' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='300' fill='%23b91c1c'/%3E%3Ctext x='50%25' y='50%25' font-size='48' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EWellness %26 Spa%3C/text%3E%3C/svg%3E",
                         status: 'approved',
                         submittedDate: new Date().toISOString()
                     },
@@ -445,6 +447,7 @@
                         email: "info@athleticlab.com",
                         introduction: "Sporcu performans analizi ve gelişimine odaklanan merkezimizde InBody cihazı ile detaylı vücut kompozisyonu ölçümü yapıyoruz. Spor hekimi ve fizyoterapist desteğiyle hizmet veriyoruz.",
                         hours: "Pazartesi - Cumartesi: 07:00 - 21:00\nPazar: Kapalı",
+                        facilityPhoto: "data:image/svg+xml,%3Csvg width='400' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='300' fill='%23991b1b'/%3E%3Ctext x='50%25' y='50%25' font-size='48' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'%3EPerformance Lab%3C/text%3E%3C/svg%3E",
                         status: 'approved',
                         submittedDate: new Date().toISOString()
                     }
