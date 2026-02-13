@@ -448,16 +448,27 @@
             const devicePhoto = document.getElementById('devicePhoto').files[0];
             const facilityPhoto = document.getElementById('facilityPhoto').files[0];
             
+            console.log('Form submitted!');
+            console.log('Device photo:', devicePhoto);
+            console.log('Facility photo:', facilityPhoto);
+            
             // Read images as base64
             const readFileAsBase64 = (file) => {
                 return new Promise((resolve, reject) => {
                     if (!file) {
+                        console.log('No file provided');
                         resolve(null);
                         return;
                     }
                     const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = reject;
+                    reader.onload = () => {
+                        console.log('File loaded successfully, size:', reader.result.length);
+                        resolve(reader.result);
+                    };
+                    reader.onerror = (error) => {
+                        console.error('File read error:', error);
+                        reject(error);
+                    };
                     reader.readAsDataURL(file);
                 });
             };
@@ -466,6 +477,10 @@
                 readFileAsBase64(devicePhoto),
                 readFileAsBase64(facilityPhoto)
             ]).then(([devicePhotoBase64, facilityPhotoBase64]) => {
+                console.log('Photos processed');
+                console.log('Device photo base64 length:', devicePhotoBase64 ? devicePhotoBase64.length : 0);
+                console.log('Facility photo base64 length:', facilityPhotoBase64 ? facilityPhotoBase64.length : 0);
+                
                 // Collect form data
                 const formData = {
                     id: Date.now(),
@@ -482,13 +497,35 @@
                     submittedDate: new Date().toISOString()
                 };
                 
+                console.log('Form data prepared:', formData);
+                
                 // Get existing requests
                 let requests = JSON.parse(localStorage.getItem('inbodyRequests') || '[]');
                 requests.push(formData);
-                localStorage.setItem('inbodyRequests', JSON.stringify(requests));
                 
-                alert('Kaydınız için teşekkür ederiz! Başvurunuzu 2-3 iş günü içinde inceleyeceğiz ve sizinle iletişime geçeceğiz.');
-                this.reset();
+                try {
+                    localStorage.setItem('inbodyRequests', JSON.stringify(requests));
+                    console.log('Saved to localStorage successfully!');
+                    console.log('Total requests:', requests.length);
+                    
+                    alert('Kaydınız için teşekkür ederiz! Başvurunuzu 2-3 iş günü içinde inceleyeceğiz ve sizinle iletişime geçeceğiz.');
+                    this.reset();
+                    
+                    // Reset file upload displays
+                    document.querySelectorAll('.file-upload-text').forEach(el => {
+                        el.innerHTML = '<strong>Yüklemek için tıklayın</strong> veya sürükleyip bırakın<br><span style="font-size: 0.85em; color: #adb5bd;">PNG, JPG - 10MB\'a kadar</span>';
+                    });
+                } catch (error) {
+                    console.error('localStorage error:', error);
+                    if (error.name === 'QuotaExceededError') {
+                        alert('Fotoğraflar çok büyük! Lütfen daha küçük boyutlu fotoğraflar kullanın (her biri 1MB altında).');
+                    } else {
+                        alert('Kayıt sırasında bir hata oluştu: ' + error.message);
+                    }
+                }
+            }).catch(error => {
+                console.error('Promise error:', error);
+                alert('Fotoğraflar yüklenirken bir hata oluştu. Lütfen tekrar deneyin.');
             });
         });
 
