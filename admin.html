@@ -363,6 +363,16 @@
             transform: translateY(-1px);
         }
 
+        .btn-delete {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #495057;
+            transform: translateY(-1px);
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -565,6 +575,10 @@
                     <option value="rejected">Reddedilen</option>
                 </select>
                 <input type="text" id="searchInput" placeholder="Tesis adı veya e-posta ara...">
+                <div style="flex-grow: 1;"></div>
+                <button class="btn btn-delete" onclick="deleteAllRejected()" style="padding: 10px 20px;">
+                    🗑️ Tüm Reddedilenleri Sil
+                </button>
             </div>
 
             <div class="requests-table">
@@ -710,6 +724,9 @@
                                     Reddet
                                 </button>
                             ` : ''}
+                            <button class="btn btn-delete" onclick="deleteRequest(${request.id})">
+                                🗑️ Sil
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -811,6 +828,34 @@
             localStorage.setItem('inbodyRequests', JSON.stringify(allRequests));
             loadRequests();
             alert('Başvuru reddedildi.');
+        }
+
+        function deleteRequest(id) {
+            const request = allRequests.find(r => r.id === id);
+            if (!request) return;
+
+            if (!confirm(`"${request.facilityName}" kaydını kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!`)) return;
+
+            allRequests = allRequests.filter(r => r.id !== id);
+            localStorage.setItem('inbodyRequests', JSON.stringify(allRequests));
+            loadRequests();
+            alert('Kayıt başarıyla silindi.');
+        }
+
+        function deleteAllRejected() {
+            const rejectedCount = allRequests.filter(r => r.status === 'rejected').length;
+            
+            if (rejectedCount === 0) {
+                alert('Silinecek reddedilmiş kayıt bulunmuyor.');
+                return;
+            }
+
+            if (!confirm(`${rejectedCount} adet reddedilmiş kaydı kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!`)) return;
+
+            allRequests = allRequests.filter(r => r.status !== 'rejected');
+            localStorage.setItem('inbodyRequests', JSON.stringify(allRequests));
+            loadRequests();
+            alert(`${rejectedCount} adet reddedilmiş kayıt başarıyla silindi.`);
         }
 
         // Event listeners
