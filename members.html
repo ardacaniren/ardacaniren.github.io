@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Üye Merkezler - InBody</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .nav-links {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #fef2f2;
+        }
+
+        .nav-links a.active {
+            background: #dc2626;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1.05em;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #868e96;
+            font-size: 1.2em;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-count {
+            color: #495057;
+            font-size: 1.1em;
+        }
+
+        .results-count strong {
+            color: #dc2626;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .member-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3em;
+        }
+
+        .member-content {
+            padding: 25px;
+        }
+
+        .member-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .member-address {
+            color: #666;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+
+        .member-address svg {
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .member-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .member-hours {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #495057;
+            margin-bottom: 15px;
+            white-space: pre-line;
+        }
+
+        .member-contact {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 15px;
+            border: 2px solid #dc2626;
+            background: white;
+            color: #dc2626;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .contact-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-state svg {
+            margin-bottom: 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #868e96;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .nav-links {
+                padding: 15px 20px;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>InBody Üye Merkezler</h1>
+        <p>Yakınınızdaki InBody cihazlarının bulunduğu merkezleri keşfedin</p>
+    </div>
+
+    <div class="nav-links">
+        <a href="members.html" class="active">Üye Merkezler</a>
+        <a href="index.html">Kayıt Ol</a>
+        <a href="admin.html">Yönetici Paneli</a>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Merkez adı, şehir veya bölge ara..."
+                >
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+
+        <div class="results-header">
+            <div class="results-count">
+                <strong id="resultsCount">0</strong> merkez bulundu
+            </div>
+        </div>
+
+        <div class="members-grid" id="membersGrid">
+        </div>
+    </div>
+
+    <script>
+        let allMembers = [];
+
+        function loadMembers() {
+            const requests = JSON.parse(localStorage.getItem('inbodyRequests') || '[]');
+            allMembers = requests.filter(r => r.status === 'approved');
+            renderMembers();
+        }
+
+        function renderMembers() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = allMembers.filter(member => {
+                return member.facilityName.toLowerCase().includes(searchTerm) ||
+                       member.address.toLowerCase().includes(searchTerm) ||
+                       member.introduction.toLowerCase().includes(searchTerm);
+            });
+
+            document.getElementById('resultsCount').textContent = filtered.length;
+
+            const grid = document.getElementById('membersGrid');
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="60" cy="60" r="50" fill="#e9ecef"/>
+                            <path d="M45 55C45 52.2386 47.2386 50 50 50H70C72.7614 50 75 52.2386 75 55V75C75 77.7614 72.7614 80 70 80H50C47.2386 80 45 77.7614 45 75V55Z" fill="#dee2e6"/>
+                            <circle cx="60" cy="40" r="8" fill="#dee2e6"/>
+                        </svg>
+                        <h2>Henüz üye merkez bulunmuyor</h2>
+                        <p>Yakında bu listede daha fazla merkez göreceksiniz</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(member => `
+                <div class="member-card">
+                    <div class="member-image">
+                        🏢
+                    </div>
+                    <div class="member-content">
+                        <div class="member-name">${member.facilityName}</div>
+                        <div class="member-address">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 0C5.24 0 3 2.24 3 5C3 8.5 8 16 8 16C8 16 13 8.5 13 5C13 2.24 10.76 0 8 0ZM8 7C6.9 7 6 6.1 6 5C6 3.9 6.9 3 8 3C9.1 3 10 3.9 10 5C10 6.1 9.1 7 8 7Z" fill="#dc2626"/>
+                            </svg>
+                            <span>${member.address}</span>
+                        </div>
+                        <div class="member-description">${member.introduction}</div>
+                        <div class="member-hours">
+                            <strong>📅 Çalışma Saatleri:</strong><br>
+                            ${member.hours}
+                        </div>
+                        <div class="member-contact">
+                            <a href="tel:${member.phone}" class="contact-btn">
+                                📞 Ara
+                            </a>
+                            <a href="mailto:${member.email}" class="contact-btn">
+                                ✉️ E-posta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', renderMembers);
+
+        // Load on page load
+        loadMembers();
+
+        // Add some sample data if none exists (for demo purposes)
+        window.addEventListener('load', function() {
+            if (allMembers.length === 0) {
+                const sampleData = [
+                    {
+                        id: Date.now(),
+                        facilityName: "Peak Performance Fitness Center",
+                        address: "Nişantaşı, Teşvikiye Cad. No:45, Şişli/İstanbul",
+                        phone: "+90 (212) 234-5678",
+                        email: "info@peakperformance.com",
+                        introduction: "Premium fitness merkezi olarak, en son teknoloji InBody cihazlarıyla vücut analizi hizmeti sunuyoruz. Uzman antrenörlerimiz eşliğinde kişiselleştirilmiş fitness programları ile hedeflerinize ulaşın.",
+                        hours: "Pazartesi - Cuma: 06:00 - 23:00\nCumartesi - Pazar: 08:00 - 21:00",
+                        status: 'approved',
+                        submittedDate: new Date().toISOString()
+                    },
+                    {
+                        id: Date.now() + 1,
+                        facilityName: "Vital Wellness & Spa",
+                        address: "Etiler, Nispetiye Cad. No:112, Beşiktaş/İstanbul",
+                        phone: "+90 (212) 345-6789",
+                        email: "contact@vitalwellness.com",
+                        introduction: "Spa ve wellness merkezimizde InBody vücut analizi ile sağlığınızı izleyin. Beslenme danışmanlığı, masaj terapileri ve yoga dersleri ile bütünsel sağlık yaklaşımı sunuyoruz.",
+                        hours: "Her Gün: 09:00 - 22:00",
+                        status: 'approved',
+                        submittedDate: new Date().toISOString()
+                    },
+                    {
+                        id: Date.now() + 2,
+                        facilityName: "Athletic Performance Lab",
+                        address: "Kadıköy, Moda Cad. No:78, Kadıköy/İstanbul",
+                        phone: "+90 (216) 456-7890",
+                        email: "info@athleticlab.com",
+                        introduction: "Sporcu performans analizi ve gelişimine odaklanan merkezimizde InBody cihazı ile detaylı vücut kompozisyonu ölçümü yapıyoruz. Spor hekimi ve fizyoterapist desteğiyle hizmet veriyoruz.",
+                        hours: "Pazartesi - Cumartesi: 07:00 - 21:00\nPazar: Kapalı",
+                        status: 'approved',
+                        submittedDate: new Date().toISOString()
+                    }
+                ];
+
+                localStorage.setItem('inbodyRequests', JSON.stringify(sampleData));
+                loadMembers();
+            }
+        });
+    </script>
+</body>
+</html>
