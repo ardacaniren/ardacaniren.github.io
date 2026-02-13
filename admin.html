@@ -41,6 +41,12 @@
             margin-bottom: 40px;
         }
 
+        .login-logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
         .login-header h1 {
             font-size: 2em;
             color: #333;
@@ -163,6 +169,12 @@
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-logo {
+            height: 40px;
+            margin-right: 20px;
         }
 
         .nav-links a {
@@ -487,6 +499,7 @@
     <div id="loginPage" class="login-container">
         <div class="login-box">
             <div class="login-header">
+                <img src="inbody-logo.png" alt="InBody Logo" class="login-logo" onerror="this.style.display='none'">
                 <h1>🔐 Yönetici Girişi</h1>
                 <p>InBody Yönetim Paneli</p>
             </div>
@@ -518,6 +531,7 @@
         </div>
 
         <div class="nav-links">
+            <img src="inbody-logo.png" alt="InBody Logo" class="nav-logo" onerror="this.style.display='none'">
             <a href="members.html">Üye Merkezler</a>
             <a href="index.html">Kayıt Ol</a>
             <a href="admin.html" class="active">Yönetici Paneli</a>
@@ -707,6 +721,12 @@
             if (!request) return;
 
             document.getElementById('modalBody').innerHTML = `
+                ${request.facilityPhoto ? `
+                    <div class="detail-group">
+                        <label>Tesis Fotoğrafı</label>
+                        <img src="${request.facilityPhoto}" alt="Tesis Fotoğrafı" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-top: 10px;">
+                    </div>
+                ` : ''}
                 <div class="detail-group">
                     <label>Tesis Adı</label>
                     <p>${request.facilityName}</p>
@@ -735,6 +755,12 @@
                     <label>Çalışma Saatleri</label>
                     <p style="white-space: pre-line;">${request.hours}</p>
                 </div>
+                ${request.devicePhoto ? `
+                    <div class="detail-group">
+                        <label>InBody Cihaz Fotoğrafı</label>
+                        <img src="${request.devicePhoto}" alt="Cihaz Fotoğrafı" style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 8px; margin-top: 10px; border: 1px solid #dee2e6;">
+                    </div>
+                ` : ''}
                 <div class="detail-group">
                     <label>Durum</label>
                     <p>
