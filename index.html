@@ -31,6 +31,7 @@
             flex-direction: column;
         }
 
+        /* HEADER */
         header {
             display: flex;
             align-items: center;
@@ -47,7 +48,7 @@
         .logo { display: flex; align-items: center; gap: 10px; }
         .inbody-logo-svg { height: 28px; width: auto; }
         .logo-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.15); }
-        .logo-sub { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; }
+        .logo-sub { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.6); }
 
         .live-badge {
             display: flex; align-items: center; gap: 6px;
@@ -59,15 +60,18 @@
         .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: blink 1.5s ease infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
+        /* ANA ALAN */
         main { flex: 1; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; max-width: 1100px; margin: 0 auto; width: 100%; }
 
-        .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+        .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; width: 100%; }
         .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
-        .featured-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-        .featured-img-wrap { position: relative; min-height: 380px; display: flex; align-items: center; justify-content: center; cursor: zoom-in; }
+        /* ÖNE ÇIKAN KART */
+        .featured-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; width: 100%; }
+        .featured-img-wrap { position: relative; min-height: 380px; display: flex; align-items: center; justify-content: center; cursor: zoom-in; background: #000; }
         #featured-img { width: 100%; height: auto; display: none; }
 
+        /* PAYLAŞIM PANELİ */
         .share-box {
             padding: 1.5rem;
             background: var(--surface2);
@@ -87,30 +91,39 @@
             transition: 0.2s; display: flex; align-items: center; gap: 6px;
         }
         .btn-send:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-send:disabled { background: var(--muted); cursor: not-allowed; }
 
         .featured-footer { padding: 0.85rem 1.25rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface); flex-wrap: wrap; gap: 0.5rem; }
         .featured-date { font-size: 0.8rem; color: var(--muted); }
+        
         .btn-refresh { display: flex; align-items: center; gap: 6px; background: var(--accent); color: white; border: none; padding: 7px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: 0.15s; }
         
-        .carousel { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+        /* CAROUSEL */
+        .carousel { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; width: 100%; }
+        .carousel::-webkit-scrollbar { height: 4px; }
+        .carousel::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
         .thumb { flex-shrink: 0; width: 160px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: 0.2s; background: var(--surface); }
         .thumb.active { border-color: var(--accent2); }
         .thumb img { width: 100%; height: 110px; object-fit: cover; }
         .thumb-label { padding: 6px 8px; font-size: 0.68rem; color: var(--muted); background: var(--surface2); text-align: center; }
 
+        /* LIGHTBOX */
         .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 1000; align-items: center; justify-content: center; cursor: zoom-out; }
         .lightbox.open { display: flex; }
         .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; }
 
+        /* YÜKLENİYOR */
         .loader-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
         .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        .zoom-hint { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; color: #ccc; }
+
+        /* GİRİŞ EKRANI */
         .login-overlay { position: fixed; inset: 0; z-index: 9999; background: #0a0f1e; display: flex; align-items: center; justify-content: center; }
         .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2.5rem 2rem; width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 1.5rem; }
-        .login-field input { background: #1a2234; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 14px; color: #f1f5f9; outline: none; width: 100%; }
-        .login-btn { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 11px; font-weight: 600; cursor: pointer; }
+        .login-field input { background: #1a2234; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px; color: #f1f5f9; outline: none; width: 100%; }
+        .login-btn { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .login-btn:hover { background: #2563eb; }
     </style>
 </head>
 <body>
@@ -118,13 +131,13 @@
 <div class="login-overlay" id="login-overlay">
     <div class="login-box">
         <div style="text-align:center; color:white; margin-bottom:10px;">
-            <h2>Yönetici Girişi</h2>
-            <p style="font-size:0.8rem; color:#64748b;">Panel erişimi için bilgilerinizi girin</p>
+            <h2 style="margin-bottom:5px;">Yönetici Girişi</h2>
+            <p style="font-size:0.8rem; color:#64748b;">InBody Takip Paneli</p>
         </div>
         <div class="login-field"><input type="text" id="login-user" placeholder="Kullanıcı Adı"></div>
         <div class="login-field"><input type="password" id="login-pass" placeholder="Şifre"></div>
         <button class="login-btn" onclick="loginCheck()">Giriş Yap</button>
-        <p id="login-error" style="color:#ef4444; font-size:0.8rem; text-align:center; display:none;">Hatalı kullanıcı adı veya şifre!</p>
+        <p id="login-error" style="color:#ef4444; font-size:0.8rem; text-align:center; display:none;">Hatalı giriş bilgileri!</p>
     </div>
 </div>
 
@@ -140,60 +153,59 @@
 </header>
 
 <main>
-    <div class="featured-wrap">
-        <div class="section-label">Son Ölçüm</div>
-        <div class="featured-card">
-            <div class="featured-img-wrap" id="featured-wrap" onclick="featuredClick()">
-                <div class="loader-wrap" id="main-loader"><div class="spinner"></div></div>
-                <img id="featured-img" src="">
-                <div class="zoom-hint" id="zoom-hint">🔍 Büyütmek için tıkla</div>
-            </div>
+    <div class="section-label">Son Ölçüm Sonucu</div>
+    <div class="featured-card">
+        <div class="featured-img-wrap" id="featured-wrap" onclick="featuredClick()">
+            <div class="loader-wrap" id="main-loader"><div class="spinner"></div></div>
+            <img id="featured-img" src="">
+            <div class="zoom-hint" id="zoom-hint">🔍 Büyütmek için tıkla</div>
+        </div>
 
-            <div class="share-box">
-                <div class="share-title"><i class="fas fa-paper-plane"></i> Raporu Danışana Gönder</div>
-                <div class="email-input-group">
-                    <input type="email" id="target-email" placeholder="danisan@mail.com">
-                    <button id="send-btn" class="btn-send" onclick="epostaGonder()">
-                        <i class="fas fa-envelope"></i> Gönder
-                    </button>
-                </div>
-            </div>
-
-            <div class="featured-footer">
-                <div class="featured-date">Son güncelleme: <span id="update-time">—</span></div>
-                <button class="btn-refresh" id="btn-refresh" onclick="veriGetir()">
-                    <i class="fas fa-sync-alt"></i> Yenile
+        <div class="share-box">
+            <div class="share-title"><i class="fas fa-paper-plane"></i> Raporu Danışana Gönder</div>
+            <div class="email-input-group">
+                <input type="email" id="target-email" placeholder="danisan@mail.com">
+                <button id="send-btn" class="btn-send" onclick="epostaGonder()">
+                    <i class="fas fa-envelope"></i> Gönder
                 </button>
             </div>
         </div>
+
+        <div class="featured-footer">
+            <div class="featured-date">Güncelleme: <span id="update-time">—</span></div>
+            <button class="btn-refresh" id="btn-refresh" onclick="veriGetir()">
+                <i class="fas fa-sync-alt"></i> Yenile
+            </button>
+        </div>
     </div>
 
-    <div class="carousel-section">
-        <div class="section-label" style="color:var(--muted)">Geçmiş Ölçümler</div>
-        <div class="carousel" id="carousel"></div>
-    </div>
+    <div class="section-label" style="color:var(--muted)">Geçmiş Analizler</div>
+    <div class="carousel" id="carousel"></div>
 </main>
 
-<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <span style="position:absolute; top:20px; right:20px; color:white; font-size:2rem; cursor:pointer;">✕</span>
     <img id="lightbox-img" src="">
 </div>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
 <script>
+    // --- KONFİGÜRASYON ---
     const ADMIN_USER = 'admin';
     const ADMIN_PASS = '0000';
-
-    (function() {
-        emailjs.init("Q3bN3o4fJ_93E57W7"); // Public Key buraya eklendi
-    })();
-
     const SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
-    const JSON_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Sheet1';
+    const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+
+    // EmailJS Başlatma
+    (function() {
+        emailjs.init("Q3bN3o4fJ_93E57W7");
+    })();
 
     let imageLinks = [];
     let currentIndex = 0;
 
+    // Sayfa Yüklenince Oturum Kontrolü
     if (sessionStorage.getItem('inbody_auth') === '1') {
         document.getElementById('login-overlay').style.display = 'none';
         veriGetir();
@@ -211,6 +223,7 @@
         }
     }
 
+    // Google Sheets'ten Veri Çekme
     async function veriGetir() {
         showState('loading');
         try {
@@ -219,30 +232,42 @@
             const jsonStr = raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1);
             const json = JSON.parse(jsonStr);
             const ids = [];
+            
             json.table.rows.forEach(row => {
                 if (row.c && row.c[0] && row.c[0].v) {
                     const url = row.c[0].v.toString();
-                    const id = url.match(/[-\w]{25,}/);
-                    if (id) ids.push(id[0]);
+                    const idMatch = url.match(/[-\w]{25,}/);
+                    if (idMatch) ids.push(idMatch[0]);
                 }
             });
+
             imageLinks = ids;
             if (ids.length > 0) {
                 loadFeatured(0);
                 buildCarousel();
             }
-            document.getElementById('update-time').textContent = new Date().toLocaleTimeString();
-        } catch(e) { console.error(e); }
+            document.getElementById('update-time').textContent = new Date().toLocaleTimeString('tr-TR');
+        } catch(e) { 
+            console.error("Veri hatası:", e);
+            alert("Veriler yüklenemedi!");
+        }
     }
 
+    // Ana Görseli Yükle
     function loadFeatured(index) {
         currentIndex = index;
         const img = document.getElementById('featured-img');
-        img.src = "https://drive.google.com/thumbnail?id=" + imageLinks[index] + "&sz=w1200";
+        const fileId = imageLinks[index];
+        // Büyük önizleme için sz=w1200 kullanıyoruz
+        img.src = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`;
         img.onload = () => showState('image');
-        document.querySelectorAll('.thumb').forEach((el, i) => el.classList.toggle('active', i === index));
+        
+        document.querySelectorAll('.thumb').forEach((el, i) => {
+            el.classList.toggle('active', i === index);
+        });
     }
 
+    // Alt Listeyi Oluştur
     function buildCarousel() {
         const c = document.getElementById('carousel');
         c.innerHTML = '';
@@ -250,51 +275,68 @@
             const t = document.createElement('div');
             t.className = 'thumb' + (i === 0 ? ' active' : '');
             t.onclick = () => loadFeatured(i);
-            t.innerHTML = `<img src="https://drive.google.com/thumbnail?id=${id}&sz=w320"><div class="thumb-label">${i==0?'Son':i+'. Ölçüm'}</div>`;
+            t.innerHTML = `
+                <img src="https://drive.google.com/thumbnail?id=${id}&sz=w320">
+                <div class="thumb-label">${i === 0 ? 'Son Ölçüm' : i + '. Önceki'}</div>
+            `;
             c.appendChild(t);
         });
     }
 
+    // --- E-POSTA GÖNDERME FONKSİYONU ---
     async function epostaGonder() {
         const email = document.getElementById('target-email').value;
-        const resimLink = document.getElementById('featured-img').src;
         const btn = document.getElementById('send-btn');
 
-        if (!email) { alert("Lütfen mail adresi girin!"); return; }
+        if (!email || !email.includes('@')) { 
+            alert("Lütfen geçerli bir e-posta adresi girin!"); 
+            return; 
+        }
 
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
 
+        // Seçili resmin ID'sini al ve temiz bir link oluştur
+        const currentId = imageLinks[currentIndex];
+        const directLink = "https://drive.google.com/uc?export=view&id=" + currentId;
+
         const params = {
-            to_email: email,
-            resim_linki: resimLink
+            to_email: email,        // EmailJS şablonundaki {{to_email}}
+            resim_linki: directLink // EmailJS şablonundaki {{resim_linki}}
         };
 
         emailjs.send('service_olohhky', 'template_65gzwms', params)
             .then(() => {
-                alert("Rapor başarıyla gönderildi!");
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-envelope"></i> Gönder';
+                alert("Rapor başarıyla danışana gönderildi!");
+                document.getElementById('target-email').value = ''; // Kutuyu temizle
             })
             .catch((err) => {
-                alert("Hata oluştu!");
+                console.error("Hata:", err);
+                alert("Gönderim başarısız oldu!");
+            })
+            .finally(() => {
                 btn.disabled = false;
-                btn.innerHTML = 'Hata!';
+                btn.innerHTML = '<i class="fas fa-envelope"></i> Gönder';
             });
     }
 
     function showState(state) {
         document.getElementById('main-loader').style.display = state === 'loading' ? 'flex' : 'none';
         document.getElementById('featured-img').style.display = state === 'image' ? 'block' : 'none';
+        document.getElementById('zoom-hint').style.display = state === 'image' ? 'block' : 'none';
     }
 
     function featuredClick() {
         const lb = document.getElementById('lightbox');
         document.getElementById('lightbox-img').src = document.getElementById('featured-img').src;
         lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
     }
 
-    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = 'auto';
+    }
 </script>
 </body>
 </html>
