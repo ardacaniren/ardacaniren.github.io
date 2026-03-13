@@ -440,12 +440,21 @@
     const ADMIN_USER = 'admin';
     const ADMIN_PASS = '0000';
 
+    // Sayfa yüklenince oturum kontrolü
+    (function() {
+        if (sessionStorage.getItem('inbody_auth') === '1') {
+            document.getElementById('login-overlay').style.display = 'none';
+            setTimeout(veriGetir, 100);
+        }
+    })();
+
     function loginCheck() {
         const user = document.getElementById('login-user').value.trim();
         const pass = document.getElementById('login-pass').value.trim();
         const errEl = document.getElementById('login-error');
 
         if (user === ADMIN_USER && pass === ADMIN_PASS) {
+            sessionStorage.setItem('inbody_auth', '1');
             document.getElementById('login-overlay').style.display = 'none';
             veriGetir();
         } else {
@@ -453,7 +462,7 @@
             ['login-user','login-pass'].forEach(id => {
                 const el = document.getElementById(id);
                 el.classList.remove('shake');
-                void el.offsetWidth; // reflow
+                void el.offsetWidth;
                 el.classList.add('shake');
             });
         }
