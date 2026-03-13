@@ -1,0 +1,24 @@
+<div style="text-align: center; font-family: sans-serif;">
+    <h2>Son InBody Ölçüm Raporum</h2>
+    <img id="inbody-resim" src="" alt="Yükleniyor..." style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</div>
+
+<script>
+    // 1. BURAYI DEĞİŞTİR: E-tabloda "Web'de Yayınla" diyerek aldığın CSV linkini yapıştır
+    const eTabloCsvLink = 'https://docs.google.com/spreadsheets/d/e/SAYFA_ID_BURAYA/pub?output=csv';
+
+    async function resmiGetir() {
+        try {
+            const response = await fetch(eTabloCsvLink);
+            const link = await response.text();
+            
+            // E-tablodaki A1 hücresindeki linki temizleyip img etiketine basar
+            document.getElementById('inbody-resim').src = link.trim();
+        } catch (error) {
+            console.error('Resim yüklenirken hata oluştu:', error);
+        }
+    }
+
+    // Sayfa açıldığında çalıştır
+    resmiGetir();
+</script>
