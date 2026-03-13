@@ -503,8 +503,11 @@
             if (!res.ok) throw new Error('Veri alınamadı (HTTP ' + res.status + ')');
             const raw = await res.text();
 
-            // Google'ın JSON wrapper'ını temizle: /*O_o*/\ngoogle.visualization.Query.setResponse({...})
-            const json = JSON.parse(raw.replace(/^.*?\(/, '').replace(/\);?\s*$/, ''));
+            console.log('Ham yanıt:', raw.slice(0, 300));
+
+            // Google wrapper: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+            const jsonStr = raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1);
+            const json = JSON.parse(jsonStr);
 
             const rows = json.table.rows;
             const ids = [];
@@ -520,7 +523,7 @@
             console.log('Bulunan ID sayısı:', ids.length, ids);
 
             if (ids.length === 0) {
-                throw new Error('Sheets\'te Drive linki bulunamadı. AppScript\'i çalıştır.');
+                throw new Error('Sheets te Drive linki bulunamadi. AppScript i calistir.');
             }
 
             imageLinks = ids;
