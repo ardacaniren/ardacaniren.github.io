@@ -22,6 +22,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         header {
@@ -72,14 +73,18 @@
             padding: 20px;
             border-radius: 16px;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         #inbody-resim {
             width: 100%;
             height: auto;
             border-radius: 8px;
-            display: none; /* İlk başta gizli, yüklenince açılacak */
+            display: none;
         }
 
         .loader {
@@ -97,90 +102,114 @@
             100% { transform: rotate(360deg); }
         }
 
+        .btn-refresh {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-refresh:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        #error-msg {
+            display: none;
+            color: #ef4444;
+            padding: 20px;
+            background: #fee2e2;
+            border-radius: 8px;
+        }
+
         footer {
             margin-top: auto;
             padding: 2rem;
             font-size: 0.9rem;
             color: #64748b;
         }
-
-        .btn-refresh {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .btn-refresh:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1><i class="fas fa-chart-line"></i> InBody Takip Sistemi</h1>
+        <h1><i class="fas fa-chart-line"></i> InBody Takip Paneli</h1>
     </header>
 
     <div class="container">
         <div class="status-card">
             <span class="dot"></span>
-            Sistem Aktif: Veriler Google Drive üzerinden anlık çekiliyor
+            Sistem Bağlantısı Aktif
         </div>
 
         <div class="report-container">
-            <h3 style="margin-top: 0;">Güncel Ölçüm Raporu</h3>
             <div id="loading-spinner" class="loader"></div>
-            <img id="inbody-resim" src="" alt="InBody Analiz Raporu" onload="resimYuklendi()">
-            <div id="error-msg" style="display:none; color: #ef4444; padding: 20px;">
-                <i class="fas fa-exclamation-circle"></i> Veri çekilirken bir hata oluştu.
+            
+            <img id="inbody-resim" src="" alt="InBody Analiz Raporu">
+            
+            <div id="error-msg">
+                <i class="fas fa-exclamation-circle"></i> 
+                <strong>Veri Çekilemedi:</strong> <br>
+                Lütfen E-Tablo yayınlama ayarlarının "CSV" olduğundan emin olun.
             </div>
         </div>
 
         <button class="btn-refresh" onclick="resmiGetir()">
-            <i class="fas fa-sync"></i> Veriyi Yenile
+            <i class="fas fa-sync-alt"></i> Görünümü Yenile
         </button>
     </div>
 
     <footer>
-        &copy; 2026 InBody Veri Otomasyonu | GitHub Pages & Google Cloud
+        &copy; 2026 InBody Otomasyon Sistemi
     </footer>
 
     <script>
-        // BURAYI DEĞİŞTİR: Google E-Tablo'dan "Web'de Yayınla" diyerek aldığın CSV linkini yapıştır
+        // Senin verdiğin güncel CSV linki
         const eTabloCsvLink = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbbOIMxUizeJw4siM8hubz7vILGnh-rBpR5I1NSiDpf2sU3QEWjCjHVkI-ATIpsru0dZeIIBSoN5Ls/pub?output=csv';
 
         async function resmiGetir() {
+            // Arayüzü hazırlıyoruz
             document.getElementById('loading-spinner').style.display = 'block';
             document.getElementById('inbody-resim').style.display = 'none';
             document.getElementById('error-msg').style.display = 'none';
 
             try {
-                // Cache engellemek için linkin sonuna rastgele sayı ekliyoruz
-                const response = await fetch(eTabloCsvLink + '&t=' + new Date().getTime());
-                const link = await response.text();
+                // Tarayıcı önbelleğini (cache) aşmak için rastgele bir zaman damgası ekliyoruz
+                const url = eTabloCsvLink + '&t=' + new Date().getTime();
+                const response = await fetch(url);
                 
-                const cleanLink = link.trim();
+                if (!response.ok) throw new Error("Ağ hatası");
                 
+                const text = await response.text();
+                
+                // CSV içindeki linki temizliyoruz (tırnakları sil, boşlukları at, ilk satırı al)
+                const cleanLink = text.replace(/["']/g, "").trim().split('\n')[0].trim();
+
                 if (cleanLink.startsWith('http')) {
-                    document.getElementById('inbody-resim').src = cleanLink;
+                    const img = document.getElementById('inbody-resim');
+                    img.src = cleanLink;
+                    
+                    // Resim gerçekten yüklendiğinde gösteriyoruz
+                    img.onload = function() {
+                        document.getElementById('loading-spinner').style.display = 'none';
+                        img.style.display = 'block';
+                    };
                 } else {
-                    throw new Error("Geçersiz Link");
+                    console.error("CSV'den gelen veri linke benzemiyor:", cleanLink);
+                    throw new Error("Geçersiz link");
                 }
             } catch (error) {
-                console.error('Hata:', error);
+                console.error('Hata detayı:', error);
                 document.getElementById('loading-spinner').style.display = 'none';
                 document.getElementById('error-msg').style.display = 'block';
             }
         }
 
-        function resimYuklendi() {
-            document.getElementById('loading-spinner').style.display = 'none';
-            document.getElementById('inbody-resim').style.display = 'block';
-        }
-
-        // Sayfa açıldığında otomatik çalıştır
+        // Sayfa açıldığında otomatik başlat
         resmiGetir();
     </script>
 </body>
