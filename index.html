@@ -29,14 +29,13 @@
             flex-direction: column;
         }
 
-        /* HEADER */
         header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 1rem 2rem;
             border-bottom: 1px solid var(--border);
-            background: rgba(17,24,39,0.8);
+            background: rgba(17,24,39,0.95);
             backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
@@ -47,17 +46,25 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: -0.02em;
         }
 
-        .logo-icon {
-            width: 32px; height: 32px;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
+        /* Gerçek InBody logosu — SVG inline */
+        .inbody-logo-svg {
+            height: 28px;
+            width: auto;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .logo-sub {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.02em;
         }
 
         .live-badge {
@@ -75,12 +82,8 @@
             animation: blink 1.5s ease infinite;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-        /* MAIN */
         main {
             flex: 1;
             padding: 2rem;
@@ -93,13 +96,9 @@
             width: 100%;
         }
 
-        /* FEATURED (büyük resim) */
-        .featured-wrap {
-            width: 100%;
-            position: relative;
-        }
+        .featured-wrap { width: 100%; }
 
-        .featured-label {
+        .section-label {
             font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.12em;
@@ -108,27 +107,21 @@
             margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
-
-        .featured-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
+        .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+        .section-label.muted { color: var(--muted); }
 
         .featured-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
-            position: relative;
         }
 
         .featured-img-wrap {
             position: relative;
-            min-height: 400px;
+            min-height: 380px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -138,26 +131,21 @@
         #featured-img {
             width: 100%;
             height: auto;
-            display: block;
-            transition: transform 0.2s ease;
+            display: none;
         }
 
-        /* Zoom overlay */
         .zoom-hint {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0,0,0,0.6);
+            bottom: 12px; right: 12px;
+            background: rgba(0,0,0,0.55);
             backdrop-filter: blur(6px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 0.72rem;
-            color: rgba(255,255,255,0.7);
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.65);
             pointer-events: none;
+            display: none;
         }
 
         .featured-footer {
@@ -167,52 +155,31 @@
             align-items: center;
             justify-content: space-between;
             background: var(--surface2);
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
-        .featured-date {
-            font-size: 0.8rem;
-            color: var(--muted);
-        }
-
-        .featured-date span {
-            color: var(--text);
-            font-weight: 500;
-        }
+        .featured-date { font-size: 0.8rem; color: var(--muted); }
+        .featured-date span { color: var(--text); font-weight: 500; }
 
         .btn-refresh {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 7px 16px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            background: var(--accent); color: white;
+            border: none; padding: 7px 16px; border-radius: 8px;
+            font-size: 0.8rem; font-weight: 500; cursor: pointer;
             font-family: 'Inter', sans-serif;
             transition: all 0.15s;
         }
-
         .btn-refresh:hover { background: #2563eb; transform: translateY(-1px); }
-        .btn-refresh:active { transform: translateY(0); }
         .btn-refresh.spinning svg { animation: spin 0.7s linear infinite; }
-
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* LOADER */
+        /* States */
         .loader-wrap {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: var(--surface);
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 12px;
         }
-
         .spinner {
             width: 40px; height: 40px;
             border: 3px solid var(--border);
@@ -220,186 +187,94 @@
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
+        .loader-text { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; }
 
-        .loader-text {
-            font-size: 0.75rem;
-            color: var(--muted);
-            letter-spacing: 0.08em;
-        }
-
-        /* ERROR */
         .error-wrap {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding: 3rem;
-            text-align: center;
+            display: none; flex-direction: column;
+            align-items: center; gap: 10px;
+            padding: 3rem; text-align: center;
+            position: absolute; inset: 0; justify-content: center;
         }
+        .error-wrap .eicon { font-size: 2rem; }
+        .error-wrap .etitle { font-weight: 600; font-size: 1rem; }
+        .error-wrap .edesc { font-size: 0.8rem; color: var(--muted); max-width: 320px; line-height: 1.6; }
+        .error-wrap code { background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; color: var(--accent2); }
 
-        .error-wrap .icon { font-size: 2rem; }
-        .error-wrap .title { font-weight: 600; }
-        .error-wrap .desc { font-size: 0.82rem; color: var(--muted); }
-
-        /* CAROUSEL (küçük resimler) */
-        .carousel-section {
-            width: 100%;
-        }
-
-        .section-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .section-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
+        /* Carousel */
+        .carousel-section { width: 100%; }
 
         .carousel {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 8px;
+            display: flex; gap: 12px;
+            overflow-x: auto; padding-bottom: 8px;
             scroll-snap-type: x mandatory;
             scrollbar-width: thin;
             scrollbar-color: var(--surface2) transparent;
         }
-
         .carousel::-webkit-scrollbar { height: 4px; }
-        .carousel::-webkit-scrollbar-track { background: transparent; }
         .carousel::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
 
         .thumb {
-            flex-shrink: 0;
-            width: 160px;
+            flex-shrink: 0; width: 160px;
             scroll-snap-align: start;
-            border-radius: 10px;
-            overflow: hidden;
+            border-radius: 10px; overflow: hidden;
             border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
+            cursor: pointer; transition: all 0.2s;
             background: var(--surface);
-            position: relative;
         }
-
         .thumb:hover { border-color: var(--accent); transform: translateY(-2px); }
         .thumb.active { border-color: var(--accent2); }
-
-        .thumb img {
-            width: 100%;
-            height: 110px;
-            object-fit: cover;
-            display: block;
-        }
-
+        .thumb img { width: 100%; height: 110px; object-fit: cover; display: block; }
         .thumb-label {
-            padding: 6px 8px;
-            font-size: 0.68rem;
-            color: var(--muted);
-            background: var(--surface2);
-            text-align: center;
+            padding: 6px 8px; font-size: 0.68rem;
+            color: var(--muted); background: var(--surface2); text-align: center;
         }
+        .thumb.active .thumb-label { color: var(--accent2); }
 
-        .thumb.active .thumb-label {
-            color: var(--accent2);
-        }
+        .skeleton { flex-shrink:0; width:160px; border-radius:10px; overflow:hidden; background:var(--surface); }
+        .skel-img { width:100%; height:110px; background: linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%); background-size:200% 100%; animation:shimmer 1.2s infinite; }
+        .skel-lbl { height:28px; background: linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%); background-size:200% 100%; animation:shimmer 1.2s infinite; }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-        .thumb-skeleton {
-            width: 160px;
-            flex-shrink: 0;
-            border-radius: 10px;
-            overflow: hidden;
-            background: var(--surface);
-        }
-
-        .skeleton-img {
-            width: 100%;
-            height: 110px;
-            background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.2s infinite;
-        }
-
-        .skeleton-label {
-            height: 28px;
-            background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* LIGHTBOX (zoom) */
+        /* Lightbox */
         .lightbox {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.93); z-index: 1000;
+            align-items: center; justify-content: center;
             cursor: zoom-out;
         }
-
         .lightbox.open { display: flex; }
-
+        .lightbox-img-wrap {
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            max-width: 95vw; max-height: 95vh;
+        }
         .lightbox img {
-            max-width: 95vw;
-            max-height: 95vh;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+            max-width: 95vw; max-height: 90vh;
+            object-fit: contain; border-radius: 8px;
             cursor: default;
+            transition: transform 0.2s ease;
+            transform-origin: center center;
         }
-
         .lightbox-close {
-            position: absolute;
-            top: 16px; right: 20px;
-            font-size: 1.8rem;
-            color: rgba(255,255,255,0.6);
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.15s;
+            position: absolute; top: 16px; right: 20px;
+            font-size: 1.8rem; color: rgba(255,255,255,0.5);
+            cursor: pointer; transition: color 0.15s; line-height: 1;
+            z-index: 10;
         }
-
         .lightbox-close:hover { color: white; }
-
-        /* Zoom controls on lightbox */
         .zoom-controls {
-            position: absolute;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
+            position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 8px; align-items: center;
         }
-
         .zoom-btn {
             width: 40px; height: 40px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px; color: white; font-size: 1.2rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
             transition: background 0.15s;
         }
-
         .zoom-btn:hover { background: rgba(255,255,255,0.2); }
+        .zoom-level { font-size: 0.75rem; color: rgba(255,255,255,0.5); min-width: 40px; text-align: center; }
 
         @media (max-width: 600px) {
             main { padding: 1rem; }
@@ -411,8 +286,15 @@
 
 <header>
     <div class="logo">
-        <div class="logo-icon">📊</div>
-        InBody Takip
+        <!-- InBody resmi logosu (SVG inline) -->
+        <svg class="inbody-logo-svg" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- "In" kırmızı -->
+            <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#E8192C">In</text>
+            <!-- "Body" siyah/beyaz -->
+            <text x="62" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#ffffff">Body</text>
+        </svg>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Takip Paneli</span>
     </div>
     <div class="live-badge">
         <span class="live-dot"></span>
@@ -421,26 +303,25 @@
 </header>
 
 <main>
-    <!-- Büyük (featured) resim -->
     <div class="featured-wrap">
-        <div class="featured-label">Son Ölçüm</div>
+        <div class="section-label">Son Ölçüm</div>
         <div class="featured-card">
-            <div class="featured-img-wrap" id="featured-wrap" onclick="openLightbox(currentIndex)">
+            <div class="featured-img-wrap" id="featured-wrap" onclick="featuredClick()">
                 <div class="loader-wrap" id="main-loader">
                     <div class="spinner"></div>
                     <div class="loader-text">YÜKLENIYOR...</div>
                 </div>
                 <div class="error-wrap" id="main-error">
-                    <div class="icon">⚠️</div>
-                    <div class="title">Rapor yüklenemedi</div>
-                    <div class="desc" id="error-text">Bir hata oluştu.</div>
+                    <div class="eicon">⚠️</div>
+                    <div class="etitle">Rapor yüklenemedi</div>
+                    <div class="edesc" id="error-text">Bir hata oluştu.</div>
                 </div>
-                <img id="featured-img" src="" alt="InBody Raporu" style="display:none">
-                <div class="zoom-hint">🔍 Büyütmek için tıkla</div>
+                <img id="featured-img" src="" alt="InBody Raporu">
+                <div class="zoom-hint" id="zoom-hint">🔍 Büyütmek için tıkla</div>
             </div>
             <div class="featured-footer">
-                <div class="featured-date">Güncelleme: <span id="update-time">—</span></div>
-                <button class="btn-refresh" id="btn-refresh" onclick="veriGetir()">
+                <div class="featured-date">Son güncelleme: <span id="update-time">—</span></div>
+                <button class="btn-refresh" id="btn-refresh" onclick="veriGetir(); event.stopPropagation();">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <polyline points="23 4 23 10 17 10"/>
                         <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
@@ -451,14 +332,12 @@
         </div>
     </div>
 
-    <!-- Küçük carousel -->
     <div class="carousel-section">
-        <div class="section-label">Geçmiş Ölçümler</div>
+        <div class="section-label muted">Geçmiş Ölçümler</div>
         <div class="carousel" id="carousel">
-            <!-- Skeleton -->
-            <div class="thumb-skeleton"><div class="skeleton-img"></div><div class="skeleton-label"></div></div>
-            <div class="thumb-skeleton"><div class="skeleton-img"></div><div class="skeleton-label"></div></div>
-            <div class="thumb-skeleton"><div class="skeleton-img"></div><div class="skeleton-label"></div></div>
+            <div class="skeleton"><div class="skel-img"></div><div class="skel-lbl"></div></div>
+            <div class="skeleton"><div class="skel-img"></div><div class="skel-lbl"></div></div>
+            <div class="skeleton"><div class="skel-img"></div><div class="skel-lbl"></div></div>
         </div>
     </div>
 </main>
@@ -466,10 +345,13 @@
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
     <span class="lightbox-close" onclick="closeLightbox()">✕</span>
-    <img id="lightbox-img" src="" alt="Büyük görünüm">
-    <div class="zoom-controls">
-        <button class="zoom-btn" onclick="zoomLightbox(-0.2); event.stopPropagation()">−</button>
-        <button class="zoom-btn" onclick="zoomLightbox(0.2); event.stopPropagation()">+</button>
+    <div class="lightbox-img-wrap">
+        <img id="lightbox-img" src="" alt="Büyük görünüm">
+    </div>
+    <div class="zoom-controls" onclick="event.stopPropagation()">
+        <button class="zoom-btn" onclick="zoomLightbox(-0.25)">−</button>
+        <span class="zoom-level" id="zoom-level">100%</span>
+        <button class="zoom-btn" onclick="zoomLightbox(0.25)">+</button>
     </div>
 </div>
 
@@ -478,158 +360,163 @@
 
     let imageLinks = [];
     let currentIndex = 0;
-    let lightboxScale = 1;
+    let lbScale = 1;
 
-    // ── CSV'den linkleri oku ─────────────────────────────────────────────────
+    function getThumbUrl(fileId) {
+        return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w320&_=" + Date.now();
+    }
+    function getFeaturedUrl(fileId) {
+        return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w1200&_=" + Date.now();
+    }
+    function getLightboxUrl(fileId) {
+        return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w2000&_=" + Date.now();
+    }
+
+    function extractFileId(url) {
+        var idParam = url.split('id=')[1];
+        if (idParam) return idParam.split('&')[0].split('"')[0].trim();
+        var dParam = url.split('/d/')[1];
+        if (dParam) return dParam.split('/')[0].split('?')[0].split('"')[0].trim();
+        return null;
+    }
+
     async function veriGetir() {
         const btn = document.getElementById('btn-refresh');
         btn.classList.add('spinning');
         btn.disabled = true;
-
-        showMainState('loading');
+        showState('loading');
 
         try {
             const res = await fetch(CSV_URL + '&_=' + Date.now());
-            if (!res.ok) throw new Error('CSV çekilemedi');
+            if (!res.ok) throw new Error('CSV alınamadı (HTTP ' + res.status + ')');
             const raw = await res.text();
 
-            // Her satırdan link çıkar
-            const rows = raw.split('\n').map(r => r.trim()).filter(Boolean);
-            const links = [];
+            console.log('CSV ham veri:\n', raw);
+
+            // Her satırı tara, Drive linki içerenleri topla
+            const rows = raw.split('\n');
+            const ids = [];
 
             for (const row of rows) {
-                const match = row.match(/https?:\/\/[^\s",\r\n]+drive\.google\.com[^\s",\r\n]*/i);
-                if (match) {
-                    const url = match[0].replace(/["\s]+$/, '');
-                    // file id çıkar
-                    const idM = url.match(/[?&]id=([\w-]+)/) || url.match(/\/d\/([\w-]+)/);
-                    if (idM) {
-                        links.push("https://drive.google.com/thumbnail?id=" + idM[1] + "&sz=w1200");
-                    }
+                // drive.google.com geçen her URL'yi yakala
+                const matches = row.match(/https?:\/\/[^\s,"'\r\n]+/g);
+                if (!matches) continue;
+                for (const url of matches) {
+                    const id = extractFileId(url);
+                    if (id && !ids.includes(id)) ids.push(id);
                 }
             }
 
-            if (links.length === 0) throw new Error('Hiç resim linki bulunamadı');
+            console.log('Bulunan ID sayısı:', ids.length, ids);
 
-            imageLinks = links;
+            if (ids.length === 0) {
+                throw new Error(
+                    'CSV\'de Drive linki bulunamadı. ' +
+                    'AppScript\'in son 10 linki A1:A10\'a yazdığından emin ol. ' +
+                    'Şu an CSV içeriği: ' + raw.slice(0, 200)
+                );
+            }
+
+            imageLinks = ids;
             currentIndex = 0;
-
-            // Büyük resmi yükle
             loadFeatured(0);
-
-            // Carousel'i doldur
             buildCarousel();
-
             document.getElementById('update-time').textContent =
-                new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+                new Date().toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
 
-        } catch (e) {
+        } catch(e) {
             console.error(e);
-            document.getElementById('error-text').textContent = e.message;
-            showMainState('error');
+            document.getElementById('error-text').innerHTML =
+                e.message + '<br><br>Console\'u (F12) kontrol et.';
+            showState('error');
         } finally {
             btn.classList.remove('spinning');
             btn.disabled = false;
         }
     }
 
-    // ── Büyük resmi yükle ────────────────────────────────────────────────────
     function loadFeatured(index) {
         currentIndex = index;
-        showMainState('loading');
-
-        const url = imageLinks[index] + '&_=' + Date.now();
+        showState('loading');
         const img = document.getElementById('featured-img');
-
-        img.onload = () => showMainState('image');
+        const url = getFeaturedUrl(imageLinks[index]);
+        img.onload = () => showState('image');
         img.onerror = () => {
-            document.getElementById('error-text').textContent = 'Resim yüklenemedi. Drive erişimini kontrol edin.';
-            showMainState('error');
+            document.getElementById('error-text').innerHTML =
+                'Resim yüklenemedi.<br>Drive paylaşım iznini kontrol et.';
+            showState('error');
         };
         img.src = url;
-
-        // Carousel aktif item güncelle
         document.querySelectorAll('.thumb').forEach((el, i) => {
             el.classList.toggle('active', i === index);
         });
     }
 
-    // ── Carousel oluştur ─────────────────────────────────────────────────────
     function buildCarousel() {
         const carousel = document.getElementById('carousel');
         carousel.innerHTML = '';
-
-        imageLinks.forEach((link, i) => {
+        imageLinks.forEach((id, i) => {
             const thumb = document.createElement('div');
             thumb.className = 'thumb' + (i === 0 ? ' active' : '');
             thumb.onclick = () => loadFeatured(i);
 
             const img = document.createElement('img');
-            // Thumbnail için küçük boyut
-            const idM = link.match(/id=([\w-]+)/);
-            img.src = idM
-                ? "https://drive.google.com/thumbnail?id=" + idM[1] + "&sz=w320&_=" + Date.now()
-                : link;
-            img.alt = "Ölçüm " + (i + 1);
+            img.src = getThumbUrl(id);
+            img.alt = 'Ölçüm ' + (i + 1);
+            img.loading = 'lazy';
 
-            const label = document.createElement('div');
-            label.className = 'thumb-label';
-            label.textContent = i === 0 ? 'Son Ölçüm' : 'Ölçüm -' + i;
+            const lbl = document.createElement('div');
+            lbl.className = 'thumb-label';
+            lbl.textContent = i === 0 ? 'Son Ölçüm' : (i === 1 ? 'Önceki' : '-' + i + '. ölçüm');
 
             thumb.appendChild(img);
-            thumb.appendChild(label);
+            thumb.appendChild(lbl);
             carousel.appendChild(thumb);
         });
     }
 
-    // ── State yönetimi ───────────────────────────────────────────────────────
-    function showMainState(state) {
+    function showState(state) {
         document.getElementById('main-loader').style.display  = state === 'loading' ? 'flex'  : 'none';
         document.getElementById('main-error').style.display   = state === 'error'   ? 'flex'  : 'none';
         document.getElementById('featured-img').style.display = state === 'image'   ? 'block' : 'none';
+        document.getElementById('zoom-hint').style.display    = state === 'image'   ? 'block' : 'none';
     }
 
-    // ── Lightbox ─────────────────────────────────────────────────────────────
-    function openLightbox(index) {
-        const idM = imageLinks[index].match(/id=([\w-]+)/);
-        const url = idM
-            ? "https://drive.google.com/thumbnail?id=" + idM[1] + "&sz=w2000&_=" + Date.now()
-            : imageLinks[index];
+    function featuredClick() {
+        if (imageLinks.length > 0 && document.getElementById('featured-img').style.display !== 'none') {
+            openLightbox(currentIndex);
+        }
+    }
 
-        lightboxScale = 1;
-        const lb = document.getElementById('lightbox');
+    function openLightbox(index) {
+        lbScale = 1;
         const lbImg = document.getElementById('lightbox-img');
         lbImg.style.transform = 'scale(1)';
-        lbImg.src = url;
-        lb.classList.add('open');
+        lbImg.src = getLightboxUrl(imageLinks[index]);
+        document.getElementById('lightbox').classList.add('open');
+        document.getElementById('zoom-level').textContent = '100%';
         document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox(e) {
-        if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
-        if (!e) {
-            document.getElementById('lightbox').classList.remove('open');
-            document.body.style.overflow = '';
-        } else {
-            document.getElementById('lightbox').classList.remove('open');
-            document.body.style.overflow = '';
-        }
+        if (e && e.target !== document.getElementById('lightbox') &&
+            !e.target.classList.contains('lightbox-close')) return;
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
     }
 
     function zoomLightbox(delta) {
-        lightboxScale = Math.min(3, Math.max(0.5, lightboxScale + delta));
-        document.getElementById('lightbox-img').style.transform = 'scale(' + lightboxScale + ')';
+        lbScale = Math.min(4, Math.max(0.4, lbScale + delta));
+        document.getElementById('lightbox-img').style.transform = 'scale(' + lbScale + ')';
+        document.getElementById('zoom-level').textContent = Math.round(lbScale * 100) + '%';
     }
 
-    // ESC tuşuyla kapat
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            document.getElementById('lightbox').classList.remove('open');
-            document.body.style.overflow = '';
-        }
+        if (e.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') });
+        if (e.key === '+' || e.key === '=') zoomLightbox(0.25);
+        if (e.key === '-') zoomLightbox(-0.25);
     });
 
-    // Başlat
     veriGetir();
 </script>
 </body>
