@@ -280,16 +280,95 @@
             main { padding: 1rem; }
             header { padding: 0.75rem 1rem; }
         }
+
+        /* LOGIN */
+        .login-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #0a0f1e;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-box {
+            background: #111827;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            width: 100%; max-width: 360px;
+            display: flex; flex-direction: column; gap: 1.5rem;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+        .login-header { text-align: center; display: flex; flex-direction: column; gap: 8px; }
+        .login-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px; }
+        .login-title { font-size: 1.1rem; font-weight: 600; color: #f1f5f9; }
+        .login-sub { font-size: 0.78rem; color: #64748b; }
+        .login-fields { display: flex; flex-direction: column; gap: 0.75rem; }
+        .login-field { display: flex; flex-direction: column; gap: 5px; }
+        .login-field label { font-size: 0.72rem; font-weight: 500; color: #94a3b8; letter-spacing: 0.05em; text-transform: uppercase; }
+        .login-field input {
+            background: #1a2234; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; padding: 10px 14px;
+            color: #f1f5f9; font-size: 0.9rem; font-family: 'Inter', sans-serif;
+            outline: none; transition: border-color 0.15s;
+        }
+        .login-field input:focus { border-color: #3b82f6; }
+        .login-field input.shake { animation: shake 0.35s ease; border-color: #9B1C1C; }
+        @keyframes shake {
+            0%,100%{transform:translateX(0)}
+            20%{transform:translateX(-8px)}
+            40%{transform:translateX(8px)}
+            60%{transform:translateX(-5px)}
+            80%{transform:translateX(5px)}
+        }
+        .login-btn {
+            background: #3b82f6; color: white; border: none;
+            border-radius: 10px; padding: 11px;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: all 0.15s;
+        }
+        .login-btn:hover { background: #2563eb; transform: translateY(-1px); }
+        .login-btn:active { transform: translateY(0); }
+        .login-error {
+            font-size: 0.78rem; color: #9B1C1C; text-align: center;
+            background: rgba(155,28,28,0.15); border: 1px solid rgba(155,28,28,0.3);
+            border-radius: 8px; padding: 8px; display: none;
+        }
     </style>
 </head>
 <body>
 
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="login-overlay">
+    <div class="login-box">
+        <div class="login-header">
+            <div class="login-logo">
+                <svg viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:32px;width:auto">
+                    <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">InBody</text>
+                </svg>
+            </div>
+            <div class="login-title">Yönetici Girişi</div>
+            <div class="login-sub">Takip paneline erişmek için giriş yapın</div>
+        </div>
+        <div class="login-fields">
+            <div class="login-field">
+                <label>Kullanıcı Adı</label>
+                <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username">
+            </div>
+            <div class="login-field">
+                <label>Şifre</label>
+                <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+            </div>
+        </div>
+        <div class="login-error" id="login-error">❌ Kullanıcı adı veya şifre hatalı</div>
+        <button class="login-btn" onclick="loginCheck()">Giriş Yap</button>
+    </div>
+</div>
+
 <header>
     <div class="logo">
         <!-- InBody resmi logosu (SVG inline) -->
-        <svg class="inbody-logo-svg" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="inbody-logo-svg" viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- "In" kırmızı -->
-            <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#E8192C">In</text>
+            <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">In</text>
             <!-- "Body" siyah/beyaz -->
             <text x="62" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#ffffff">Body</text>
         </svg>
@@ -356,6 +435,38 @@
 </div>
 
 <script>
+
+    // ── LOGIN ────────────────────────────────────────────────────────────────
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = '0000';
+
+    function loginCheck() {
+        const user = document.getElementById('login-user').value.trim();
+        const pass = document.getElementById('login-pass').value.trim();
+        const errEl = document.getElementById('login-error');
+
+        if (user === ADMIN_USER && pass === ADMIN_PASS) {
+            document.getElementById('login-overlay').style.display = 'none';
+            veriGetir();
+        } else {
+            errEl.style.display = 'block';
+            ['login-user','login-pass'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('shake');
+                void el.offsetWidth; // reflow
+                el.classList.add('shake');
+            });
+        }
+    }
+
+    // Enter tuşuyla giriş
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && document.getElementById('login-overlay').style.display !== 'none') {
+            loginCheck();
+        }
+    });
+
+
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbbOIMxUizeJw4siM8hubz7vILGnh-rBpR5I1NSiDpf2sU3QEWjCjHVkI-ATIpsru0dZeIIBSoN5Ls/pub?output=csv';
 
     let imageLinks = [];
@@ -517,7 +628,7 @@
         if (e.key === '-') zoomLightbox(-0.25);
     });
 
-    veriGetir();
+    // veriGetir login sonrası çağrılır
 </script>
 </body>
 </html>
