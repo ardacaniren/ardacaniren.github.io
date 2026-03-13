@@ -32,7 +32,6 @@
     </div>
 
     <script>
-        // Senin güncel CSV linkin
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbbOIMxUizeJw4siM8hubz7vILGnh-rBpR5I1NSiDpf2sU3QEWjCjHVkI-ATIpsru0dZeIIBSoN5Ls/pub?output=csv';
 
         async function resmiGetir() {
@@ -45,34 +44,42 @@
             error.style.display = 'none';
 
             try {
+                // Cache'i kır: CSV her seferinde taze çekilsin
                 const response = await fetch(csvUrl + '&cache=' + new Date().getTime());
                 const rawData = await response.text();
-                
+
                 console.log("Ham Veri:", rawData);
 
-                // --- ZIRHLI TEMİZLİK ---
-                // 1. Tüm tırnakları sil
-                // 2. Linkin sonundaki o yanlış harfleri (d gibi) temizle
-                // 3. Sadece https:// ile başlayan gerçek linki cımbızla çek
-                let cleanLink = "";
+                // Drive linkini bul
                 const linkMatch = rawData.match(/https?:\/\/[^\s",]+/);
-                
-                if (linkMatch) {
-                    cleanLink = linkMatch[0].trim();
-                }
+                let cleanLink = linkMatch ? linkMatch[0].trim() : "";
 
                 console.log("Ayıklanan Link:", cleanLink);
 
-                if (cleanLink.includes("drive.google.com")) {
-                    img.src = cleanLink;
-                    img.onload = () => {
-                        spinner.style.display = 'none';
-                        img.style.display = 'block';
-                    };
-                    img.onerror = () => { throw new Error("Resim yüklenemedi"); };
-                } else {
+                if (!cleanLink.includes("drive.google.com")) {
                     throw new Error("Geçerli link bulunamadı");
                 }
+
+                // FILE_ID çıkar (hem ?id= hem /d/ formatını destekler)
+                let fileId = null;
+                const idMatch1 = cleanLink.match(/[?&]id=([\w-]+)/);
+                const idMatch2 = cleanLink.match(/\/d\/([\w-]+)/);
+                if (idMatch1) fileId = idMatch1[1];
+                else if (idMatch2) fileId = idMatch2[1];
+
+                if (!fileId) throw new Error("File ID bulunamadı: " + cleanLink);
+
+                console.log("File ID:", fileId);
+
+                // Cache'i kır: resim URL'sine zaman damgası ekle
+                const imgUrl = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w1200&_=" + Date.now();
+
+                img.src = imgUrl;
+                img.onload = () => {
+                    spinner.style.display = 'none';
+                    img.style.display = 'block';
+                };
+                img.onerror = () => { throw new Error("Resim yüklenemedi"); };
 
             } catch (e) {
                 console.error("Hata:", e);
@@ -81,7 +88,7 @@
             }
         }
 
-        resmiGetir(); // Başlat
+        resmiGetir();
     </script>
 </body>
 </html>
