@@ -370,7 +370,7 @@
             <!-- "In" kırmızı -->
             <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">In</text>
             <!-- "Body" siyah/beyaz -->
-            <text x="62" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#ffffff">Body</text>
+            <text x="52" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#ffffff">Body</text>
         </svg>
         <div class="logo-divider"></div>
         <span class="logo-sub">Takip Paneli</span>
@@ -467,7 +467,8 @@
     });
 
 
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbbOIMxUizeJw4siM8hubz7vILGnh-rBpR5I1NSiDpf2sU3QEWjCjHVkI-ATIpsru0dZeIIBSoN5Ls/pub?output=csv';
+    const SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
+    const JSON_URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Sheet1';
 
     let imageLinks = [];
     let currentIndex = 0;
@@ -498,34 +499,28 @@
         showState('loading');
 
         try {
-            const res = await fetch(CSV_URL + '&_=' + Date.now());
-            if (!res.ok) throw new Error('CSV alınamadı (HTTP ' + res.status + ')');
+            const res = await fetch(JSON_URL + '&_=' + Date.now());
+            if (!res.ok) throw new Error('Veri alınamadı (HTTP ' + res.status + ')');
             const raw = await res.text();
 
-            console.log('CSV ham veri:\n', raw);
+            // Google'ın JSON wrapper'ını temizle: /*O_o*/\ngoogle.visualization.Query.setResponse({...})
+            const json = JSON.parse(raw.replace(/^.*?\(/, '').replace(/\);?\s*$/, ''));
 
-            // Her satırı tara, Drive linki içerenleri topla
-            const rows = raw.split('\n');
+            const rows = json.table.rows;
             const ids = [];
 
             for (const row of rows) {
-                // drive.google.com geçen her URL'yi yakala
-                const matches = row.match(/https?:\/\/[^\s,"'\r\n]+/g);
-                if (!matches) continue;
-                for (const url of matches) {
-                    const id = extractFileId(url);
-                    if (id && !ids.includes(id)) ids.push(id);
-                }
+                if (!row.c || !row.c[0] || !row.c[0].v) continue;
+                const url = row.c[0].v.toString().trim();
+                if (!url.includes('drive.google.com')) continue;
+                const id = extractFileId(url);
+                if (id && !ids.includes(id)) ids.push(id);
             }
 
             console.log('Bulunan ID sayısı:', ids.length, ids);
 
             if (ids.length === 0) {
-                throw new Error(
-                    'CSV\'de Drive linki bulunamadı. ' +
-                    'AppScript\'in son 10 linki A1:A10\'a yazdığından emin ol. ' +
-                    'Şu an CSV içeriği: ' + raw.slice(0, 200)
-                );
+                throw new Error('Sheets\'te Drive linki bulunamadı. AppScript\'i çalıştır.');
             }
 
             imageLinks = ids;
