@@ -1,24 +1,187 @@
-<div style="text-align: center; font-family: sans-serif;">
-    <h2>Son InBody Ölçüm Raporum</h2>
-    <img id="inbody-resim" src="" alt="Yükleniyor..." style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-</div>
-
-<script>
-    // 1. BURAYI DEĞİŞTİR: E-tabloda "Web'de Yayınla" diyerek aldığın CSV linkini yapıştır
-    const eTabloCsvLink = 'https://docs.google.com/spreadsheets/d/e/SAYFA_ID_BURAYA/pub?output=csv';
-
-    async function resmiGetir() {
-        try {
-            const response = await fetch(eTabloCsvLink);
-            const link = await response.text();
-            
-            // E-tablodaki A1 hücresindeki linki temizleyip img etiketine basar
-            document.getElementById('inbody-resim').src = link.trim();
-        } catch (error) {
-            console.error('Resim yüklenirken hata oluştu:', error);
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InBody Ölçüm Paneli</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
         }
-    }
 
-    // Sayfa açıldığında çalıştır
-    resmiGetir();
-</script>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .status-card {
+            background: var(--card);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            font-weight: 500;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .report-container {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        #inbody-resim {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: none; /* İlk başta gizli, yüklenince açılacak */
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .btn-refresh {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-refresh:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fas fa-chart-line"></i> InBody Takip Sistemi</h1>
+    </header>
+
+    <div class="container">
+        <div class="status-card">
+            <span class="dot"></span>
+            Sistem Aktif: Veriler Google Drive üzerinden anlık çekiliyor
+        </div>
+
+        <div class="report-container">
+            <h3 style="margin-top: 0;">Güncel Ölçüm Raporu</h3>
+            <div id="loading-spinner" class="loader"></div>
+            <img id="inbody-resim" src="" alt="InBody Analiz Raporu" onload="resimYuklendi()">
+            <div id="error-msg" style="display:none; color: #ef4444; padding: 20px;">
+                <i class="fas fa-exclamation-circle"></i> Veri çekilirken bir hata oluştu.
+            </div>
+        </div>
+
+        <button class="btn-refresh" onclick="resmiGetir()">
+            <i class="fas fa-sync"></i> Veriyi Yenile
+        </button>
+    </div>
+
+    <footer>
+        &copy; 2026 InBody Veri Otomasyonu | GitHub Pages & Google Cloud
+    </footer>
+
+    <script>
+        // BURAYI DEĞİŞTİR: Google E-Tablo'dan "Web'de Yayınla" diyerek aldığın CSV linkini yapıştır
+        const eTabloCsvLink = 'BURAYA_GOOGLE_TABLO_CSV_LINKINI_YAPISTIR';
+
+        async function resmiGetir() {
+            document.getElementById('loading-spinner').style.display = 'block';
+            document.getElementById('inbody-resim').style.display = 'none';
+            document.getElementById('error-msg').style.display = 'none';
+
+            try {
+                // Cache engellemek için linkin sonuna rastgele sayı ekliyoruz
+                const response = await fetch(eTabloCsvLink + '&t=' + new Date().getTime());
+                const link = await response.text();
+                
+                const cleanLink = link.trim();
+                
+                if (cleanLink.startsWith('http')) {
+                    document.getElementById('inbody-resim').src = cleanLink;
+                } else {
+                    throw new Error("Geçersiz Link");
+                }
+            } catch (error) {
+                console.error('Hata:', error);
+                document.getElementById('loading-spinner').style.display = 'none';
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        function resimYuklendi() {
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('inbody-resim').style.display = 'block';
+        }
+
+        // Sayfa açıldığında otomatik çalıştır
+        resmiGetir();
+    </script>
+</body>
+</html>
