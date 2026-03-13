@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InBody Ölçüm Paneli</title>
+    <title>InBody Ölçüm Takip Paneli</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -84,7 +84,7 @@
             width: 100%;
             height: auto;
             border-radius: 8px;
-            display: none;
+            display: none; /* Başlangıçta gizli */
         }
 
         .loader {
@@ -114,6 +114,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 2rem;
         }
 
         .btn-refresh:hover { opacity: 0.9; transform: translateY(-1px); }
@@ -153,8 +154,8 @@
             
             <div id="error-msg">
                 <i class="fas fa-exclamation-circle"></i> 
-                <strong>Veri Çekilemedi:</strong> <br>
-                Lütfen E-Tablo yayınlama ayarlarının "CSV" olduğundan emin olun.
+                <br><strong>Görsel Yüklenemedi</strong><br>
+                Lütfen E-Tablo'daki linki ve paylaşım izinlerini kontrol edin.
             </div>
         </div>
 
@@ -164,52 +165,67 @@
     </div>
 
     <footer>
-        &copy; 2026 InBody Otomasyon Sistemi
+        &copy; 2026 InBody Otomasyon Sistemi | GitHub Pages
     </footer>
 
     <script>
-        // Senin verdiğin güncel CSV linki
+        // SENİN VERDİĞİN GÜNCEL CSV LİNKİ
         const eTabloCsvLink = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbbOIMxUizeJw4siM8hubz7vILGnh-rBpR5I1NSiDpf2sU3QEWjCjHVkI-ATIpsru0dZeIIBSoN5Ls/pub?output=csv';
 
         async function resmiGetir() {
-            // Arayüzü hazırlıyoruz
-            document.getElementById('loading-spinner').style.display = 'block';
-            document.getElementById('inbody-resim').style.display = 'none';
-            document.getElementById('error-msg').style.display = 'none';
+            const spinner = document.getElementById('loading-spinner');
+            const img = document.getElementById('inbody-resim');
+            const error = document.getElementById('error-msg');
+
+            // Başlangıç durumu
+            spinner.style.display = 'block';
+            img.style.display = 'none';
+            error.style.display = 'none';
 
             try {
-                // Tarayıcı önbelleğini (cache) aşmak için rastgele bir zaman damgası ekliyoruz
-                const url = eTabloCsvLink + '&t=' + new Date().getTime();
-                const response = await fetch(url);
+                // nocache ekleyerek her seferinde taze veri çekiyoruz
+                const response = await fetch(eTabloCsvLink + '&nocache=' + new Date().getTime());
+                const rawText = await response.text();
                 
-                if (!response.ok) throw new Error("Ağ hatası");
-                
-                const text = await response.text();
-                
-                // CSV içindeki linki temizliyoruz (tırnakları sil, boşlukları at, ilk satırı al)
-                const cleanLink = text.replace(/["']/g, "").trim().split('\n')[0].trim();
+                // --- KRİTİK TEMİZLİK NOKTASI ---
+                // 1. Tırnak işaretlerini (" ve ') tamamen siler.
+                // 2. Satır başındaki ve sonundaki boşlukları atar.
+                // 3. Eğer linkin sonuna yanlışlıkla bir harf (mesela 'd') eklendiyse onu temizler.
+                // 4. Sadece ilk satırı alır.
+                let cleanLink = rawText.replace(/["']/g, "").trim().split('\n')[0].trim();
+
+                // Eğer linkin sonunda fazladan karakter varsa (senin ekran görüntündeki gibi), 
+                // linkin gerçek yapısını korumak için sadece link kısmını ayıklıyoruz.
+                const linkMatch = cleanLink.match(/https?:\/\/[^\s]+/);
+                if (linkMatch) {
+                    cleanLink = linkMatch[0];
+                }
+
+                console.log("Okunan Temiz Link:", cleanLink);
 
                 if (cleanLink.startsWith('http')) {
-                    const img = document.getElementById('inbody-resim');
                     img.src = cleanLink;
                     
-                    // Resim gerçekten yüklendiğinde gösteriyoruz
-                    img.onload = function() {
-                        document.getElementById('loading-spinner').style.display = 'none';
+                    img.onload = () => {
+                        spinner.style.display = 'none';
                         img.style.display = 'block';
                     };
+
+                    img.onerror = () => {
+                        throw new Error("Görsel yükleme hatası (Drive izni eksik olabilir)");
+                    };
                 } else {
-                    console.error("CSV'den gelen veri linke benzemiyor:", cleanLink);
-                    throw new Error("Geçersiz link");
+                    throw new Error("E-Tablo'da geçerli bir link bulunamadı.");
                 }
-            } catch (error) {
-                console.error('Hata detayı:', error);
-                document.getElementById('loading-spinner').style.display = 'none';
-                document.getElementById('error-msg').style.display = 'block';
+
+            } catch (e) {
+                console.error("Hata Detayı:", e);
+                spinner.style.display = 'none';
+                error.style.display = 'block';
             }
         }
 
-        // Sayfa açıldığında otomatik başlat
+        // Sayfa açıldığında ilk kez çalıştır
         resmiGetir();
     </script>
 </body>
