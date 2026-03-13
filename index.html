@@ -22,122 +22,108 @@
             --success: #10b981;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* HEADER */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border);
-            background: rgba(17,24,39,0.95);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
+        header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: rgba(17,24,39,0.95); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .logo { display: flex; align-items: center; gap: 10px; }
         .inbody-logo-svg { height: 28px; width: auto; }
         .logo-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.15); }
         .logo-sub { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.6); }
-
-        .live-badge {
-            display: flex; align-items: center; gap: 6px;
-            background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2);
-            padding: 4px 12px; border-radius: 20px;
-            font-size: 0.72rem; font-weight: 500; color: #10b981;
-        }
-
+        .live-badge { display: flex; align-items: center; gap: 6px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 500; color: #10b981; }
         .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: blink 1.5s ease infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-        /* ANA ALAN */
         main { flex: 1; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; max-width: 1100px; margin: 0 auto; width: 100%; }
 
         .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; width: 100%; }
         .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
-        /* ÖNE ÇIKAN KART */
         .featured-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; width: 100%; }
         .featured-img-wrap { position: relative; min-height: 380px; display: flex; align-items: center; justify-content: center; cursor: zoom-in; background: #000; }
         #featured-img { width: 100%; height: auto; display: none; }
 
-        /* PAYLAŞIM PANELİ */
-        .share-box {
-            padding: 1.5rem;
-            background: var(--surface2);
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
+        .share-box { padding: 1.5rem; background: var(--surface2); border-top: 1px solid var(--border); text-align: center; }
         .share-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; color: var(--accent2); display: flex; justify-content: center; align-items: center; gap: 8px; }
         .email-input-group { display: flex; gap: 8px; justify-content: center; max-width: 400px; margin: 0 auto; }
-        .email-input-group input {
-            flex: 1; background: var(--surface); border: 1px solid var(--border);
-            border-radius: 8px; padding: 10px 14px; color: white; font-size: 0.9rem; outline: none;
-        }
+        .email-input-group input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: white; font-size: 0.9rem; outline: none; font-family: 'Inter', sans-serif; }
         .email-input-group input:focus { border-color: var(--accent); }
-        .btn-send {
-            background: var(--success); color: white; border: none; padding: 10px 18px;
-            border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
-            transition: 0.2s; display: flex; align-items: center; gap: 6px;
-        }
+        .btn-send { background: var(--success); color: white; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s; display: flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; }
         .btn-send:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-send:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .featured-footer { padding: 0.85rem 1.25rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface); flex-wrap: wrap; gap: 0.5rem; }
         .featured-date { font-size: 0.8rem; color: var(--muted); }
-        
-        .btn-refresh { display: flex; align-items: center; gap: 6px; background: var(--accent); color: white; border: none; padding: 7px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: 0.15s; }
-        
-        /* CAROUSEL */
-        .carousel { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; width: 100%; }
-        .carousel::-webkit-scrollbar { height: 4px; }
-        .carousel::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
-        .thumb { flex-shrink: 0; width: 160px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: 0.2s; background: var(--surface); }
-        .thumb.active { border-color: var(--accent2); }
-        .thumb img { width: 100%; height: 110px; object-fit: cover; }
-        .thumb-label { padding: 6px 8px; font-size: 0.68rem; color: var(--muted); background: var(--surface2); text-align: center; }
-
-        /* LIGHTBOX */
-        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 1000; align-items: center; justify-content: center; cursor: zoom-out; }
-        .lightbox.open { display: flex; }
-        .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; }
-
-        /* YÜKLENİYOR */
-        .loader-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
-        .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+        .btn-refresh { display: flex; align-items: center; gap: 6px; background: var(--accent); color: white; border: none; padding: 7px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: 0.15s; font-family: 'Inter', sans-serif; }
+        .btn-refresh:hover { background: #2563eb; }
+        .btn-refresh.spinning i { animation: spin 0.7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .zoom-hint { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; color: #ccc; }
+        .carousel { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; width: 100%; scrollbar-width: thin; scrollbar-color: var(--surface2) transparent; }
+        .carousel::-webkit-scrollbar { height: 4px; }
+        .carousel::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
+        .thumb { flex-shrink: 0; width: 160px; scroll-snap-align: start; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: 0.2s; background: var(--surface); }
+        .thumb:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .thumb.active { border-color: var(--accent2); }
+        .thumb img { width: 100%; height: 110px; object-fit: cover; display: block; }
+        .thumb-label { padding: 6px 8px; font-size: 0.68rem; color: var(--muted); background: var(--surface2); text-align: center; }
+        .thumb.active .thumb-label { color: var(--accent2); }
 
-        /* GİRİŞ EKRANI */
+        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 1000; align-items: center; justify-content: center; cursor: zoom-out; }
+        .lightbox.open { display: flex; }
+        .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; border-radius: 8px; transition: transform 0.2s; }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.6); font-size: 2rem; cursor: pointer; line-height: 1; }
+        .lightbox-close:hover { color: white; }
+        .zoom-controls { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; align-items: center; }
+        .zoom-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .zoom-btn:hover { background: rgba(255,255,255,0.2); }
+        .zoom-level { font-size: 0.75rem; color: rgba(255,255,255,0.5); min-width: 40px; text-align: center; }
+
+        .loader-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+        .loader-text { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; }
+        .zoom-hint { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; color: #ccc; display: none; }
+
+        /* LOGIN */
         .login-overlay { position: fixed; inset: 0; z-index: 9999; background: #0a0f1e; display: flex; align-items: center; justify-content: center; }
-        .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2.5rem 2rem; width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 1.5rem; }
-        .login-field input { background: #1a2234; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px; color: #f1f5f9; outline: none; width: 100%; }
-        .login-btn { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .login-btn:hover { background: #2563eb; }
+        .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2.5rem 2rem; width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 1.25rem; box-shadow: 0 25px 60px rgba(0,0,0,0.5); }
+        .login-logo { display: flex; justify-content: center; margin-bottom: 4px; }
+        .login-title { text-align: center; font-size: 1.1rem; font-weight: 600; color: #f1f5f9; }
+        .login-sub { text-align: center; font-size: 0.78rem; color: #64748b; margin-top: -0.5rem; }
+        .login-field { display: flex; flex-direction: column; gap: 5px; }
+        .login-field label { font-size: 0.72rem; font-weight: 500; color: #94a3b8; letter-spacing: 0.05em; text-transform: uppercase; }
+        .login-field input { background: #1a2234; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 11px 14px; color: #f1f5f9; font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; }
+        .login-field input:focus { border-color: #3b82f6; }
+        .login-field input.shake { animation: shake 0.35s ease; border-color: #800020; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+        .login-btn { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 11px; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; }
+        .login-btn:hover { background: #2563eb; transform: translateY(-1px); }
+        .login-error { font-size: 0.78rem; color: #800020; text-align: center; background: rgba(128,0,32,0.1); border: 1px solid rgba(128,0,32,0.2); border-radius: 8px; padding: 8px; display: none; }
+
+        @media (max-width: 600px) { main { padding: 1rem; } header { padding: 0.75rem 1rem; } }
     </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div class="login-overlay" id="login-overlay">
     <div class="login-box">
-        <div style="text-align:center; color:white; margin-bottom:10px;">
-            <h2 style="margin-bottom:5px;">Yönetici Girişi</h2>
-            <p style="font-size:0.8rem; color:#64748b;">InBody Takip Paneli</p>
+        <div class="login-logo">
+            <svg viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:36px;width:auto">
+                <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">InBody</text>
+            </svg>
         </div>
-        <div class="login-field"><input type="text" id="login-user" placeholder="Kullanıcı Adı"></div>
-        <div class="login-field"><input type="password" id="login-pass" placeholder="Şifre"></div>
+        <div class="login-title">Yönetici Girişi</div>
+        <div class="login-sub">Takip paneline erişmek için giriş yapın</div>
+        <div class="login-field">
+            <label>Kullanıcı Adı</label>
+            <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username">
+        </div>
+        <div class="login-field">
+            <label>Şifre</label>
+            <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password">
+        </div>
+        <div class="login-error" id="login-error">❌ Kullanıcı adı veya şifre hatalı</div>
         <button class="login-btn" onclick="loginCheck()">Giriş Yap</button>
-        <p id="login-error" style="color:#ef4444; font-size:0.8rem; text-align:center; display:none;">Hatalı giriş bilgileri!</p>
     </div>
 </div>
 
@@ -156,8 +142,11 @@
     <div class="section-label">Son Ölçüm Sonucu</div>
     <div class="featured-card">
         <div class="featured-img-wrap" id="featured-wrap" onclick="featuredClick()">
-            <div class="loader-wrap" id="main-loader"><div class="spinner"></div></div>
-            <img id="featured-img" src="">
+            <div class="loader-wrap" id="main-loader">
+                <div class="spinner"></div>
+                <div class="loader-text">YÜKLENIYOR...</div>
+            </div>
+            <img id="featured-img" src="" alt="InBody Raporu">
             <div class="zoom-hint" id="zoom-hint">🔍 Büyütmek için tıkla</div>
         </div>
 
@@ -183,159 +172,211 @@
     <div class="carousel" id="carousel"></div>
 </main>
 
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <span style="position:absolute; top:20px; right:20px; color:white; font-size:2rem; cursor:pointer;">✕</span>
-    <img id="lightbox-img" src="">
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="lightbox-img" src="" alt="Büyük görünüm">
+    <div class="zoom-controls" onclick="event.stopPropagation()">
+        <button class="zoom-btn" onclick="zoomLightbox(-0.25)">−</button>
+        <span class="zoom-level" id="zoom-level">100%</span>
+        <button class="zoom-btn" onclick="zoomLightbox(0.25)">+</button>
+    </div>
 </div>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
 <script>
-    // --- KONFİGÜRASYON ---
+    // ── KONFİGÜRASYON ───────────────────────────────────────────────────────
     const ADMIN_USER = 'admin';
     const ADMIN_PASS = '0000';
-    const SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
-    const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+    const SHEET_ID   = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
+    const JSON_URL   = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Sheet1';
 
-    // EmailJS Başlatma
-    (function() {
-        emailjs.init("Q3bN3o4fJ_93E57W7");
-    })();
+    // EmailJS
+    emailjs.init("Q3bN3o4fJ_93E57W7");
 
     let imageLinks = [];
     let currentIndex = 0;
+    let lbScale = 1;
 
-    // Sayfa Yüklenince Oturum Kontrolü
+    // ── LOGIN ────────────────────────────────────────────────────────────────
+    // Oturum kontrolü — sekme açık kaldığı sürece tekrar sorma
     if (sessionStorage.getItem('inbody_auth') === '1') {
         document.getElementById('login-overlay').style.display = 'none';
-        veriGetir();
+        setTimeout(veriGetir, 100);
     }
 
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && document.getElementById('login-overlay').style.display !== 'none') {
+            loginCheck();
+        }
+        if (e.key === 'Escape') closeLightbox({ target: document.getElementById('lightbox') });
+        if (e.key === '+' || e.key === '=') zoomLightbox(0.25);
+        if (e.key === '-') zoomLightbox(-0.25);
+    });
+
     function loginCheck() {
-        const u = document.getElementById('login-user').value;
-        const p = document.getElementById('login-pass').value;
+        const u = document.getElementById('login-user').value.trim();
+        const p = document.getElementById('login-pass').value.trim();
+        const errEl = document.getElementById('login-error');
         if (u === ADMIN_USER && p === ADMIN_PASS) {
             sessionStorage.setItem('inbody_auth', '1');
             document.getElementById('login-overlay').style.display = 'none';
             veriGetir();
         } else {
-            document.getElementById('login-error').style.display = 'block';
+            errEl.style.display = 'block';
+            ['login-user', 'login-pass'].forEach(function(id) {
+                var el = document.getElementById(id);
+                el.classList.remove('shake');
+                void el.offsetWidth;
+                el.classList.add('shake');
+            });
         }
     }
 
-    // Google Sheets'ten Veri Çekme
+    // ── VERİ ÇEK ────────────────────────────────────────────────────────────
     async function veriGetir() {
+        const btn = document.getElementById('btn-refresh');
+        btn.classList.add('spinning');
+        btn.disabled = true;
         showState('loading');
+
         try {
             const res = await fetch(JSON_URL + '&_=' + Date.now());
+            if (!res.ok) throw new Error('HTTP ' + res.status);
             const raw = await res.text();
+
+            // Google wrapper temizle
             const jsonStr = raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1);
             const json = JSON.parse(jsonStr);
+
             const ids = [];
-            
-            json.table.rows.forEach(row => {
-                if (row.c && row.c[0] && row.c[0].v) {
-                    const url = row.c[0].v.toString();
-                    const idMatch = url.match(/[-\w]{25,}/);
-                    if (idMatch) ids.push(idMatch[0]);
-                }
+            json.table.rows.forEach(function(row) {
+                if (!row.c || !row.c[0] || !row.c[0].v) return;
+                var url = row.c[0].v.toString().trim();
+                var id = extractFileId(url);
+                if (id && ids.indexOf(id) === -1) ids.push(id);
             });
 
+            if (ids.length === 0) throw new Error('Drive linki bulunamadı');
+
             imageLinks = ids;
-            if (ids.length > 0) {
-                loadFeatured(0);
-                buildCarousel();
-            }
-            document.getElementById('update-time').textContent = new Date().toLocaleTimeString('tr-TR');
-        } catch(e) { 
-            console.error("Veri hatası:", e);
-            alert("Veriler yüklenemedi!");
+            currentIndex = 0;
+            loadFeatured(0);
+            buildCarousel();
+            document.getElementById('update-time').textContent =
+                new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+
+        } catch(e) {
+            console.error('Veri hatası:', e);
+            showState('error');
+        } finally {
+            btn.classList.remove('spinning');
+            btn.disabled = false;
         }
     }
 
-    // Ana Görseli Yükle
+    function extractFileId(url) {
+        var idParam = url.split('id=')[1];
+        if (idParam) return idParam.split('&')[0].split('"')[0].trim();
+        var dParam = url.split('/d/')[1];
+        if (dParam) return dParam.split('/')[0].split('?')[0].split('"')[0].trim();
+        return null;
+    }
+
+    // ── GÖRSEL YÜKLEYİCİ ────────────────────────────────────────────────────
     function loadFeatured(index) {
         currentIndex = index;
-        const img = document.getElementById('featured-img');
-        const fileId = imageLinks[index];
-        // Büyük önizleme için sz=w1200 kullanıyoruz
-        img.src = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`;
-        img.onload = () => showState('image');
-        
-        document.querySelectorAll('.thumb').forEach((el, i) => {
+        showState('loading');
+        var img = document.getElementById('featured-img');
+        img.onload = function() { showState('image'); };
+        img.onerror = function() { showState('error'); };
+        img.src = 'https://drive.google.com/thumbnail?id=' + imageLinks[index] + '&sz=w1200&_=' + Date.now();
+        document.querySelectorAll('.thumb').forEach(function(el, i) {
             el.classList.toggle('active', i === index);
         });
     }
 
-    // Alt Listeyi Oluştur
     function buildCarousel() {
-        const c = document.getElementById('carousel');
+        var c = document.getElementById('carousel');
         c.innerHTML = '';
-        imageLinks.forEach((id, i) => {
-            const t = document.createElement('div');
+        imageLinks.forEach(function(id, i) {
+            var t = document.createElement('div');
             t.className = 'thumb' + (i === 0 ? ' active' : '');
-            t.onclick = () => loadFeatured(i);
-            t.innerHTML = `
-                <img src="https://drive.google.com/thumbnail?id=${id}&sz=w320">
-                <div class="thumb-label">${i === 0 ? 'Son Ölçüm' : i + '. Önceki'}</div>
-            `;
+            t.onclick = function() { loadFeatured(i); };
+            var img = document.createElement('img');
+            img.src = 'https://drive.google.com/thumbnail?id=' + id + '&sz=w320';
+            img.alt = 'Ölçüm ' + (i + 1);
+            img.loading = 'lazy';
+            var lbl = document.createElement('div');
+            lbl.className = 'thumb-label';
+            lbl.textContent = i === 0 ? 'Son Ölçüm' : i + '. Önceki';
+            t.appendChild(img);
+            t.appendChild(lbl);
             c.appendChild(t);
         });
     }
 
-    // --- E-POSTA GÖNDERME FONKSİYONU ---
-    async function epostaGonder() {
-        const email = document.getElementById('target-email').value;
-        const btn = document.getElementById('send-btn');
-
-        if (!email || !email.includes('@')) { 
-            alert("Lütfen geçerli bir e-posta adresi girin!"); 
-            return; 
-        }
-
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
-
-        // Seçili resmin ID'sini al ve temiz bir link oluştur
-        const currentId = imageLinks[currentIndex];
-        const directLink = "https://drive.google.com/uc?export=view&id=" + currentId;
-
-        const params = {
-            to_email: email,        // EmailJS şablonundaki {{to_email}}
-            resim_linki: directLink // EmailJS şablonundaki {{resim_linki}}
-        };
-
-        emailjs.send('service_olohhky', 'template_65gzwms', params)
-            .then(() => {
-                alert("Rapor başarıyla danışana gönderildi!");
-                document.getElementById('target-email').value = ''; // Kutuyu temizle
-            })
-            .catch((err) => {
-                console.error("Hata:", err);
-                alert("Gönderim başarısız oldu!");
-            })
-            .finally(() => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-envelope"></i> Gönder';
-            });
-    }
-
+    // ── STATE ────────────────────────────────────────────────────────────────
     function showState(state) {
-        document.getElementById('main-loader').style.display = state === 'loading' ? 'flex' : 'none';
-        document.getElementById('featured-img').style.display = state === 'image' ? 'block' : 'none';
-        document.getElementById('zoom-hint').style.display = state === 'image' ? 'block' : 'none';
+        document.getElementById('main-loader').style.display  = state === 'loading' ? 'flex'  : 'none';
+        document.getElementById('featured-img').style.display = state === 'image'   ? 'block' : 'none';
+        document.getElementById('zoom-hint').style.display    = state === 'image'   ? 'block' : 'none';
     }
 
+    // ── LIGHTBOX ─────────────────────────────────────────────────────────────
     function featuredClick() {
-        const lb = document.getElementById('lightbox');
-        document.getElementById('lightbox-img').src = document.getElementById('featured-img').src;
-        lb.classList.add('open');
+        if (document.getElementById('featured-img').style.display === 'none') return;
+        lbScale = 1;
+        var lbImg = document.getElementById('lightbox-img');
+        lbImg.style.transform = 'scale(1)';
+        lbImg.src = 'https://drive.google.com/thumbnail?id=' + imageLinks[currentIndex] + '&sz=w2000&_=' + Date.now();
+        document.getElementById('lightbox').classList.add('open');
+        document.getElementById('zoom-level').textContent = '100%';
         document.body.style.overflow = 'hidden';
     }
 
-    function closeLightbox() {
+    function closeLightbox(e) {
+        if (e && e.target !== document.getElementById('lightbox') &&
+            !e.target.classList.contains('lightbox-close')) return;
         document.getElementById('lightbox').classList.remove('open');
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = '';
+    }
+
+    function zoomLightbox(delta) {
+        lbScale = Math.min(4, Math.max(0.4, lbScale + delta));
+        document.getElementById('lightbox-img').style.transform = 'scale(' + lbScale + ')';
+        document.getElementById('zoom-level').textContent = Math.round(lbScale * 100) + '%';
+    }
+
+    // ── E-POSTA ──────────────────────────────────────────────────────────────
+    async function epostaGonder() {
+        var email = document.getElementById('target-email').value.trim();
+        var btn = document.getElementById('send-btn');
+
+        if (!email || !email.includes('@')) {
+            alert('Lütfen geçerli bir e-posta adresi girin!');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+
+        // thumbnail linki — e-posta istemcilerinde daha güvenilir
+        var resimLinki = 'https://drive.google.com/thumbnail?id=' + imageLinks[currentIndex] + '&sz=w1200';
+
+        emailjs.send('service_olohhky', 'template_65gzwms', {
+            to_email: email,
+            resim_linki: resimLinki
+        }).then(function() {
+            alert('Rapor başarıyla danışana gönderildi!');
+            document.getElementById('target-email').value = '';
+        }).catch(function(err) {
+            console.error('EmailJS hatası:', err);
+            alert('Gönderim başarısız oldu!');
+        }).finally(function() {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-envelope"></i> Gönder';
+        });
     }
 </script>
 </body>
