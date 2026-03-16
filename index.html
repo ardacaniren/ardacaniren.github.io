@@ -221,6 +221,28 @@
         .modal-error { font-size: 0.78rem; color: #f87171; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; text-align: center; display: none; }
         .modal-success { font-size: 0.78rem; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; text-align: center; display: none; }
 
+
+        /* YENİ rozeti */
+        .thumb { position: relative; }
+        .new-badge {
+            position: absolute; top: 6px; left: 6px;
+            background: #800020; color: white;
+            font-size: 0.6rem; font-weight: 800;
+            letter-spacing: 0.1em; padding: 3px 7px;
+            border-radius: 6px; text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(128,0,32,0.5);
+            animation: pulse-badge 2s ease infinite;
+            z-index: 2;
+        }
+        @keyframes pulse-badge {
+            0%,100% { box-shadow: 0 2px 8px rgba(128,0,32,0.5); }
+            50% { box-shadow: 0 2px 16px rgba(128,0,32,0.9); }
+        }
+        .section-label .new-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #800020; display: inline-block;
+            animation: pulse-badge 1.5s ease infinite;
+        }
         @media (max-width: 600px) { main { padding: 1rem; } header { padding: 0.75rem 1rem; } }
     </style>
 </head>
@@ -461,14 +483,52 @@
         img.onerror = function() { showState('error'); };
         img.src = 'https://drive.google.com/thumbnail?id=' + imageLinks[index] + '&sz=w1200&_=' + Date.now();
         document.querySelectorAll('.thumb').forEach(function(el,i){ el.classList.toggle('active', i===index); });
+
+        // index 0 görüldüyse YENİ rozetini kaldır
+        if (index === 0 && imageLinks[0]) {
+            localStorage.setItem('ib_last_seen', imageLinks[0]);
+            var badge = document.querySelector('.new-badge');
+            if (badge) badge.remove();
+            var dot = document.querySelector('.new-dot');
+            if (dot) dot.remove();
+        }
     }
 
     function buildCarousel() {
         var c = document.getElementById('carousel'); c.innerHTML = '';
+        // YENİ kontrolü: son görülen ID ile karşılaştır
+        var lastSeen = localStorage.getItem('ib_last_seen');
+        var latestId = imageLinks[0];
+        var isNew = latestId && latestId !== lastSeen;
+
+        // Section label'a nokta ekle/kaldır
+        var labels = document.querySelectorAll('.section-label');
+        labels.forEach(function(el) {
+            var dot = el.querySelector('.new-dot');
+            if (dot) dot.remove();
+        });
+        if (isNew) {
+            var firstLabel = document.querySelector('.section-label');
+            if (firstLabel) {
+                var dot = document.createElement('span');
+                dot.className = 'new-dot';
+                firstLabel.insertBefore(dot, firstLabel.firstChild);
+            }
+        }
+
         imageLinks.forEach(function(id, i) {
             var t = document.createElement('div');
             t.className = 'thumb' + (i===0?' active':'');
             t.onclick = function(){ loadFeatured(i); };
+
+            // YENİ rozeti — sadece ilk thumb'a ve daha önce görülmediyse
+            if (i === 0 && isNew) {
+                var badge = document.createElement('div');
+                badge.className = 'new-badge';
+                badge.textContent = 'YENİ';
+                t.appendChild(badge);
+            }
+
             var img = document.createElement('img');
             img.src = 'https://drive.google.com/thumbnail?id=' + id + '&sz=w320';
             img.loading = 'lazy';
