@@ -231,21 +231,21 @@
         .login-left { flex: 1; background: #080d1a; border-right: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; padding: 3rem 2.5rem; }
         .login-left-inner { max-width: 440px; width: 100%; }
         .welcome-title { font-size: 2rem; font-weight: 800; color: #f1f5f9; letter-spacing: -0.03em; margin-bottom: 1rem; line-height: 1.2; }
-        .welcome-sub { font-size: 0.9rem; color: #64748b; line-height: 1.75; margin-bottom: 2rem; }
+        .welcome-sub { font-size: 0.9rem; color: #64748b; line-height: 1.75; margin-bottom: 1.25rem; }
 
-        .feature-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+        .feature-list { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.5rem; }
         .feature-item { display: flex; align-items: flex-start; gap: 12px; }
         .feature-icon { font-size: 1.3rem; margin-top: 1px; flex-shrink: 0; }
         .feature-title { font-size: 0.875rem; font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
         .feature-desc { font-size: 0.78rem; color: #475569; line-height: 1.5; }
 
-        .kvkk-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 1.25rem; }
+        .kvkk-box { background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 1.25rem; }
         .kvkk-title { font-size: 0.78rem; font-weight: 700; color: #94a3b8; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
         .kvkk-text { font-size: 0.75rem; color: #475569; line-height: 1.7; }
 
         /* SAĞ PANEL */
         .login-right { width: 420px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2.5rem 2rem; width: 100%; display: flex; flex-direction: column; gap: 1.25rem; box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
+        .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.14); border-radius: 20px; padding: 2.5rem 2rem; width: 100%; display: flex; flex-direction: column; gap: 1.25rem; box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06); }
         .login-logo { display: flex; justify-content: center; }
         .login-title { text-align: center; font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
         .login-sub { text-align: center; font-size: 0.78rem; color: #64748b; margin-top: -0.5rem; }
@@ -258,6 +258,16 @@
         .login-btn:hover { background: #2563eb; transform: translateY(-1px); }
         .login-error { font-size: 0.78rem; color: #f87171; text-align: center; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; display: none; }
         .login-success { font-size: 0.78rem; color: #10b981; text-align: center; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; display: none; }
+
+        .logo-text-big {
+            font-family: 'Arial Black', Arial, sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            color: #800020;
+            letter-spacing: -0.02em;
+            display: block;
+            text-align: center;
+        }
         .login-forgot { text-align: center; font-size: 0.78rem; color: #475569; cursor: pointer; transition: color 0.15s; margin-top: -0.25rem; }
         .login-forgot:hover { color: #94a3b8; }
 
@@ -342,9 +352,7 @@
         <div class="login-right">
             <div class="login-box" id="login-box-main">
                 <div class="login-logo">
-                    <svg viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:auto">
-                        <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">InBody</text>
-                    </svg>
+                    <span class="logo-text-big">InBody</span>
                 </div>
                 <div class="login-title">Yönetici Girişi</div>
                 <div class="login-sub">Panele erişmek için bilgilerinizi girin</div>
@@ -364,9 +372,7 @@
             <!-- ŞİFRE SIFIRLAMA -->
             <div class="login-box" id="login-box-reset" style="display:none">
                 <div class="login-logo">
-                    <svg viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:auto">
-                        <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">InBody</text>
-                    </svg>
+                    <span class="logo-text-big">InBody</span>
                 </div>
                 <div class="login-title">Şifre Sıfırlama</div>
                 <div class="login-sub">Mevcut şifrenizi doğrulayıp yenisini belirleyin</div>
