@@ -14,14 +14,14 @@
             --border: rgba(255,255,255,0.08); --text: #f1f5f9; --muted: #64748b;
             --header-bg: rgba(10,15,30,0.98); --input-bg: #1a2234;
             --input-border: rgba(255,255,255,0.1); --input-color: #f1f5f9;
-            --label-color: #94a3b8; --card-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --card-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
         :root[data-theme="light"] {
             --bg: #f0f4f8; --surface: #ffffff; --surface2: #f8fafc;
             --border: rgba(0,0,0,0.08); --text: #0f172a; --muted: #94a3b8;
             --header-bg: rgba(255,255,255,0.98); --input-bg: #f1f5f9;
             --input-border: rgba(0,0,0,0.1); --input-color: #0f172a;
-            --label-color: #64748b; --card-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            --card-shadow: 0 4px 16px rgba(0,0,0,0.08);
         }
 
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; }
@@ -29,6 +29,7 @@
         /* HEADER */
         header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: var(--header-bg); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-wordmark { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; font-size: 1.4rem; color: #800020; letter-spacing: -0.02em; }
         .logo-divider { width: 1px; height: 22px; background: var(--border); }
         .logo-sub { font-size: 0.85rem; font-weight: 500; color: var(--muted); }
         .header-right { display: flex; align-items: center; gap: 8px; }
@@ -40,9 +41,10 @@
 
         /* MAIN */
         main { flex: 1; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; max-width: 900px; margin: 0 auto; width: 100%; }
-        .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #3b82f6; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; width: 100%; }
+        .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #3b82f6; display: flex; align-items: center; gap: 8px; width: 100%; }
         .section-label::after { content:''; flex:1; height:1px; background: var(--border); }
         .section-label.muted { color: var(--muted); }
+        .new-dot { width: 8px; height: 8px; border-radius: 50%; background: #800020; display: inline-block; flex-shrink: 0; animation: pulse-badge 1.5s ease infinite; }
 
         /* FEATURED CARD */
         .featured-card { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--card-shadow); }
@@ -78,13 +80,13 @@
         .thumb:hover { border-color: #3b82f6; transform: translateY(-3px); }
         .thumb.active { border-color: #06b6d4; }
         .thumb img { width: 100%; height: 105px; object-fit: cover; display: block; }
-        .thumb-label { padding: 6px 8px; font-size: 0.67rem; color: var(--muted); background: var(--surface2); text-align: center; }
+        .thumb-label { padding: 6px 8px; font-size: 0.67rem; color: var(--muted); background: var(--surface2); text-align: center; line-height: 1.5; }
         .thumb.active .thumb-label { color: #06b6d4; font-weight: 600; }
+        .thumb-tag { background: #800020; color: white; font-size: 0.58rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; letter-spacing: 0.06em; vertical-align: middle; }
 
-        /* YENİ rozeti */
-        .new-badge { position: absolute; top: 6px; left: 6px; background: #800020; color: white; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; padding: 3px 7px; border-radius: 6px; text-transform: uppercase; box-shadow: 0 2px 8px rgba(128,0,32,0.5); animation: pulse-badge 2s ease infinite; z-index: 2; }
+        /* YENİ ROZETİ */
+        .new-badge { position: absolute; top: 6px; left: 6px; background: #800020; color: white; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; padding: 3px 7px; border-radius: 6px; text-transform: uppercase; z-index: 2; animation: pulse-badge 2s ease infinite; }
         @keyframes pulse-badge { 0%,100%{box-shadow:0 2px 8px rgba(128,0,32,0.5)} 50%{box-shadow:0 2px 16px rgba(128,0,32,0.9)} }
-        .section-label .new-dot { width: 8px; height: 8px; border-radius: 50%; background: #800020; display: inline-block; animation: pulse-badge 1.5s ease infinite; }
 
         /* LOADER */
         .loader-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
@@ -95,26 +97,28 @@
         .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; cursor: zoom-out; }
         .lightbox.open { display: flex; }
         .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; border-radius: 8px; transition: transform 0.2s; }
-        .lb-close { position: absolute; top: 20px; right: 24px; color: rgba(255,255,255,0.5); font-size: 2rem; cursor: pointer; transition: color 0.15s; }
+        .lb-close { position: absolute; top: 20px; right: 24px; color: rgba(255,255,255,0.5); font-size: 2rem; cursor: pointer; transition: color 0.15s; line-height: 1; }
         .lb-close:hover { color: white; }
         .zoom-controls { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; align-items: center; z-index: 1001; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 6px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-        .zoom-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .zoom-btn { width: 38px; height: 38px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
         .zoom-btn:hover { background: rgba(255,255,255,0.2); }
-        .zoom-level { font-size: 0.75rem; color: rgba(255,255,255,0.5); min-width: 44px; text-align: center; }
+        .zoom-level { font-size: 0.75rem; color: rgba(255,255,255,0.6); min-width: 44px; text-align: center; }
 
         /* LOGIN */
-        .login-wrapper { width: 100%; max-width: 360px; }
         .login-overlay { position: fixed; inset: 0; z-index: 9999; background: #0a0f1e; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+        .login-wrapper { width: 100%; max-width: 360px; }
         .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem 1.75rem; width: 100%; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 20px 50px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06); }
         .login-logo { display: flex; justify-content: center; }
-        .logo-text-big { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; font-size: 1.8rem; color: #800020; letter-spacing: -0.02em; display: block; text-align: center; }
-        .login-title { text-align: center; font-size: 1rem; font-weight: 700; color: #f1f5f9; margin-top: -0.25rem; }
+        .login-wordmark { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; font-size: 1.8rem; color: #800020; letter-spacing: -0.02em; }
+        .login-title { text-align: center; font-size: 1rem; font-weight: 700; color: #f1f5f9; }
         .login-sub { text-align: center; font-size: 0.75rem; color: #475569; margin-top: -0.25rem; }
         .login-field { display: flex; flex-direction: column; gap: 4px; }
         .login-field label { font-size: 0.68rem; font-weight: 600; color: #64748b; letter-spacing: 0.07em; text-transform: uppercase; }
         .login-field input { background: #1a2234; border: 1px solid rgba(255,255,255,0.08); border-radius: 9px; padding: 10px 13px; color: #f1f5f9; font-size: 0.875rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; }
         .login-field input:focus { border-color: #3b82f6; }
-        .login-field input:-webkit-autofill, .login-field input:-webkit-autofill:hover, .login-field input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0px 1000px #1a2234 inset !important; -webkit-text-fill-color: #f1f5f9 !important; border-color: rgba(255,255,255,0.08) !important; }
+        .login-field input:-webkit-autofill,
+        .login-field input:-webkit-autofill:hover,
+        .login-field input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0px 1000px #1a2234 inset !important; -webkit-text-fill-color: #f1f5f9 !important; border-color: rgba(255,255,255,0.08) !important; }
         .login-field input.shake { animation: shake 0.35s ease; border-color: #800020; }
         @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
         .login-btn { background: #3b82f6; color: white; border: none; border-radius: 9px; padding: 11px; font-size: 0.875rem; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; margin-top: 0.25rem; }
@@ -125,7 +129,7 @@
         .login-forgot:hover { color: #64748b; }
         .kvkk-note { font-size: 0.65rem; color: #2d3f55; text-align: center; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.75rem; }
 
-        /* AYARLAR MODAL */
+        /* AYARLAR */
         .modal-overlay { position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex; }
         .modal-box { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 1.1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.5); }
@@ -136,9 +140,9 @@
         .modal-field input { background: #1a2234; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 14px; color: #f1f5f9; font-size: 0.875rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; }
         .modal-field input:focus { border-color: #3b82f6; }
         .modal-actions { display: flex; gap: 8px; padding-top: 0.25rem; }
-        .btn-primary { flex: 1; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; }
+        .btn-primary { flex:1; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 10px; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; }
         .btn-primary:hover { background: #2563eb; }
-        .btn-secondary { flex: 1; background: rgba(255,255,255,0.06); color: #94a3b8; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; }
+        .btn-secondary { flex:1; background: rgba(255,255,255,0.06); color: #94a3b8; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); color: #f1f5f9; }
         .modal-error { font-size: 0.78rem; color: #f87171; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; text-align: center; display: none; }
         .modal-success { font-size: 0.78rem; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; text-align: center; display: none; }
@@ -151,54 +155,45 @@
 <!-- LOGIN -->
 <div class="login-overlay" id="login-overlay">
     <div class="login-wrapper">
-
-    <!-- GİRİŞ KUTUSU -->
-    <div class="login-box" id="login-box-main">
-        <div class="login-logo">
-            <span class="logo-text-big">InBody</span>
+        <div class="login-box" id="login-box-main">
+            <div class="login-logo"><span class="login-wordmark">InBody</span></div>
+            <div class="login-title">Yönetici Girişi</div>
+            <div class="login-sub">Takip paneline erişmek için giriş yapın</div>
+            <div class="login-field">
+                <label>Kullanıcı Adı</label>
+                <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username">
+            </div>
+            <div class="login-field">
+                <label>Şifre</label>
+                <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password">
+            </div>
+            <div class="login-error" id="login-error">❌ Kullanıcı adı veya şifre hatalı</div>
+            <button class="login-btn" onclick="loginCheck()">Giriş Yap</button>
+            <div class="login-forgot" onclick="showReset()">Şifremi Unuttum</div>
+            <div class="kvkk-note">🛡️ Bu panel KVKK kapsamında korunmaktadır. Giriş yaparak kişisel verilerin işlenmesine ilişkin aydınlatma metnini kabul etmiş olursunuz.</div>
         </div>
-        <div class="login-title">Yönetici Girişi</div>
-        <div class="login-sub">Takip paneline erişmek için giriş yapın</div>
-        <div class="login-field">
-            <label>Kullanıcı Adı</label>
-            <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username">
+        <div class="login-box" id="login-box-reset" style="display:none">
+            <div class="login-logo"><span class="login-wordmark">InBody</span></div>
+            <div class="login-title">Şifre Sıfırlama</div>
+            <div class="login-sub">Mevcut şifrenizi doğrulayıp yenisini belirleyin</div>
+            <div class="login-field">
+                <label>Mevcut Şifre</label>
+                <input type="password" id="reset-current" placeholder="Mevcut şifre">
+            </div>
+            <div class="login-field">
+                <label>Yeni Şifre</label>
+                <input type="password" id="reset-new" placeholder="Yeni şifre">
+            </div>
+            <div class="login-field">
+                <label>Yeni Şifre Tekrar</label>
+                <input type="password" id="reset-new2" placeholder="Yeni şifre tekrar">
+            </div>
+            <div class="login-error" id="reset-error"></div>
+            <div class="login-success" id="reset-success">✓ Şifre başarıyla güncellendi!</div>
+            <button class="login-btn" onclick="resetPass()">Şifreyi Güncelle</button>
+            <div class="login-forgot" onclick="showLogin()">← Giriş Ekranına Dön</div>
         </div>
-        <div class="login-field">
-            <label>Şifre</label>
-            <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password">
-        </div>
-        <div class="login-error" id="login-error">❌ Kullanıcı adı veya şifre hatalı</div>
-        <button class="login-btn" onclick="loginCheck()">Giriş Yap</button>
-        <div class="login-forgot" onclick="showReset()">Şifremi Unuttum</div>
-        <div class="kvkk-note">🛡️ Bu panel KVKK kapsamında korunmaktadır. Giriş yaparak kişisel verilerin işlenmesine ilişkin aydınlatma metnini kabul etmiş olursunuz.</div>
     </div>
-
-    <!-- ŞİFRE SIFIRLAMA -->
-    <div class="login-box" id="login-box-reset" style="display:none !important">
-        <div class="login-logo">
-            <span class="logo-text-big">InBody</span>
-        </div>
-        <div class="login-title">Şifre Sıfırlama</div>
-        <div class="login-sub">Mevcut şifrenizi doğrulayıp yenisini belirleyin</div>
-        <div class="login-field">
-            <label>Mevcut Şifre</label>
-            <input type="password" id="reset-current" placeholder="Mevcut şifre">
-        </div>
-        <div class="login-field">
-            <label>Yeni Şifre</label>
-            <input type="password" id="reset-new" placeholder="Yeni şifre">
-        </div>
-        <div class="login-field">
-            <label>Yeni Şifre Tekrar</label>
-            <input type="password" id="reset-new2" placeholder="Yeni şifre tekrar">
-        </div>
-        <div class="login-error" id="reset-error"></div>
-        <div class="login-success" id="reset-success">✓ Şifre başarıyla güncellendi!</div>
-        <button class="login-btn" onclick="resetPass()">Şifreyi Güncelle</button>
-        <div class="login-forgot" onclick="showLogin()">← Giriş Ekranına Dön</div>
-    </div>
-
-    </div><!-- /login-wrapper -->
 </div>
 
 <!-- AYARLAR -->
@@ -232,26 +227,26 @@
     </div>
 </div>
 
+<!-- HEADER -->
 <header>
     <div class="logo">
-        <svg viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:28px;width:auto">
-            <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">InBody</text>
-        </svg>
+        <span class="logo-wordmark">InBody</span>
         <div class="logo-divider"></div>
         <span class="logo-sub">Takip Paneli</span>
     </div>
     <div class="header-right">
         <div class="live-badge"><span class="live-dot"></span>CANLI</div>
-        <button class="btn-icon" id="theme-btn" onclick="toggleTheme()" title="Tema değiştir">🌙</button>
+        <button class="btn-icon" id="theme-btn" onclick="toggleTheme()" title="Tema">🌙</button>
         <button class="btn-icon" onclick="openSettings()" title="Ayarlar"><i class="fas fa-cog" style="font-size:0.85rem;color:var(--muted)"></i></button>
     </div>
 </header>
 
+<!-- MAIN -->
 <main>
-    <div class="section-label">Son Ölçüm Sonucu</div>
+    <div class="section-label" id="main-label">Son Ölçüm Sonucu</div>
 
     <div class="featured-card">
-        <div class="featured-img-wrap" id="featured-wrap" onclick="featuredClick()">
+        <div class="featured-img-wrap" onclick="featuredClick()">
             <div class="loader-wrap" id="main-loader">
                 <div class="spinner"></div>
                 <div class="loader-text">YÜKLENIYOR...</div>
@@ -259,7 +254,6 @@
             <img id="featured-img" src="" alt="InBody Raporu">
             <div class="zoom-hint" id="zoom-hint">🔍 Büyütmek için tıkla</div>
         </div>
-
         <div class="share-box">
             <div class="share-title"><i class="fas fa-paper-plane"></i> Raporu Danışana Gönder</div>
             <div class="email-row">
@@ -269,7 +263,6 @@
                 </button>
             </div>
         </div>
-
         <div class="card-footer">
             <div class="update-text">Güncelleme: <span id="update-time">—</span></div>
             <button class="btn-refresh" id="btn-refresh" onclick="veriGetir()">
@@ -304,15 +297,15 @@
     function getUser() { return localStorage.getItem('ib_user') || 'admin'; }
     function getPass() { return localStorage.getItem('ib_pass') || '0000'; }
 
-    let imageLinks = [], currentIndex = 0, lbScale = 1;
+    let imageLinks = [], imageDates = [], currentIndex = 0, lbScale = 1;
 
-    // ŞİFRE SIFIRLAMA
+    /* ŞİFRE SIFIRLAMA */
     function showReset() {
         document.getElementById('login-box-main').style.display = 'none';
         document.getElementById('login-box-reset').style.display = 'flex';
         document.getElementById('reset-error').style.display = 'none';
         document.getElementById('reset-success').style.display = 'none';
-        ['reset-current','reset-new','reset-new2'].forEach(function(id){ document.getElementById(id).value=''; });
+        ['reset-current','reset-new','reset-new2'].forEach(id => document.getElementById(id).value = '');
     }
     function showLogin() {
         document.getElementById('login-box-reset').style.display = 'none';
@@ -325,16 +318,15 @@
         var err = document.getElementById('reset-error');
         var suc = document.getElementById('reset-success');
         err.style.display = 'none'; suc.style.display = 'none';
-        if (cur !== getPass()) { err.textContent='❌ Mevcut şifre hatalı!'; err.style.display='block'; return; }
-        if (!np) { err.textContent='❌ Yeni şifre boş olamaz!'; err.style.display='block'; return; }
-        if (np !== np2) { err.textContent='❌ Şifreler eşleşmiyor!'; err.style.display='block'; return; }
+        if (cur !== getPass()) { err.textContent = '❌ Mevcut şifre hatalı!';   err.style.display = 'block'; return; }
+        if (!np)               { err.textContent = '❌ Yeni şifre boş olamaz!'; err.style.display = 'block'; return; }
+        if (np !== np2)        { err.textContent = '❌ Şifreler eşleşmiyor!';   err.style.display = 'block'; return; }
         localStorage.setItem('ib_pass', np);
         suc.style.display = 'block';
         setTimeout(showLogin, 1500);
     }
 
-    // TEMA
-
+    /* TEMA */
     function applyTheme(t) {
         document.documentElement.setAttribute('data-theme', t);
         localStorage.setItem('ib_theme', t);
@@ -345,19 +337,19 @@
     }
     applyTheme(localStorage.getItem('ib_theme') || 'dark');
 
-    // LOGIN
+    /* LOGIN */
     if (sessionStorage.getItem('inbody_auth') === '1') {
         document.getElementById('login-overlay').style.display = 'none';
         setTimeout(veriGetir, 100);
     }
-
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && document.getElementById('login-overlay').style.display !== 'none') loginCheck();
+        if (e.key === 'Enter' &&
+            document.getElementById('login-overlay').style.display !== 'none' &&
+            document.getElementById('login-box-main').style.display !== 'none') loginCheck();
         if (e.key === 'Escape') { closeLightbox({ target: document.getElementById('lightbox') }); closeSettings(); }
         if (e.key === '+' || e.key === '=') zoomLightbox(0.25);
         if (e.key === '-') zoomLightbox(-0.25);
     });
-
     function loginCheck() {
         var u = document.getElementById('login-user').value.trim();
         var p = document.getElementById('login-pass').value.trim();
@@ -374,18 +366,18 @@
         }
     }
 
-    // AYARLAR
+    /* AYARLAR */
     function openSettings() {
-        ['new-username','current-pass','new-pass','new-pass2'].forEach(function(id){ document.getElementById(id).value=''; });
+        ['new-username','current-pass','new-pass','new-pass2'].forEach(id => document.getElementById(id).value = '');
         document.getElementById('settings-error').style.display = 'none';
         document.getElementById('settings-success').style.display = 'none';
         document.getElementById('settings-modal').classList.add('open');
     }
     function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
     function saveSettings() {
-        var newUser = document.getElementById('new-username').value.trim();
-        var curPass = document.getElementById('current-pass').value.trim();
-        var newPass = document.getElementById('new-pass').value.trim();
+        var newUser  = document.getElementById('new-username').value.trim();
+        var curPass  = document.getElementById('current-pass').value.trim();
+        var newPass  = document.getElementById('new-pass').value.trim();
         var newPass2 = document.getElementById('new-pass2').value.trim();
         var err = document.getElementById('settings-error');
         var suc = document.getElementById('settings-success');
@@ -393,16 +385,16 @@
         var changed = false;
         if (newUser) { localStorage.setItem('ib_user', newUser); changed = true; }
         if (curPass || newPass || newPass2) {
-            if (curPass !== getPass()) { err.textContent = '❌ Mevcut şifre hatalı!'; err.style.display='block'; return; }
-            if (!newPass) { err.textContent = '❌ Yeni şifre boş olamaz!'; err.style.display='block'; return; }
-            if (newPass !== newPass2) { err.textContent = '❌ Şifreler eşleşmiyor!'; err.style.display='block'; return; }
+            if (curPass !== getPass()) { err.textContent = '❌ Mevcut şifre hatalı!';   err.style.display='block'; return; }
+            if (!newPass)              { err.textContent = '❌ Yeni şifre boş olamaz!'; err.style.display='block'; return; }
+            if (newPass !== newPass2)  { err.textContent = '❌ Şifreler eşleşmiyor!';   err.style.display='block'; return; }
             localStorage.setItem('ib_pass', newPass); changed = true;
         }
         if (changed) { suc.style.display='block'; setTimeout(closeSettings, 1500); }
         else { err.textContent = '❌ Değiştirilecek bir şey girilmedi.'; err.style.display='block'; }
     }
 
-    // VERİ
+    /* VERİ */
     async function veriGetir() {
         var btn = document.getElementById('btn-refresh');
         btn.classList.add('spinning'); btn.disabled = true;
@@ -413,73 +405,68 @@
             var raw = await res.text();
             var jsonStr = raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1);
             var json = JSON.parse(jsonStr);
-            var ids = [];
+            var ids = [], dates = [];
             json.table.rows.forEach(function(row) {
                 if (!row.c || !row.c[0] || !row.c[0].v) return;
                 var id = extractFileId(row.c[0].v.toString().trim());
-                if (id && ids.indexOf(id) === -1) ids.push(id);
+                if (id && ids.indexOf(id) === -1) {
+                    ids.push(id);
+                    dates.push((row.c[1] && row.c[1].v) ? row.c[1].v.toString().trim() : '');
+                }
             });
             if (ids.length === 0) throw new Error('Drive linki bulunamadı');
-            imageLinks = ids; currentIndex = 0;
-            loadFeatured(0); buildCarousel();
+            imageLinks = ids; imageDates = dates; currentIndex = 0;
+            loadFeatured(0);
+            buildCarousel();
             document.getElementById('update-time').textContent =
                 new Date().toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
-        } catch(e) { console.error(e); showState('error'); }
-        finally { btn.classList.remove('spinning'); btn.disabled = false; }
+        } catch(e) {
+            console.error(e); showState('error');
+        } finally {
+            btn.classList.remove('spinning'); btn.disabled = false;
+        }
     }
 
     function extractFileId(url) {
         var a = url.split('id=')[1]; if (a) return a.split('&')[0].split('"')[0].trim();
-        var b = url.split('/d/')[1]; if (b) return b.split('/')[0].split('?')[0].trim();
+        var b = url.split('/d/')[1];  if (b) return b.split('/')[0].split('?')[0].trim();
         return null;
     }
 
     function loadFeatured(index) {
-        currentIndex = index; showState('loading');
+        currentIndex = index;
+        showState('loading');
         var img = document.getElementById('featured-img');
-        img.onload = function() { showState('image'); };
+        img.onload  = function() { showState('image'); };
         img.onerror = function() { showState('error'); };
         img.src = 'https://drive.google.com/thumbnail?id=' + imageLinks[index] + '&sz=w1200&_=' + Date.now();
-        document.querySelectorAll('.thumb').forEach(function(el,i){ el.classList.toggle('active', i===index); });
-
-        // index 0 görüldüyse YENİ rozetini kaldır
+        document.querySelectorAll('.thumb').forEach(function(el, i) { el.classList.toggle('active', i === index); });
         if (index === 0 && imageLinks[0]) {
             localStorage.setItem('ib_last_seen', imageLinks[0]);
-            var badge = document.querySelector('.new-badge');
-            if (badge) badge.remove();
-            var dot = document.querySelector('.new-dot');
-            if (dot) dot.remove();
+            var badge = document.querySelector('.new-badge'); if (badge) badge.remove();
+            var dot   = document.querySelector('.new-dot');   if (dot)   dot.remove();
         }
     }
 
     function buildCarousel() {
-        var c = document.getElementById('carousel'); c.innerHTML = '';
-        // YENİ kontrolü: son görülen ID ile karşılaştır
-        var lastSeen = localStorage.getItem('ib_last_seen');
-        var latestId = imageLinks[0];
-        var isNew = latestId && latestId !== lastSeen;
+        var c = document.getElementById('carousel');
+        c.innerHTML = '';
+        var isNew = imageLinks[0] && imageLinks[0] !== localStorage.getItem('ib_last_seen');
 
-        // Section label'a nokta ekle/kaldır
-        var labels = document.querySelectorAll('.section-label');
-        labels.forEach(function(el) {
-            var dot = el.querySelector('.new-dot');
-            if (dot) dot.remove();
-        });
+        // Section label noktası
+        var lbl = document.getElementById('main-label');
+        var oldDot = lbl.querySelector('.new-dot'); if (oldDot) oldDot.remove();
         if (isNew) {
-            var firstLabel = document.querySelector('.section-label');
-            if (firstLabel) {
-                var dot = document.createElement('span');
-                dot.className = 'new-dot';
-                firstLabel.insertBefore(dot, firstLabel.firstChild);
-            }
+            var dot = document.createElement('span');
+            dot.className = 'new-dot';
+            lbl.insertBefore(dot, lbl.firstChild);
         }
 
         imageLinks.forEach(function(id, i) {
             var t = document.createElement('div');
-            t.className = 'thumb' + (i===0?' active':'');
-            t.onclick = function(){ loadFeatured(i); };
+            t.className = 'thumb' + (i === 0 ? ' active' : '');
+            t.onclick = function() { loadFeatured(i); };
 
-            // YENİ rozeti — sadece ilk thumb'a ve daha önce görülmediyse
             if (i === 0 && isNew) {
                 var badge = document.createElement('div');
                 badge.className = 'new-badge';
@@ -490,19 +477,25 @@
             var img = document.createElement('img');
             img.src = 'https://drive.google.com/thumbnail?id=' + id + '&sz=w320';
             img.loading = 'lazy';
-            var lbl = document.createElement('div');
-            lbl.className = 'thumb-label';
-            lbl.textContent = i===0 ? 'Son Ölçüm' : i+'. Önceki';
-            t.appendChild(img); t.appendChild(lbl); c.appendChild(t);
+
+            var label = document.createElement('div');
+            label.className = 'thumb-label';
+            var dateText = (imageDates[i] && imageDates[i] !== '') ? imageDates[i] : (i === 0 ? 'Son Ölçüm' : (i + 1) + '. Ölçüm');
+            label.innerHTML = (i === 0 ? '<span class="thumb-tag">SON</span> ' : '') + dateText;
+
+            t.appendChild(img);
+            t.appendChild(label);
+            c.appendChild(t);
         });
     }
 
     function showState(state) {
-        document.getElementById('main-loader').style.display  = state==='loading' ? 'flex'  : 'none';
-        document.getElementById('featured-img').style.display = state==='image'   ? 'block' : 'none';
-        document.getElementById('zoom-hint').style.display    = state==='image'   ? 'block' : 'none';
+        document.getElementById('main-loader').style.display  = state === 'loading' ? 'flex'  : 'none';
+        document.getElementById('featured-img').style.display = state === 'image'   ? 'block' : 'none';
+        document.getElementById('zoom-hint').style.display    = state === 'image'   ? 'block' : 'none';
     }
 
+    /* LIGHTBOX */
     function featuredClick() {
         if (document.getElementById('featured-img').style.display === 'none') return;
         lbScale = 1;
@@ -519,21 +512,23 @@
         document.body.style.overflow = '';
     }
     function zoomLightbox(d) {
-        lbScale = Math.min(4, Math.max(0.4, lbScale+d));
-        document.getElementById('lightbox-img').style.transform = 'scale('+lbScale+')';
-        document.getElementById('zoom-level').textContent = Math.round(lbScale*100)+'%';
+        lbScale = Math.min(4, Math.max(0.4, lbScale + d));
+        document.getElementById('lightbox-img').style.transform = 'scale(' + lbScale + ')';
+        document.getElementById('zoom-level').textContent = Math.round(lbScale * 100) + '%';
     }
 
+    /* E-POSTA */
     async function epostaGonder() {
         var email = document.getElementById('target-email').value.trim();
-        var btn = document.getElementById('send-btn');
+        var btn   = document.getElementById('send-btn');
         if (!email || !email.includes('@')) { alert('Geçerli bir e-posta girin!'); return; }
-        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
         var link = 'https://drive.google.com/thumbnail?id=' + imageLinks[currentIndex] + '&sz=w1200';
-        emailjs.send('service_olohhky','template_65gzwms',{ to_email:email, resim_linki:link })
-            .then(function(){ alert('Rapor gönderildi!'); document.getElementById('target-email').value=''; })
-            .catch(function(){ alert('Gönderim başarısız!'); })
-            .finally(function(){ btn.disabled=false; btn.innerHTML='<i class="fas fa-envelope"></i> Gönder'; });
+        emailjs.send('service_olohhky', 'template_65gzwms', { to_email: email, resim_linki: link })
+            .then(function()  { alert('Rapor gönderildi!'); document.getElementById('target-email').value = ''; })
+            .catch(function() { alert('Gönderim başarısız!'); })
+            .finally(function() { btn.disabled = false; btn.innerHTML = '<i class="fas fa-envelope"></i> Gönder'; });
     }
 </script>
 </body>
