@@ -183,14 +183,10 @@
         .zoom-level { font-size: 0.75rem; color: rgba(255,255,255,0.5); min-width: 44px; text-align: center; }
 
         /* LOGIN */
-        .login-overlay { position: fixed; inset: 0; z-index: 9999; background: #0a0f1e; display: flex; align-items: center; justify-content: center; }
-        .login-box {
-            background: #111827; border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px; padding: 2.5rem 2rem; width: 100%; max-width: 360px;
-            display: flex; flex-direction: column; gap: 1.25rem;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-        }
+        .login-overlay { position: fixed; inset: 0; z-index: 9999; background: #0a0f1e; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+        .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.10); border-radius: 16px; padding: 1.75rem 1.5rem; width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06); }
         .login-logo { display: flex; justify-content: center; }
+        .logo-text-big { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; font-size: 2rem; color: #800020; letter-spacing: -0.02em; display: block; text-align: center; }
         .login-title { text-align: center; font-size: 1.1rem; font-weight: 700; color: #f1f5f9; }
         .login-sub { text-align: center; font-size: 0.78rem; color: #64748b; margin-top: -0.5rem; }
         .login-field { display: flex; flex-direction: column; gap: 5px; }
@@ -198,6 +194,14 @@
         .login-field input { background: #1a2234; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 11px 14px; color: #f1f5f9; font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; }
         .login-field input:focus { border-color: #3b82f6; }
         .login-field input.shake { animation: shake 0.35s ease; border-color: #800020; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+        .login-btn { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; }
+        .login-btn:hover { background: #2563eb; transform: translateY(-1px); }
+        .login-error { font-size: 0.78rem; color: #f87171; text-align: center; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; display: none; }
+        .login-success { font-size: 0.78rem; color: #10b981; text-align: center; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; display: none; }
+        .login-forgot { text-align: center; font-size: 0.78rem; color: #475569; cursor: pointer; transition: color 0.15s; }
+        .login-forgot:hover { color: #94a3b8; }
+        .kvkk-note { font-size: 0.68rem; color: #334155; text-align: center; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; margin-top: -0.25rem; }
         @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
         .login-btn { background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; letter-spacing: 0.02em; }
         .login-btn:hover { background: #2563eb; transform: translateY(-1px); }
@@ -259,15 +263,6 @@
         .login-error { font-size: 0.78rem; color: #f87171; text-align: center; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; display: none; }
         .login-success { font-size: 0.78rem; color: #10b981; text-align: center; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; display: none; }
 
-        .logo-text-big {
-            font-family: 'Arial Black', Arial, sans-serif;
-            font-weight: 900;
-            font-size: 2rem;
-            color: #800020;
-            letter-spacing: -0.02em;
-            display: block;
-            text-align: center;
-        }
         .login-forgot { text-align: center; font-size: 0.78rem; color: #475569; cursor: pointer; transition: color 0.15s; margin-top: -0.25rem; }
         .login-forgot:hover { color: #94a3b8; }
 
@@ -306,96 +301,53 @@
 
 <!-- LOGIN -->
 <div class="login-overlay" id="login-overlay">
-    <div class="login-page">
 
-        <!-- SOL PANEL: Hoşgeldiniz -->
-        <div class="login-left">
-            <div class="login-left-inner">
-                <svg viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:44px;width:auto;margin-bottom:1.5rem">
-                    <text x="0" y="46" font-family="Arial Black, Arial" font-weight="900" font-size="52" fill="#800020">InBody</text>
-                </svg>
-                <h1 class="welcome-title">Hoş Geldiniz</h1>
-                <p class="welcome-sub">Danışan ölçüm sonuçlarını görüntülemek, geçmiş analizleri incelemek ve raporları danışanlarınızla paylaşmak için giriş yapmanız gerekmektedir.</p>
-
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <span class="feature-icon">📊</span>
-                        <div>
-                            <div class="feature-title">Anlık Ölçüm Takibi</div>
-                            <div class="feature-desc">Yeni ölçümler otomatik olarak panele yansır</div>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">📧</span>
-                        <div>
-                            <div class="feature-title">Rapor Paylaşımı</div>
-                            <div class="feature-desc">Danışanlarınıza tek tıkla rapor gönderin</div>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">🔒</span>
-                        <div>
-                            <div class="feature-title">Güvenli Erişim</div>
-                            <div class="feature-desc">Verileriniz şifre korumalı panelde saklanır</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="kvkk-box">
-                    <div class="kvkk-title">🛡️ KVKK Aydınlatma Metni</div>
-                    <p class="kvkk-text">Bu platform, 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında yalnızca yetkili kullanıcıların erişimine açıktır. Danışan ölçüm verileri yalnızca hizmet amacıyla işlenmekte olup üçüncü taraflarla paylaşılmamaktadır. Sisteme giriş yaparak KVKK kapsamındaki aydınlatma metnini okuduğunuzu ve kabul ettiğinizi onaylamış olursunuz.</p>
-                </div>
-            </div>
+    <!-- GİRİŞ KUTUSU -->
+    <div class="login-box" id="login-box-main">
+        <div class="login-logo">
+            <span class="logo-text-big">InBody</span>
         </div>
-
-        <!-- SAĞ PANEL: Giriş Formu -->
-        <div class="login-right">
-            <div class="login-box" id="login-box-main">
-                <div class="login-logo">
-                    <span class="logo-text-big">InBody</span>
-                </div>
-                <div class="login-title">Yönetici Girişi</div>
-                <div class="login-sub">Panele erişmek için bilgilerinizi girin</div>
-                <div class="login-field">
-                    <label>Kullanıcı Adı</label>
-                    <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username">
-                </div>
-                <div class="login-field">
-                    <label>Şifre</label>
-                    <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password">
-                </div>
-                <div class="login-error" id="login-error">❌ Kullanıcı adı veya şifre hatalı</div>
-                <button class="login-btn" onclick="loginCheck()">Giriş Yap</button>
-                <div class="login-forgot" onclick="showReset()">Şifremi Unuttum</div>
-            </div>
-
-            <!-- ŞİFRE SIFIRLAMA -->
-            <div class="login-box" id="login-box-reset" style="display:none">
-                <div class="login-logo">
-                    <span class="logo-text-big">InBody</span>
-                </div>
-                <div class="login-title">Şifre Sıfırlama</div>
-                <div class="login-sub">Mevcut şifrenizi doğrulayıp yenisini belirleyin</div>
-                <div class="login-field">
-                    <label>Mevcut Şifre</label>
-                    <input type="password" id="reset-current" placeholder="Mevcut şifre">
-                </div>
-                <div class="login-field">
-                    <label>Yeni Şifre</label>
-                    <input type="password" id="reset-new" placeholder="Yeni şifre">
-                </div>
-                <div class="login-field">
-                    <label>Yeni Şifre Tekrar</label>
-                    <input type="password" id="reset-new2" placeholder="Yeni şifre tekrar">
-                </div>
-                <div class="login-error" id="reset-error"></div>
-                <div class="login-success" id="reset-success">✓ Şifre başarıyla güncellendi!</div>
-                <button class="login-btn" onclick="resetPass()">Şifreyi Güncelle</button>
-                <div class="login-forgot" onclick="showLogin()">← Giriş Ekranına Dön</div>
-            </div>
+        <div class="login-title">Yönetici Girişi</div>
+        <div class="login-sub">Takip paneline erişmek için giriş yapın</div>
+        <div class="login-field">
+            <label>Kullanıcı Adı</label>
+            <input type="text" id="login-user" placeholder="Kullanıcı adı" autocomplete="username">
         </div>
-
+        <div class="login-field">
+            <label>Şifre</label>
+            <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password">
+        </div>
+        <div class="login-error" id="login-error">❌ Kullanıcı adı veya şifre hatalı</div>
+        <button class="login-btn" onclick="loginCheck()">Giriş Yap</button>
+        <div class="login-forgot" onclick="showReset()">Şifremi Unuttum</div>
+        <div class="kvkk-note">🛡️ Bu panel KVKK kapsamında korunmaktadır. Giriş yaparak kişisel verilerin işlenmesine ilişkin aydınlatma metnini kabul etmiş olursunuz.</div>
     </div>
+
+    <!-- ŞİFRE SIFIRLAMA -->
+    <div class="login-box" id="login-box-reset" style="display:none">
+        <div class="login-logo">
+            <span class="logo-text-big">InBody</span>
+        </div>
+        <div class="login-title">Şifre Sıfırlama</div>
+        <div class="login-sub">Mevcut şifrenizi doğrulayıp yenisini belirleyin</div>
+        <div class="login-field">
+            <label>Mevcut Şifre</label>
+            <input type="password" id="reset-current" placeholder="Mevcut şifre">
+        </div>
+        <div class="login-field">
+            <label>Yeni Şifre</label>
+            <input type="password" id="reset-new" placeholder="Yeni şifre">
+        </div>
+        <div class="login-field">
+            <label>Yeni Şifre Tekrar</label>
+            <input type="password" id="reset-new2" placeholder="Yeni şifre tekrar">
+        </div>
+        <div class="login-error" id="reset-error"></div>
+        <div class="login-success" id="reset-success">✓ Şifre başarıyla güncellendi!</div>
+        <button class="login-btn" onclick="resetPass()">Şifreyi Güncelle</button>
+        <div class="login-forgot" onclick="showLogin()">← Giriş Ekranına Dön</div>
+    </div>
+
 </div>
 
 <!-- AYARLAR -->
