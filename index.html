@@ -391,8 +391,8 @@
                 <input type="text" id="file-search" placeholder="Search files..." oninput="filterFiles()">
             </div>
             <div class="files-toolbar-right">
-                <button class="view-btn active" id="view-grid" onclick="setView('grid')" title="Grid view"><i class="fas fa-th"></i></button>
-                <button class="view-btn" id="view-list" onclick="setView('list')" title="List view"><i class="fas fa-list"></i></button>
+                <button class="view-btn active" id="view-list" onclick="setView('list')" title="List view"><i class="fas fa-list"></i></button>
+                <button class="view-btn" id="view-grid" onclick="setView('grid')" title="Grid view"><i class="fas fa-th"></i></button>
                 <button class="btn-refresh" onclick="dosyalariGetir()" style="padding:8px 14px">
                     <i class="fas fa-sync-alt"></i>
                 </button>
@@ -440,7 +440,7 @@
     function getPass() { return localStorage.getItem('ib_pass') || '0000'; }
 
     let imageLinks = [], imageDates = [], currentIndex = 0, lbScale = 1;
-    let allFiles = [], currentFolder = 'all', currentView = 'grid';
+    let allFiles = [], currentFolder = 'all', currentView = 'list';
 
     /* ── DİL ── */
     const STRINGS = {
