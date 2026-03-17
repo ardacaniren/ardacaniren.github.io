@@ -320,6 +320,57 @@
 
     let imageLinks = [], imageDates = [], currentIndex = 0, lbScale = 1;
 
+
+    /* ── BİLDİRİM SESİ ── */
+    function playNewSound() {
+        try {
+            var ctx = new (window.AudioContext || window.webkitAudioContext)();
+            // İki nota — yukarı çıkan kısa ding
+            function note(freq, start, dur, vol) {
+                var osc  = ctx.createOscillator();
+                var gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+                gain.gain.setValueAtTime(0, ctx.currentTime + start);
+                gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + start + 0.01);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+                osc.start(ctx.currentTime + start);
+                osc.stop(ctx.currentTime + start + dur);
+            }
+            note(880, 0,    0.18, 0.3);  // La5
+            note(1320, 0.15, 0.28, 0.2); // Mi6
+        } catch(e) { console.warn('Audio not supported', e); }
+    }
+
+
+    /* ── BİLDİRİM SESİ ── */
+    function playNewMeasurementSound() {
+        try {
+            var ctx = new (window.AudioContext || window.webkitAudioContext)();
+            // İki nota: yukarı çıkan kısa bir "ding ding"
+            var notes = [
+                { freq: 523.25, start: 0,    dur: 0.15 },  // C5
+                { freq: 659.25, start: 0.18, dur: 0.15 },  // E5
+                { freq: 783.99, start: 0.36, dur: 0.25 },  // G5
+            ];
+            notes.forEach(function(n) {
+                var osc  = ctx.createOscillator();
+                var gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.value = n.freq;
+                gain.gain.setValueAtTime(0, ctx.currentTime + n.start);
+                gain.gain.linearRampToValueAtTime(0.28, ctx.currentTime + n.start + 0.02);
+                gain.gain.linearRampToValueAtTime(0, ctx.currentTime + n.start + n.dur);
+                osc.start(ctx.currentTime + n.start);
+                osc.stop(ctx.currentTime + n.start + n.dur + 0.05);
+            });
+        } catch(e) { /* ses desteklenmiyorsa sessiz geç */ }
+    }
+
     /* ── DİL ── */
     const STRINGS = {
         en: {
@@ -549,10 +600,40 @@
         }
     }
 
+
+    /* ── BİLDİRİM SESİ ── */
+    function playNewMeasurementSound() {
+        try {
+            var ctx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // İki nota: kısa bir "ding ding" efekti
+            function playNote(freq, startTime, duration, gain) {
+                var osc = ctx.createOscillator();
+                var gainNode = ctx.createGain();
+                osc.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, startTime);
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(gain, startTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+                osc.start(startTime);
+                osc.stop(startTime + duration);
+            }
+
+            var now = ctx.currentTime;
+            playNote(880, now, 0.4, 0.3);        // La5 — ilk ding
+            playNote(1108, now + 0.18, 0.5, 0.2); // Do#6 — ikinci ding (daha yüksek, fading)
+        } catch(e) {
+            console.log('Audio not supported:', e);
+        }
+    }
+
     function buildCarousel() {
         var c = document.getElementById('carousel');
         c.innerHTML = '';
         var isNew = imageLinks[0] && imageLinks[0] !== localStorage.getItem('ib_last_seen');
+        if (isNew) playNewSound();
 
         var lbl = document.getElementById('main-label');
         var oldDot = lbl.querySelector('.new-dot'); if (oldDot) oldDot.remove();
@@ -560,6 +641,7 @@
             var dot = document.createElement('span');
             dot.className = 'new-dot';
             lbl.insertBefore(dot, lbl.firstChild);
+            playNewMeasurementSound();
         }
 
         imageLinks.forEach(function(id, i) {
