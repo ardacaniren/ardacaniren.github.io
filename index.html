@@ -767,6 +767,7 @@
         container.innerHTML = '';
 
         folders.forEach(function(folderName) {
+            if (folderName === '/') return;
             var count = allFiles.filter(function(x){ return x.folder === folderName; }).length;
             var card = document.createElement('div');
             card.className = 'folder-card';
