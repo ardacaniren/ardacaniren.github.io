@@ -150,6 +150,18 @@
         .file-row-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: 0.15s; }
         .file-row-btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
 
+        /* FOLDER VIEW */
+        .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+        .folder-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; text-align: center; }
+        .folder-card:hover { border-color: #3b82f6; transform: translateY(-3px); box-shadow: var(--card-shadow); }
+        .folder-card-icon { font-size: 2.8rem; line-height: 1; }
+        .folder-card-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+        .folder-card-count { font-size: 0.72rem; color: var(--muted); }
+        .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
+        .breadcrumb-item { cursor: pointer; transition: color 0.15s; }
+        .breadcrumb-item:hover { color: var(--text); }
+        .breadcrumb-item.active { color: var(--text); font-weight: 600; cursor: default; }
+        .breadcrumb-sep { color: var(--border); }
         .files-empty { text-align: center; padding: 4rem 2rem; color: var(--muted); }
         .files-empty i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
         .files-empty p { font-size: 0.9rem; }
@@ -386,7 +398,7 @@
                 </button>
             </div>
         </div>
-        <div class="folder-tabs" id="folder-tabs"></div>
+        <div class="breadcrumb" id="breadcrumb"></div>
         <div id="files-container"></div>
     </div>
 </div>
@@ -498,6 +510,7 @@
         document.getElementById('tab-'+tab).classList.add('active');
         document.getElementById('page-'+tab).classList.add('active');
         if (tab==='files' && allFiles.length===0) dosyalariGetir();
+        if (tab==='files' && allFiles.length>0) showFolderGrid();
     }
 
     /* ── LOGIN ── */
@@ -731,8 +744,7 @@
                     folder:    (row.c[5]&&row.c[5].v)?row.c[5].v:'/',
                 });
             });
-            buildFolderTabs();
-            renderFiles();
+            showFolderGrid();
         } catch(e){
             console.error(e);
             container.innerHTML='<div class="files-empty"><i class="fas fa-exclamation-triangle"></i><p>Could not load files. Make sure AppScript has run at least once.</p></div>';
@@ -740,25 +752,59 @@
     }
 
     function buildFolderTabs(){
-        var folders=[...new Set(allFiles.map(function(f){return f.folder;}))].sort();
-        var tabs=document.getElementById('folder-tabs');
-        tabs.innerHTML='';
-        var all=document.createElement('div');
-        all.className='folder-pill'+(currentFolder==='all'?' active':'');
-        all.textContent=t('all_folders')+' ('+allFiles.length+')';
-        all.onclick=function(){currentFolder='all';buildFolderTabs();renderFiles();};
-        tabs.appendChild(all);
-        folders.forEach(function(f){
-            var count=allFiles.filter(function(x){return x.folder===f;}).length;
-            var pill=document.createElement('div');
-            pill.className='folder-pill'+(currentFolder===f?' active':'');
-            pill.innerHTML='<i class="fas fa-folder" style="margin-right:5px;font-size:0.75rem"></i>'+f+' ('+count+')';
-            pill.onclick=function(){currentFolder=f;buildFolderTabs();renderFiles();};
-            tabs.appendChild(pill);
+        // Show folder grid view
+        showFolderGrid();
+    }
+
+    function showFolderGrid() {
+        currentFolder = 'grid';
+        var bc = document.getElementById('breadcrumb');
+        bc.innerHTML = '<span class="breadcrumb-item active"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span>';
+
+        var folders = [...new Set(allFiles.map(function(f){return f.folder;}))].sort();
+        var container = document.getElementById('files-container');
+        container.className = 'folder-grid';
+        container.innerHTML = '';
+
+        folders.forEach(function(folderName) {
+            var count = allFiles.filter(function(x){ return x.folder === folderName; }).length;
+            var card = document.createElement('div');
+            card.className = 'folder-card';
+            card.innerHTML =
+                '<div class="folder-card-icon">📁</div>' +
+                '<div class="folder-card-name">' + folderName + '</div>' +
+                '<div class="folder-card-count">' + count + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
+            card.onclick = function(){ openFolder(folderName); };
+            container.appendChild(card);
         });
+
+        // If only one folder or there are root files, also show root
+        var rootFiles = allFiles.filter(function(f){ return f.folder === '/'; });
+        if (rootFiles.length > 0 && folders.indexOf('/') === -1) {
+            var card = document.createElement('div');
+            card.className = 'folder-card';
+            card.innerHTML =
+                '<div class="folder-card-icon">📂</div>' +
+                '<div class="folder-card-name">' + (currentLang === 'tr' ? 'Genel' : 'General') + '</div>' +
+                '<div class="folder-card-count">' + rootFiles.length + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
+            card.onclick = function(){ openFolder('/'); };
+            container.appendChild(card);
+        }
+    }
+
+    function openFolder(folderName) {
+        currentFolder = folderName;
+        // Breadcrumb
+        var bc = document.getElementById('breadcrumb');
+        bc.innerHTML =
+            '<span class="breadcrumb-item" onclick="showFolderGrid()"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span>' +
+            '<span class="breadcrumb-sep">›</span>' +
+            '<span class="breadcrumb-item active">📁 ' + folderName + '</span>';
+        renderFiles();
     }
 
     function filterFiles(){
+        if (currentFolder === 'grid') { showFolderGrid(); return; }
         renderFiles();
     }
 
