@@ -431,15 +431,7 @@
             <p>No approved centers yet.</p>
         </div>
     </div>
-    <div id="apply-overlay" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
-        <div style="background:var(--surface);border-radius:20px;width:100%;max-width:640px;height:85vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0">
-                <div style="font-size:1rem;font-weight:700;color:var(--text)">Center Registration Request</div>
-                <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.25rem;cursor:pointer">X</button>
-            </div>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
-        </div>
-    </div>
+
     <div id="applications-panel" style="display:none;flex:1;flex-direction:column;padding:1.5rem 2rem;gap:1rem;max-width:900px;margin:0 auto;width:100%">
         <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:12px">
@@ -1192,5 +1184,15 @@
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
 
 </script>
+
+<div id="apply-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
+    <div style="background:var(--surface);border-radius:20px;width:100%;max-width:640px;height:85vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0">
+            <div style="font-size:1rem;font-weight:700;color:var(--text)">Center Registration Request</div>
+            <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1">&#x2715;</button>
+        </div>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
+    </div>
+</div>
 </body>
 </html>
