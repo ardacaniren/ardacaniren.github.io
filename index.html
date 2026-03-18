@@ -264,6 +264,7 @@
             <button class="login-btn" onclick="loginCheck()" data-i18n="login_btn">Sign In</button>
             <div class="login-forgot" onclick="showReset()" data-i18n="forgot_pw">Forgot Password</div>
             <div class="kvkk-note" data-i18n="kvkk">🛡️ This panel is protected under KVKK/GDPR.</div>
+            <div style="text-align:center;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05)"><button onclick="showApplyForm()" style="background:none;border:none;color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-map-marker-alt"></i> Apply to Become a Center</button></div>
         </div>
         <div class="login-box" id="login-box-reset" style="display:none">
             <div class="login-logo"><span class="login-wordmark">InBody</span></div>
@@ -434,7 +435,7 @@
         <div style="background:var(--surface);border-radius:20px;width:100%;max-width:640px;height:85vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0">
                 <div style="font-size:1rem;font-weight:700;color:var(--text)">Center Registration Request</div>
-                <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.25rem;cursor:pointer">✕</button>
+                <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.25rem;cursor:pointer">X</button>
             </div>
             <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
         </div>
@@ -443,15 +444,15 @@
         <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:12px">
                 <button onclick="showPublicCenters()" style="display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:10px;font-size:0.8rem;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-arrow-left"></i> Back</button>
-                <div style="font-size:1rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px"><i class="fas fa-clipboard-list"></i> Applications</div>
+                <div style="font-size:1rem;font-weight:700;color:var(--text)"><i class="fas fa-clipboard-list"></i> Applications</div>
             </div>
             <button onclick="basviruGetir()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:10px;cursor:pointer"><i class="fas fa-sync-alt"></i></button>
         </div>
         <div style="display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content">
-            <div class="app-tab active" id="apptab-pending"  onclick="filterApps('pending')"  style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer">Pending</div>
-            <div class="app-tab"        id="apptab-approved" onclick="filterApps('approved')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer">Approved</div>
-            <div class="app-tab"        id="apptab-rejected" onclick="filterApps('rejected')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer">Rejected</div>
-            <div class="app-tab"        id="apptab-all"      onclick="filterApps('all')"      style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer">All</div>
+            <div id="apptab-pending"  onclick="filterApps('pending')"  style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text)">Pending</div>
+            <div id="apptab-approved" onclick="filterApps('approved')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">Approved</div>
+            <div id="apptab-rejected" onclick="filterApps('rejected')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">Rejected</div>
+            <div id="apptab-all"      onclick="filterApps('all')"      style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">All</div>
         </div>
         <div id="app-list" style="display:flex;flex-direction:column;gap:10px"></div>
     </div>
