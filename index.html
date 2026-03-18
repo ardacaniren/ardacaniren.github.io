@@ -1146,14 +1146,9 @@
         document.body.style.overflow = '';
     }
     function showPublicApply() {
-        // From login page — switch to centers tab and show form
-        sessionStorage.setItem('inbody_auth', '1');
-        document.getElementById('login-overlay').style.display = 'none';
-        veriGetir();
-        setTimeout(function() {
-            switchTab('centers');
-            setTimeout(showApplyForm, 500);
-        }, 300);
+        // Login sayfasından — sadece formu aç, giriş yapma
+        document.getElementById('apply-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
     function showPublicCenters() {
         document.getElementById('applications-panel').style.display = 'none';
