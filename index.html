@@ -566,6 +566,7 @@
         document.getElementById('page-'+tab).classList.add('active');
         if (tab==='files' && allFiles.length===0) dosyalariGetir();
         if (tab==='files' && allFiles.length>0) showFolderGrid();
+        if (tab==='centers') merkezleriGetir();
     }
 
     /* ── LOGIN ── */
@@ -588,6 +589,7 @@
             sessionStorage.setItem('inbody_auth','1');
             document.getElementById('login-overlay').style.display='none';
             veriGetir();
+            setTimeout(addAdminCenterBtn, 500);
         } else {
             err.textContent=t('login_error'); err.style.display='block';
             ['login-user','login-pass'].forEach(function(id){
@@ -1021,6 +1023,173 @@
 
     // Init
     applyLang();
+    if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
+    /* CENTERS */
+    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json';
+    var allApplications = [];
+    var currentAppFilter = 'pending';
+    var approvedCenters = [];
+
+    function showApplyForm() {
+        var ov = document.getElementById('apply-overlay');
+        if (ov) { ov.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    }
+    function hideApplyForm() {
+        var ov = document.getElementById('apply-overlay');
+        if (ov) { ov.style.display = 'none'; document.body.style.overflow = ''; }
+    }
+    function showPublicCenters() {
+        document.getElementById('applications-panel').style.display = 'none';
+        document.getElementById('centers-public').style.display = 'flex';
+    }
+    function showApplicationsPanel() {
+        document.getElementById('centers-public').style.display = 'none';
+        document.getElementById('applications-panel').style.display = 'flex';
+        basviruGetir();
+    }
+    function filterCenters() { renderCenters(); }
+    function filterApps(f) {
+        currentAppFilter = f;
+        ['pending','approved','rejected','all'].forEach(function(x) {
+            var el = document.getElementById('apptab-' + x);
+            if (!el) return;
+            if (x === f) { el.style.background = 'var(--surface)'; el.style.color = 'var(--text)'; }
+            else { el.style.background = 'transparent'; el.style.color = 'var(--muted)'; }
+        });
+        renderApplications();
+    }
+    function addAdminCenterBtn() {
+        if (document.getElementById('admin-center-btn')) return;
+        var btn = document.createElement('button');
+        btn.id = 'admin-center-btn';
+        btn.className = 'btn-icon';
+        btn.title = 'Applications';
+        btn.innerHTML = '<i class="fas fa-clipboard-list" style="font-size:0.85rem;color:var(--muted)"></i>';
+        btn.onclick = function() { switchTab('centers'); setTimeout(showApplicationsPanel, 100); };
+        var th = document.getElementById('theme-btn');
+        if (th) th.parentNode.insertBefore(btn, th);
+    }
+    async function merkezleriGetir() {
+        try {
+            var res = await fetch(FORM_JSON_URL + '&_=' + Date.now());
+            var raw = await res.text();
+            var json = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1));
+            allApplications = [];
+            if (!json.table || !json.table.rows) { renderCenters(); return; }
+            json.table.rows.forEach(function(row, idx) {
+                if (!row.c || !row.c[0] || !row.c[0].v) return;
+                var st = localStorage.getItem('app_status_' + idx) || 'pending';
+                var ml = localStorage.getItem('app_map_' + idx) || '';
+                allApplications.push({
+                    idx: idx,
+                    date: row.c[0] ? row.c[0].v : '',
+                    name: row.c[1] ? row.c[1].v : '',
+                    email: row.c[2] ? row.c[2].v : '',
+                    phone: row.c[3] ? row.c[3].v : '',
+                    company: row.c[4] ? row.c[4].v : '',
+                    city: row.c[5] ? row.c[5].v : '',
+                    status: st,
+                    mapLink: ml
+                });
+            });
+            approvedCenters = allApplications.filter(function(a) { return a.status === 'approved'; });
+            renderCenters();
+        } catch(e) { console.error('Centers error:', e); }
+    }
+    function renderCenters() {
+        var grid = document.getElementById('centers-grid');
+        var empty = document.getElementById('centers-empty');
+        var countEl = document.getElementById('centers-count');
+        if (!grid) return;
+        var query = '';
+        var searchEl = document.getElementById('center-search');
+        if (searchEl) query = searchEl.value.toLowerCase();
+        var filtered = approvedCenters.filter(function(c) {
+            return !query || c.name.toLowerCase().indexOf(query) > -1 || c.city.toLowerCase().indexOf(query) > -1 || c.company.toLowerCase().indexOf(query) > -1;
+        });
+        if (countEl) countEl.textContent = filtered.length + (filtered.length !== 1 ? ' centers' : ' center');
+        grid.innerHTML = '';
+        if (filtered.length === 0) { if (empty) empty.style.display = 'block'; return; }
+        if (empty) empty.style.display = 'none';
+        filtered.forEach(function(c) {
+            var card = document.createElement('div');
+            card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.2s;cursor:default';
+            card.onmouseenter = function() { this.style.borderColor = '#3b82f6'; this.style.transform = 'translateY(-3px)'; };
+            card.onmouseleave = function() { this.style.borderColor = 'var(--border)'; this.style.transform = ''; };
+            var mapHtml = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--muted)">&#128205;</div>';
+            if (c.mapLink) {
+                mapHtml = '<iframe src="https://maps.google.com/maps?q=' + encodeURIComponent(c.city + ' ' + c.company) + '&output=embed&z=15" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;pointer-events:none"></iframe>';
+            }
+            var mapsBtn = '';
+            if (c.mapLink) {
+                mapsBtn = '<a href="' + c.mapLink + '" target="_blank" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Maps</button></a>';
+            }
+            card.innerHTML =
+                '<div style="height:160px;background:var(--surface2);overflow:hidden">' + mapHtml + '</div>' +
+                '<div style="padding:1.25rem">' +
+                    '<div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:3px">' + c.name + '</div>' +
+                    '<div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:10px">' + c.company + '</div>' +
+                    '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">' + c.city + '</div>' +
+                    '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">' + c.phone + '</div>' +
+                    '<div style="font-size:0.78rem;color:var(--muted)">' + c.email + '</div>' +
+                '</div>' +
+                '<div style="display:flex;gap:8px;padding:1rem 1.25rem;border-top:1px solid var(--border);background:var(--surface2)">' +
+                    mapsBtn +
+                    '<a href="mailto:' + c.email + '" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(16,185,129,0.1);color:#10b981;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Contact</button></a>' +
+                '</div>';
+            grid.appendChild(card);
+        });
+    }
+    async function basviruGetir() { await merkezleriGetir(); renderApplications(); }
+    function renderApplications() {
+        var list = document.getElementById('app-list');
+        if (!list) return;
+        list.innerHTML = '';
+        var filtered = allApplications.filter(function(a) {
+            return currentAppFilter === 'all' || a.status === currentAppFilter;
+        });
+        if (filtered.length === 0) {
+            list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)">No applications found.</div>';
+            return;
+        }
+        filtered.forEach(function(a) {
+            var sc = a.status === 'approved' ? '#10b981' : (a.status === 'rejected' ? '#ef4444' : '#eab308');
+            var sb = a.status === 'approved' ? 'rgba(16,185,129,0.15)' : (a.status === 'rejected' ? 'rgba(239,68,68,0.15)' : 'rgba(234,179,8,0.15)');
+            var card = document.createElement('div');
+            card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:1rem';
+            var mapInputHtml = '';
+            if (a.status === 'pending') {
+                mapInputHtml = '<div style="margin-top:8px"><input id="mapinput_' + a.idx + '" type="text" value="' + (a.mapLink || '') + '" placeholder="Google Maps link (optional)" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:7px 10px;color:var(--input-color);font-size:0.78rem;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"></div>';
+            }
+            var adminBtnsHtml = '';
+            if (a.status === 'pending') {
+                adminBtnsHtml =
+                    '<button onclick="setAppStatus(' + a.idx + ', \'approved\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(16,185,129,0.1);color:#10b981">Approve</button>' +
+                    '<button onclick="setAppStatus(' + a.idx + ', \'rejected\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(239,68,68,0.1);color:#ef4444">Reject</button>';
+            }
+            card.innerHTML =
+                '<div style="flex:1">' +
+                    '<div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:3px">' + a.name + '</div>' +
+                    '<div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:8px">' + a.company + '</div>' +
+                    '<div style="font-size:0.75rem;color:var(--muted)">' + a.city + ' | ' + a.phone + ' | ' + a.email + '</div>' +
+                    mapInputHtml +
+                    '<div style="font-size:0.68rem;color:var(--muted);margin-top:6px">' + a.date + '</div>' +
+                '</div>' +
+                '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end">' +
+                    '<span style="padding:4px 10px;border-radius:20px;font-size:0.68rem;font-weight:700;text-transform:uppercase;background:' + sb + ';color:' + sc + '">' + a.status + '</span>' +
+                    adminBtnsHtml +
+                '</div>';
+            list.appendChild(card);
+        });
+    }
+    function setAppStatus(idx, status) {
+        var mi = document.getElementById('mapinput_' + idx);
+        var ml = mi ? mi.value.trim() : '';
+        localStorage.setItem('app_status_' + idx, status);
+        if (ml) localStorage.setItem('app_map_' + idx, ml);
+        basviruGetir();
+    }
+
 </script>
 </body>
 </html>
