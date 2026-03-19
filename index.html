@@ -373,7 +373,7 @@
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
-                <div class="score-hover-zone" id="score-hover-zone" onmouseenter="showScoreTip(event)" onmouseleave="hideScoreTip()" onmousemove="moveScoreTip(event)">
+                <div class="score-hover-zone" id="score-hover-zone">
                     <div class="score-hover-tooltip">
                         <div class="score-tooltip-title">InBody Score</div>
                         <div class="score-tooltip-row"><span class="score-tooltip-icon">📊</span><span>It shows your InBody score.</span></div>
@@ -1205,26 +1205,6 @@
         document.body.style.overflow='';
     }
 
-    function showScoreTip(e) {
-        var tt = document.querySelector('.score-hover-tooltip');
-        if (!tt) return;
-        tt.style.opacity = '1';
-        moveScoreTip(e);
-    }
-    function hideScoreTip() {
-        var tt = document.querySelector('.score-hover-tooltip');
-        if (tt) tt.style.opacity = '0';
-    }
-    function moveScoreTip(e) {
-        var tt = document.querySelector('.score-hover-tooltip');
-        if (!tt) return;
-        var x = e.clientX + 16;
-        var y = e.clientY - 100;
-        if (x + 250 > window.innerWidth) x = e.clientX - 260;
-        if (y < 8) y = e.clientY + 16;
-        tt.style.left = x + 'px';
-        tt.style.top  = y + 'px';
-    }
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
