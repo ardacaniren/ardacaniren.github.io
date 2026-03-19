@@ -373,14 +373,7 @@
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
-                <div class="score-hover-zone" id="score-hover-zone">
-                    <div class="score-hover-tooltip">
-                        <div class="score-tooltip-title">InBody Score</div>
-                        <div class="score-tooltip-row"><span class="score-tooltip-icon">📊</span><span>It shows your InBody score.</span></div>
-                        <div class="score-tooltip-row"><span class="score-tooltip-icon">👨</span><span>For men it should be <strong style="color:#3b82f6">over 80</strong></span></div>
-                        <div class="score-tooltip-row"><span class="score-tooltip-icon">👩</span><span>For women it should be <strong style="color:#ec4899">over 70</strong></span></div>
-                    </div>
-                </div>
+                <div class="score-hover-zone" id="score-hover-zone" onmouseenter="showScoreTip(event)" onmouseleave="hideScoreTip()"></div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
             </div>
             <div class="share-box">
@@ -1205,6 +1198,26 @@
         document.body.style.overflow='';
     }
 
+    function showScoreTip(e) {
+        var zone = document.getElementById('score-hover-zone');
+        var tt   = document.getElementById('score-tooltip-popup');
+        if (!zone || !tt) return;
+        var rect = zone.getBoundingClientRect();
+        tt.style.display = 'block';
+        // Tooltip'i zone'un üstüne ortala
+        var ttW = 240;
+        var left = rect.left + (rect.width / 2) - (ttW / 2);
+        var top  = rect.top - tt.offsetHeight - 10;
+        if (left < 8) left = 8;
+        if (left + ttW > window.innerWidth - 8) left = window.innerWidth - ttW - 8;
+        if (top < 8) top = rect.bottom + 10;
+        tt.style.left = left + 'px';
+        tt.style.top  = top  + 'px';
+    }
+    function hideScoreTip() {
+        var tt = document.getElementById('score-tooltip-popup');
+        if (tt) tt.style.display = 'none';
+    }
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
@@ -1219,6 +1232,13 @@
         </div>
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
     </div>
+</div>
+
+<div id="score-tooltip-popup" style="position:fixed;display:none;background:rgba(10,15,30,0.97);border:1px solid rgba(59,130,246,0.45);border-radius:14px;padding:14px 18px;width:240px;z-index:9999;backdrop-filter:blur(12px);pointer-events:none">
+    <div style="font-size:0.68rem;font-weight:800;letter-spacing:0.12em;color:#3b82f6;margin-bottom:10px;text-transform:uppercase">InBody Score</div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:#e2e8f0;margin-bottom:6px">📊 It shows your InBody score.</div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:#e2e8f0;margin-bottom:6px">👨 For men it should be <strong style="color:#3b82f6;margin-left:4px">over 80</strong></div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:#e2e8f0">👩 For women it should be <strong style="color:#ec4899;margin-left:4px">over 70</strong></div>
 </div>
 </body>
 </html>
