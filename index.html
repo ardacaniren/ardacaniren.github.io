@@ -394,96 +394,95 @@
 
                 <div class="annotation-layer" id="annotation-layer">
 
-                    <!-- InBody Score — sağ üst -->
-                    <div class="ann-zone" data-body="📊 <strong>Score: 73/100</strong><br><br>Overall body composition score reflecting muscle, fat, and water balance.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>⚡ A muscular person may score over 100 points." style="top:4%;right:0;width:48%;height:18%"
-                        data-title="InBody Score"
-                        data-hint="📊 Overall body composition score. Men: >80 | Women: >70"
+                    <div class="ann-zone" style="top:2%;left:0;width:53%;height:7%"
+                        data-title="Patient Info"
+                        data-body="🪪 <strong>ID:</strong> arda_can_iren (Arda Can İren)<br>📏 <strong>Height:</strong> 189 cm<br>🎂 <strong>Age:</strong> 25<br>⚧ <strong>Gender:</strong> Male<br>📅 <strong>Test Date:</strong> 19.03.2026 08:34"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'InBody Score','📊 <strong>Score: 73/100</strong><br><br>Overall body composition score reflecting muscle, fat, and water balance.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>⚡ A muscular person may score over 100 points.')"></div>
+                        onclick="showAnnPopup(event,'Patient Info',this.dataset.body)"></div>
 
-                    <!-- Visceral Fat Area — sağ ikinci bölüm -->
-                    <div class="ann-zone" data-body="🫃 <strong>VFA: 41.8 cm²</strong><br><br>Visceral fat surrounds internal organs and is linked to metabolic disease risk.<br><br>✅ Normal: under 100 cm²<br>⚠️ Caution: 100–150 cm²<br>🚨 High Risk: over 150 cm²<br><br>Your score is excellent!" style="top:22%;right:0;width:48%;height:18%"
-                        data-title="Visceral Fat Area"
-                        data-hint="🫃 VFA: 41.8 cm² — Well within normal range"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Visceral Fat Area','🫃 <strong>VFA: 41.8 cm²</strong><br><br>Visceral fat surrounds internal organs and is linked to metabolic disease risk.<br><br>✅ Normal: under 100 cm²<br>⚠️ Caution: 100–150 cm²<br>🚨 High Risk: over 150 cm²<br><br>Your score is excellent!')"></div>
-
-                    <!-- Weight Control — sağ orta -->
-                    <div class="ann-zone" data-body="🎯 <strong>Target Weight: 78.6 kg</strong><br><br>Weight Control: <strong>+7.2 kg</strong><br>Fat Control: <strong>+0.6 kg</strong><br>Muscle Control: <strong>+6.6 kg</strong><br><br>To reach your ideal weight, focus on gaining muscle rather than fat." style="top:40%;right:0;width:48%;height:10%"
-                        data-title="Weight Control"
-                        data-hint="🎯 Target: 78.6 kg — You need +7.2 kg"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Weight Control','🎯 <strong>Target Weight: 78.6 kg</strong><br><br>Weight Control: <strong>+7.2 kg</strong><br>Fat Control: <strong>+0.6 kg</strong><br>Muscle Control: <strong>+6.6 kg</strong><br><br>To reach your ideal weight, focus on gaining muscle rather than fat.')"></div>
-
-                    <!-- Body Balance Evaluation — sağ -->
-                    <div class="ann-zone" data-body="⚖️ Evaluates muscle balance between body segments.<br><br>Upper Body: <strong>Balanced</strong> ✅<br>Lower Body: <strong>Balanced</strong> ✅<br>Upper-Lower: <strong>Slightly Unbalanced</strong> ⚠️<br><br>Balanced segments reduce injury risk and improve posture." style="top:50%;right:0;width:48%;height:10%"
-                        data-title="Body Balance Evaluation"
-                        data-hint="⚖️ Upper & Lower body — Balanced"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Balance Evaluation','⚖️ Evaluates muscle balance between body segments.<br><br>Upper Body: <strong>Balanced</strong> ✅<br>Lower Body: <strong>Balanced</strong> ✅<br>Upper-Lower: <strong>Slightly Unbalanced</strong> ⚠️<br><br>Balanced segments reduce injury risk and improve posture.')"></div>
-
-                    <!-- Segmental Fat Analysis — sağ alt -->
-                    <div class="ann-zone" data-body="🫀 Fat distribution across body segments:<br><br>Right Arm: 0.6 kg (77.8%)<br>Left Arm: 0.5 kg (73.7%)<br>Trunk: 5.3 kg (<strong style=color:#ef4444>107.5%</strong>)<br>Right Leg: 1.9 kg (93.0%)<br>Left Leg: 1.9 kg (93.8%)<br><br>⚠️ Trunk fat slightly above ideal — focus on cardio." style="top:60%;right:0;width:48%;height:12%"
-                        data-title="Segmental Fat Analysis"
-                        data-hint="🫀 Fat distribution across body segments"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Segmental Fat Analysis','🫀 Fat distribution across body segments:<br><br>Right Arm: 0.6 kg (77.8%)<br>Left Arm: 0.5 kg (73.7%)<br>Trunk: 5.3 kg (<strong style=color:#ef4444>107.5%</strong>)<br>Right Leg: 1.9 kg (93.0%)<br>Left Leg: 1.9 kg (93.8%)<br><br>⚠️ Trunk fat slightly above ideal — focus on cardio.')"></div>
-
-                    <!-- Research Parameters — sağ alt -->
-                    <div class="ann-zone" data-body="🔬 Advanced body composition metrics:<br><br>💧 Intracellular Water: 27.8 L (27.4–33.4)<br>💧 Extracellular Water: 16.3 L (16.8–20.6)<br>🔥 Basal Metabolic Rate: <strong>1670 kcal</strong><br>📐 Waist-Hip Ratio: 0.84 (0.80–0.90) ✅<br>🧬 Body Cell Mass: 39.8 kg<br>📏 SMI: 7.8 kg/m²" style="top:72%;right:0;width:48%;height:14%"
-                        data-title="Research Parameters"
-                        data-hint="🔬 Advanced metabolic & cellular data"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Research Parameters','🔬 Advanced body composition metrics:<br><br>💧 Intracellular Water: 27.8 L (27.4–33.4)<br>💧 Extracellular Water: 16.3 L (16.8–20.6)<br>🔥 Basal Metabolic Rate: <strong>1670 kcal</strong><br>📐 Waist-Hip Ratio: 0.84 (0.80–0.90) ✅<br>🧬 Body Cell Mass: 39.8 kg<br>📏 SMI: 7.8 kg/m²')"></div>
-
-                    <!-- Body Composition Analysis — sol üst -->
-                    <div class="ann-zone" data-body="💧 <strong>Total Body Water:</strong> 44.1 L (44.2–54.0) ⚠️<br>🧬 <strong>Protein:</strong> 12.0 kg (11.9–14.5) ✅<br>🦴 <strong>Minerals:</strong> 4.13 kg (4.09–4.99) ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg (9.4–18.9) ✅<br>⚖️ <strong>Weight:</strong> 71.4 kg (66.8–90.4) ✅<br><br>Overall composition is healthy. Slightly low body water." style="top:4%;left:0;width:52%;height:22%"
+                    <div class="ann-zone" style="top:9%;left:0;width:53%;height:19%"
                         data-title="Body Composition Analysis"
-                        data-hint="💧 Water, Protein, Minerals, Body Fat breakdown"
+                        data-body="💧 <strong>Total Body Water:</strong> 44.1 L (44.2–54.0) ⚠️ slightly low<br>🧬 <strong>Protein:</strong> 12.0 kg (11.9–14.5) ✅<br>🦴 <strong>Minerals:</strong> 4.13 kg (4.09–4.99) ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg (9.4–18.9) ✅<br>⚖️ <strong>Weight:</strong> 71.4 kg ✅"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Composition Analysis','💧 <strong>Total Body Water:</strong> 44.1 L (44.2–54.0) ⚠️<br>🧬 <strong>Protein:</strong> 12.0 kg (11.9–14.5) ✅<br>🦴 <strong>Minerals:</strong> 4.13 kg (4.09–4.99) ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg (9.4–18.9) ✅<br>⚖️ <strong>Weight:</strong> 71.4 kg (66.8–90.4) ✅<br><br>Overall composition is healthy. Slightly low body water.')"></div>
+                        onclick="showAnnPopup(event,'Body Composition Analysis',this.dataset.body)"></div>
 
-                    <!-- Muscle-Fat Analysis — sol -->
-                    <div class="ann-zone" data-body="💪 <strong>Weight:</strong> 71.4 kg<br>🦵 <strong>SMM (Skeletal Muscle):</strong> 34.2 kg ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg ✅<br><br>Ideal body composition has muscle bar longer than fat bar. Yours is excellent — keep it up!" style="top:26%;left:0;width:52%;height:13%"
+                    <div class="ann-zone" style="top:28%;left:0;width:53%;height:11%"
                         data-title="Muscle-Fat Analysis"
-                        data-hint="💪 Weight 71.4 | Muscle 34.2 | Fat 11.2 kg"
+                        data-body="⚖️ <strong>Weight:</strong> 71.4 kg<br>💪 <strong>SMM:</strong> 34.2 kg ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg ✅<br><br>Ideal: muscle bar longer than fat bar. Yours is excellent!"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Muscle-Fat Analysis','💪 <strong>Weight:</strong> 71.4 kg<br>🦵 <strong>SMM (Skeletal Muscle):</strong> 34.2 kg ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg ✅<br><br>Ideal body composition has muscle bar longer than fat bar. Yours is excellent — keep it up!')"></div>
+                        onclick="showAnnPopup(event,'Muscle-Fat Analysis',this.dataset.body)"></div>
 
-                    <!-- Obesity Analysis — sol -->
-                    <div class="ann-zone" data-body="📏 <strong>BMI: 20.0</strong> kg/m² — Normal (18.5–22.9) ✅<br>📉 <strong>PBF: 15.7%</strong> — Excellent for men ✅<br><br>Normal range PBF for men: 10–20%<br>Normal range PBF for women: 18–28%<br><br>Low body fat with good muscle mass = optimal composition." style="top:39%;left:0;width:52%;height:10%"
+                    <div class="ann-zone" style="top:39%;left:0;width:53%;height:9%"
                         data-title="Obesity Analysis"
-                        data-hint="📏 BMI: 20.0 | PBF: 15.7% — Both normal"
+                        data-body="📏 <strong>BMI:</strong> 20.0 kg/m² — Normal (18.5–22.9) ✅<br>📉 <strong>PBF:</strong> 15.7% — Excellent ✅<br><br>Men normal PBF: 10–20% | Women: 18–28%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Obesity Analysis','📏 <strong>BMI: 20.0</strong> kg/m² — Normal (18.5–22.9) ✅<br>📉 <strong>PBF: 15.7%</strong> — Excellent for men ✅<br><br>Normal range PBF for men: 10–20%<br>Normal range PBF for women: 18–28%<br><br>Low body fat with good muscle mass = optimal composition.')"></div>
+                        onclick="showAnnPopup(event,'Obesity Analysis',this.dataset.body)"></div>
 
-                    <!-- Segmental Lean Analysis — sol -->
-                    <div class="ann-zone" data-body="🦾 Lean mass per segment (100% = ideal):<br><br>Right Arm: 3.13 kg — <strong>92.1%</strong><br>Left Arm: 3.24 kg — <strong>95.5%</strong><br>Trunk: 26.2 kg — <strong>96.7%</strong><br>Right Leg: 11.73 kg — <strong style=color:#10b981>113.7%</strong> 💪<br>Left Leg: 10.81 kg — <strong style=color:#10b981>114.5%</strong> 💪<br><br>Above 100% means above-average muscle for your frame. Legs are very strong!" style="top:49%;left:0;width:52%;height:22%"
+                    <div class="ann-zone" style="top:48%;left:0;width:53%;height:21%"
                         data-title="Segmental Lean Analysis"
-                        data-hint="🦾 Muscle distribution — All segments normal+"
+                        data-body="🦾 Lean mass per segment (100% = ideal):<br><br>Right Arm: 3.13 kg — 92.1%<br>Left Arm: 3.24 kg — 95.5%<br>Trunk: 26.2 kg — 96.7%<br>Right Leg: 11.73 kg — <strong style='color:#10b981'>113.7%</strong> 💪<br>Left Leg: 10.81 kg — <strong style='color:#10b981'>114.5%</strong> 💪"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Segmental Lean Analysis','🦾 Lean mass per segment (100% = ideal):<br><br>Right Arm: 3.13 kg — <strong>92.1%</strong><br>Left Arm: 3.24 kg — <strong>95.5%</strong><br>Trunk: 26.2 kg — <strong>96.7%</strong><br>Right Leg: 11.73 kg — <strong style=color:#10b981>113.7%</strong> 💪<br>Left Leg: 10.81 kg — <strong style=color:#10b981>114.5%</strong> 💪<br><br>Above 100% means above-average muscle for your frame. Legs are very strong!')"></div>
+                        onclick="showAnnPopup(event,'Segmental Lean Analysis',this.dataset.body)"></div>
 
-                    <!-- ECW Ratio — sol -->
-                    <div class="ann-zone" data-body="💦 <strong>ECW Ratio: 0.370</strong><br><br>Normal range: 0.360–0.390 ✅<br><br>Extracellular/Total Body Water ratio indicates fluid balance and inflammation status.<br><br>High values (>0.400) may suggest inflammation, kidney issues, or overtraining." style="top:71%;left:0;width:52%;height:7%"
+                    <div class="ann-zone" style="top:69%;left:0;width:53%;height:7%"
                         data-title="ECW Ratio Analysis"
-                        data-hint="💦 ECW Ratio: 0.370 — Normal fluid balance"
+                        data-body="💦 <strong>ECW Ratio: 0.370</strong><br><br>Normal: 0.360–0.390 ✅<br><br>High values (>0.400) may suggest inflammation or overtraining."
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'ECW Ratio Analysis','💦 <strong>ECW Ratio: 0.370</strong><br><br>Normal range: 0.360–0.390 ✅<br><br>Extracellular/Total Body Water ratio indicates fluid balance and inflammation status.<br><br>High values (>0.400) may suggest inflammation, kidney issues, or overtraining.')"></div>
+                        onclick="showAnnPopup(event,'ECW Ratio Analysis',this.dataset.body)"></div>
 
-                    <!-- Body Composition History — sol alt -->
-                    <div class="ann-zone" data-body="📈 Tracking last 8 measurements:<br><br>⚖️ Weight: 70.7 → 71.3 → 71.2 → 71.3 → 71.2 → 70.6 → 71.0 → <strong>71.4 kg</strong><br>💪 SMM: 34.7 → 34.5 → 34.4 → 34.5 → 34.4 → 34.0 → 34.6 → <strong>34.2 kg</strong><br>🫀 PBF: 13.8 → 15.0 → 14.9 → 14.8 → 14.9 → 15.0 → 14.4 → <strong>15.7%</strong><br><br>Weight is very stable. Muscle mass well maintained over time." style="top:78%;left:0;width:52%;height:16%"
+                    <div class="ann-zone" style="top:76%;left:0;width:53%;height:19%"
                         data-title="Body Composition History"
-                        data-hint="📈 8 measurements tracked — Weight stable"
+                        data-body="📈 Last 8 measurements:<br><br>⚖️ Weight: 70.7→71.3→71.2→71.3→71.2→70.6→71.0→<strong>71.4</strong> kg<br>💪 SMM: 34.7→34.5→34.4→34.5→34.4→34.0→34.6→<strong>34.2</strong> kg<br>🫀 PBF: 13.8→15.0→14.9→14.8→14.9→15.0→14.4→<strong>15.7%</strong>"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Composition History','📈 Tracking last 8 measurements:<br><br>⚖️ Weight: 70.7 → 71.3 → 71.2 → 71.3 → 71.2 → 70.6 → 71.0 → <strong>71.4 kg</strong><br>💪 SMM: 34.7 → 34.5 → 34.4 → 34.5 → 34.4 → 34.0 → 34.6 → <strong>34.2 kg</strong><br>🫀 PBF: 13.8 → 15.0 → 14.9 → 14.8 → 14.9 → 15.0 → 14.4 → <strong>15.7%</strong><br><br>Weight is very stable. Muscle mass well maintained over time.')"></div>
+                        onclick="showAnnPopup(event,'Body Composition History',this.dataset.body)"></div>
 
-                    <!-- Whole Body Phase Angle + Impedance — sağ alt -->
-                    <div class="ann-zone" data-body="⚡ <strong>Phase Angle: 6.0°</strong><br><br>Reflects cell membrane integrity and overall cellular health.<br><br>✅ Normal: 5.0°–7.5° for men<br>✅ Normal: 4.5°–6.5° for women<br><br>Higher values = healthier, more hydrated cells. Your score is good!" style="top:86%;right:0;width:48%;height:10%"
-                        data-title="Whole Body Phase Angle"
-                        data-hint="⚡ Phase Angle: 6.0° — Good cell health"
+                    <div class="ann-zone" style="top:2%;right:0;width:47%;height:16%"
+                        data-title="InBody Score"
+                        data-body="📊 <strong>Score: 73/100</strong><br><br>Overall body composition score.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>⚡ A muscular person may score over 100."
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Whole Body Phase Angle','⚡ <strong>Phase Angle: 6.0°</strong><br><br>Reflects cell membrane integrity and overall cellular health.<br><br>✅ Normal: 5.0°–7.5° for men<br>✅ Normal: 4.5°–6.5° for women<br><br>Higher values = healthier, more hydrated cells. Your score is good!')"></div>
+                        onclick="showAnnPopup(event,'InBody Score',this.dataset.body)"></div>
+
+                    <div class="ann-zone" style="top:18%;right:0;width:47%;height:16%"
+                        data-title="Visceral Fat Area"
+                        data-body="🫃 <strong>VFA: 41.8 cm²</strong><br><br>✅ Normal: under 100 cm²<br>⚠️ Caution: 100–150 cm²<br>🚨 High Risk: over 150 cm²<br><br>Your score is excellent!"
+                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
+                        onclick="showAnnPopup(event,'Visceral Fat Area',this.dataset.body)"></div>
+
+                    <div class="ann-zone" style="top:34%;right:0;width:47%;height:9%"
+                        data-title="Weight Control"
+                        data-body="🎯 <strong>Target Weight: 78.6 kg</strong><br><br>Weight Control: <strong>+7.2 kg</strong><br>Fat Control: +0.6 kg<br>Muscle Control: +6.6 kg<br><br>Focus on muscle gain rather than fat."
+                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
+                        onclick="showAnnPopup(event,'Weight Control',this.dataset.body)"></div>
+
+                    <div class="ann-zone" style="top:43%;right:0;width:47%;height:8%"
+                        data-title="Body Balance Evaluation"
+                        data-body="⚖️ Upper Body: <strong>Balanced</strong> ✅<br>Lower Body: <strong>Balanced</strong> ✅<br>Upper-Lower: <strong>Slightly Unbalanced</strong> ⚠️<br><br>Balanced segments reduce injury risk."
+                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
+                        onclick="showAnnPopup(event,'Body Balance Evaluation',this.dataset.body)"></div>
+
+                    <div class="ann-zone" style="top:51%;right:0;width:47%;height:11%"
+                        data-title="Segmental Fat Analysis"
+                        data-body="🫀 Fat per segment:<br><br>Right Arm: 0.6 kg (77.8%)<br>Left Arm: 0.5 kg (73.7%)<br>Trunk: 5.3 kg (<strong style='color:#ef4444'>107.5%</strong>) ⚠️<br>Right Leg: 1.9 kg (93.0%)<br>Left Leg: 1.9 kg (93.8%)"
+                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
+                        onclick="showAnnPopup(event,'Segmental Fat Analysis',this.dataset.body)"></div>
+
+                    <div class="ann-zone" style="top:62%;right:0;width:47%;height:13%"
+                        data-title="Research Parameters"
+                        data-body="🔬 Advanced metrics:<br><br>💧 ICW: 27.8 L (27.4–33.4) ✅<br>💧 ECW: 16.3 L (16.8–20.6) ⚠️<br>🔥 BMR: <strong>1670 kcal</strong><br>📐 WHR: 0.84 ✅<br>🧬 BCM: 39.8 kg<br>📏 SMI: 7.8 kg/m²"
+                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
+                        onclick="showAnnPopup(event,'Research Parameters',this.dataset.body)"></div>
+
+                    <div class="ann-zone" style="top:75%;right:0;width:47%;height:7%"
+                        data-title="Whole Body Phase Angle"
+                        data-body="⚡ <strong>Phase Angle: 6.0°</strong><br><br>✅ Men normal: 5.0–7.5°<br>✅ Women normal: 4.5–6.5°<br><br>Higher = healthier, more hydrated cells."
+                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
+                        onclick="showAnnPopup(event,'Whole Body Phase Angle',this.dataset.body)"></div>
+
+                    <div class="ann-zone" style="top:82%;right:0;width:47%;height:14%"
+                        data-title="Impedance"
+                        data-body="📡 Bioelectrical impedance values (Ω) across frequencies:<br><br>1 kHz: RA 418.7 | LA 395.9 | TR 36.3<br>5 kHz: RA 408.0 | LA 386.3 | TR 34.9<br>50 kHz: RA 356.2 | LA 339.9 | TR 29.7<br><br>Lower impedance at higher frequencies = better cellular hydration."
+                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
+                        onclick="showAnnPopup(event,'Impedance',this.dataset.body)"></div>
 
                 </div>
                 </div>
