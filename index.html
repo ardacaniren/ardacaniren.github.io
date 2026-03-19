@@ -249,11 +249,17 @@
         /* ── ANNOTATION ZONES ── */
         .annotation-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
         .ann-zone { position: absolute; pointer-events: all; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
-        .ann-zone:hover { background: rgba(59,130,246,0.12); }
-        .ann-zone.active { background: rgba(59,130,246,0.18); outline: 2px solid rgba(59,130,246,0.5); }
+        .ann-zone:hover { background: rgba(59,130,246,0.1); outline: 1px solid rgba(59,130,246,0.3); }
+        .ann-zone.active { background: rgba(59,130,246,0.15); outline: 2px solid rgba(59,130,246,0.6); }
+
+        /* Hover mini preview */
+        .ann-preview { position: fixed; z-index: 9998; background: rgba(10,15,30,0.92); border: 1px solid rgba(59,130,246,0.3); border-radius: 10px; padding: 8px 12px; max-width: 200px; pointer-events: none; display: none; backdrop-filter: blur(8px); }
+        .ann-preview-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; color: #3b82f6; text-transform: uppercase; margin-bottom:3px; }
+        .ann-preview-hint { font-size: 0.7rem; color: rgba(226,232,240,0.6); }
 
         /* Popup */
-        #ann-popup { position: fixed; z-index: 9999; background: rgba(10,15,30,0.97); border: 1px solid rgba(59,130,246,0.5); border-radius: 14px; padding: 14px 18px; width: 250px; display: none; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+        #ann-popup { position: fixed; z-index: 9999; background: rgba(10,15,30,0.97); border: 1px solid rgba(59,130,246,0.5); border-radius: 14px; padding: 14px 18px; width: 260px; display: none; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); animation: annFadeIn 0.15s ease; }
+        @keyframes annFadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
         .ann-popup-title { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; color: #3b82f6; margin-bottom: 10px; text-transform: uppercase; }
         .ann-popup-body { font-size: 0.82rem; color: #e2e8f0; line-height: 1.6; }
         .ann-popup-body strong { color: #93c5fd; }
@@ -390,31 +396,31 @@
 
                     <!-- InBody Score — sağ üst -->
                     <div class="ann-zone" style="top:5%;right:0;width:50%;height:16%"
-                        onclick="showAnnPopup(event,'InBody Score','📊 Overall body composition score.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>A muscular person may score over 100.')"></div>
+                        data-title="InBody Score" data-hint="Click for score details" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'InBody Score','📊 Overall body composition score.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>A muscular person may score over 100.')"></div>
 
                     <!-- Body Composition Analysis — sol üst tablo -->
                     <div class="ann-zone" style="top:7%;left:0;width:50%;height:18%"
-                        onclick="showAnnPopup(event,'Body Composition Analysis','💧 <strong>Total Body Water:</strong> 44.1 L — Normal range 44.2~54.0<br><br>🧬 <strong>Protein:</strong> 12.0 kg — Normal range 11.9~14.5<br><br>🦴 <strong>Minerals:</strong> 4.13 kg — Normal range 4.09~4.99<br><br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg — Normal range 9.4~18.9')"></div>
+                        data-title="Body Composition Analysis" data-hint="Click for composition details" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Body Composition Analysis','💧 <strong>Total Body Water:</strong> 44.1 L — Normal range 44.2~54.0<br><br>🧬 <strong>Protein:</strong> 12.0 kg — Normal range 11.9~14.5<br><br>🦴 <strong>Minerals:</strong> 4.13 kg — Normal range 4.09~4.99<br><br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg — Normal range 9.4~18.9')"></div>
 
                     <!-- Muscle-Fat Analysis -->
                     <div class="ann-zone" style="top:25%;left:0;width:55%;height:14%"
-                        onclick="showAnnPopup(event,'Muscle-Fat Analysis','⚖️ <strong>Weight:</strong> 71.4 kg<br><br>💪 <strong>SMM (Skeletal Muscle Mass):</strong> 34.2 kg<br><br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg<br><br>Green bar = Normal range. Aim to keep weight and fat in Normal, muscle in Normal-Over.')"></div>
+                        data-title="Muscle-Fat Analysis" data-hint="Click for muscle & fat details" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Muscle-Fat Analysis','⚖️ <strong>Weight:</strong> 71.4 kg<br><br>💪 <strong>SMM (Skeletal Muscle Mass):</strong> 34.2 kg<br><br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg<br><br>Green bar = Normal range. Aim to keep weight and fat in Normal, muscle in Normal-Over.')"></div>
 
                     <!-- Obesity Analysis -->
                     <div class="ann-zone" style="top:39%;left:0;width:55%;height:10%"
-                        onclick="showAnnPopup(event,'Obesity Analysis','📏 <strong>BMI:</strong> 20.0 kg/m² — Normal range 18.5~22.9<br><br>📉 <strong>PBF (Percent Body Fat):</strong> 15.7% — Excellent for men (Normal: 10~20%)<br><br>Low PBF with high muscle = optimal body composition.')"></div>
+                        data-title="Obesity Analysis" data-hint="Click for BMI & PBF details" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Obesity Analysis','📏 <strong>BMI:</strong> 20.0 kg/m² — Normal range 18.5~22.9<br><br>📉 <strong>PBF (Percent Body Fat):</strong> 15.7% — Excellent for men (Normal: 10~20%)<br><br>Low PBF with high muscle = optimal body composition.')"></div>
 
                     <!-- Visceral Fat Area — sağ orta -->
                     <div class="ann-zone" style="top:22%;right:0;width:50%;height:20%"
-                        onclick="showAnnPopup(event,'Visceral Fat Area','🫃 <strong>VFA:</strong> 41.8 cm²<br><br>✅ Normal range: under 100 cm²<br>⚠️ Caution: 100~150 cm²<br>🚨 High risk: over 150 cm²<br><br>Visceral fat surrounds internal organs and is linked to metabolic disease risk.')"></div>
+                        data-title="Visceral Fat Area" data-hint="Click for visceral fat details" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Visceral Fat Area','🫃 <strong>VFA:</strong> 41.8 cm²<br><br>✅ Normal range: under 100 cm²<br>⚠️ Caution: 100~150 cm²<br>🚨 High risk: over 150 cm²<br><br>Visceral fat surrounds internal organs and is linked to metabolic disease risk.')"></div>
 
                     <!-- Segmental Lean Analysis -->
                     <div class="ann-zone" style="top:49%;left:0;width:55%;height:20%"
-                        onclick="showAnnPopup(event,'Segmental Lean Analysis','🦾 Shows lean mass distribution across body segments.<br><br>Right Arm: 3.13 kg (92.1%)<br>Left Arm: 3.24 kg (95.5%)<br>Trunk: 26.2 kg (96.7%)<br>Right Leg: 11.73 kg (113.7%)<br>Left Leg: 10.81 kg (113.5%)<br><br>100% = ideal. Over 100% means above average muscle for your body.')"></div>
+                        data-title="Segmental Lean Analysis" data-hint="Click for segment details" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Segmental Lean Analysis','🦾 Shows lean mass distribution across body segments.<br><br>Right Arm: 3.13 kg (92.1%)<br>Left Arm: 3.24 kg (95.5%)<br>Trunk: 26.2 kg (96.7%)<br>Right Leg: 11.73 kg (113.7%)<br>Left Leg: 10.81 kg (113.5%)<br><br>100% = ideal. Over 100% means above average muscle for your body.')"></div>
 
                     <!-- ECW Ratio -->
                     <div class="ann-zone" style="top:70%;left:0;width:55%;height:8%"
-                        onclick="showAnnPopup(event,'ECW Ratio','💦 <strong>ECW Ratio: 0.370</strong><br><br>Normal range: 0.360~0.390<br><br>ECW/TBW ratio indicates fluid balance. High values may suggest inflammation or poor fluid regulation.')"></div>
+                        data-title="ECW Ratio" data-hint="Click for fluid balance details" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'ECW Ratio','💦 <strong>ECW Ratio: 0.370</strong><br><br>Normal range: 0.360~0.390<br><br>ECW/TBW ratio indicates fluid balance. High values may suggest inflammation or poor fluid regulation.')"></div>
 
                 </div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
@@ -1242,6 +1248,24 @@
     }
 
     var activeAnnZone = null;
+    function showAnnPreview(e, el) {
+        var box = document.getElementById('ann-preview-box');
+        document.getElementById('ann-preview-title').textContent = el.dataset.title || '';
+        document.getElementById('ann-preview-hint').textContent = el.dataset.hint || 'Click for details';
+        box.style.display = 'block';
+        moveAnnPreview(e);
+    }
+    function hideAnnPreview() {
+        document.getElementById('ann-preview-box').style.display = 'none';
+    }
+    function moveAnnPreview(e) {
+        var box = document.getElementById('ann-preview-box');
+        var x = e.clientX + 14, y = e.clientY - 60;
+        if (x + 210 > window.innerWidth) x = e.clientX - 215;
+        if (y < 8) y = e.clientY + 14;
+        box.style.left = x + 'px';
+        box.style.top  = y + 'px';
+    }
     function showAnnPopup(e, title, body) {
         e.stopPropagation();
         // active zone
@@ -1253,6 +1277,7 @@
         document.getElementById('ann-popup-body').innerHTML = body;
         var popup = document.getElementById('ann-popup');
         popup.style.display = 'block';
+        hideAnnPreview();
         // konumlandır - tıklanan zone'un üstünde
         var rect = e.currentTarget.getBoundingClientRect();
         var pw = 250, ph = popup.offsetHeight || 120;
@@ -1288,6 +1313,7 @@
     </div>
 </div>
 
+<div id="ann-preview-box" class="ann-preview"><div class="ann-preview-title" id="ann-preview-title"></div><div class="ann-preview-hint" id="ann-preview-hint"></div></div>
 <div id="ann-popup">
     <button class="ann-popup-close" onclick="closeAnnPopup()">✕</button>
     <div class="ann-popup-title" id="ann-popup-title"></div>
