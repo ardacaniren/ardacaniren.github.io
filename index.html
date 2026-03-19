@@ -373,12 +373,13 @@
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
-                <button class="score-info-btn" onclick="toggleScoreTooltip(event)" title="InBody Score Info">ℹ</button>
-                <div class="score-tooltip" id="score-tooltip">
-                    <div class="score-tooltip-title">InBody Score</div>
-                    <div class="score-tooltip-row"><span class="score-tooltip-icon">📊</span><span>It shows your InBody score.</span></div>
-                    <div class="score-tooltip-row"><span class="score-tooltip-icon">👨</span><span>For men it should be <strong>over 80</strong></span></div>
-                    <div class="score-tooltip-row"><span class="score-tooltip-icon">👩</span><span>For women it should be <strong>over 70</strong></span></div>
+                <div class="score-hover-zone" id="score-hover-zone">
+                    <div class="score-hover-tooltip">
+                        <div class="score-tooltip-title">InBody Score</div>
+                        <div class="score-tooltip-row"><span class="score-tooltip-icon">📊</span><span>It shows your InBody score.</span></div>
+                        <div class="score-tooltip-row"><span class="score-tooltip-icon">👨</span><span>For men it should be <strong style="color:#3b82f6">over 80</strong></span></div>
+                        <div class="score-tooltip-row"><span class="score-tooltip-icon">👩</span><span>For women it should be <strong style="color:#ec4899">over 70</strong></span></div>
+                    </div>
                 </div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
             </div>
@@ -1203,16 +1204,6 @@
         document.getElementById('pdf-frame').src='';
         document.body.style.overflow='';
     }
-
-    function toggleScoreTooltip(e) {
-        e.stopPropagation();
-        var tt = document.getElementById('score-tooltip');
-        tt.classList.toggle('visible');
-    }
-    document.addEventListener('click', function() {
-        var tt = document.getElementById('score-tooltip');
-        if (tt) tt.classList.remove('visible');
-    });
 
     // Init
     applyLang();
