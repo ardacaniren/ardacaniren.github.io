@@ -246,6 +246,18 @@
         .thumb-note-dot { position:absolute; top:4px; right:4px; width:8px; height:8px; background:#3b82f6; border-radius:50%; border:1px solid var(--surface); }
         .note-tooltip { position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#e2e8f0; font-size:0.72rem; padding:6px 10px; border-radius:8px; white-space:nowrap; max-width:200px; white-space:normal; text-align:center; pointer-events:none; opacity:0; transition:opacity 0.15s; z-index:10; margin-bottom:6px; }
         .thumb:hover .note-tooltip { opacity:1; }
+        /* ── ANNOTATION ZONES ── */
+        .annotation-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
+        .ann-zone { position: absolute; pointer-events: all; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
+        .ann-zone:hover { background: rgba(59,130,246,0.12); }
+        .ann-zone.active { background: rgba(59,130,246,0.18); outline: 2px solid rgba(59,130,246,0.5); }
+
+        /* Popup */
+        #ann-popup { position: fixed; z-index: 9999; background: rgba(10,15,30,0.97); border: 1px solid rgba(59,130,246,0.5); border-radius: 14px; padding: 14px 18px; width: 250px; display: none; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+        .ann-popup-title { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; color: #3b82f6; margin-bottom: 10px; text-transform: uppercase; }
+        .ann-popup-body { font-size: 0.82rem; color: #e2e8f0; line-height: 1.6; }
+        .ann-popup-body strong { color: #93c5fd; }
+        .ann-popup-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; line-height: 1; }
         @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
@@ -373,7 +385,11 @@
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
-                <div class="score-hover-zone" id="score-hover-zone" onmouseenter="showScoreTip(event)" onmouseleave="hideScoreTip()"></div>
+
+                <div class="annotation-layer" id="annotation-layer">
+                    <!-- InBody Score bölgesi: resmin sağ üst ~%50-%100 genişlik, %5-%20 yükseklik -->
+                    <div class="ann-zone" style="top:5%;right:0;width:50%;height:16%" onclick="showAnnPopup(event,'InBody Score','📊 It shows your overall body composition score.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>A muscular person may score over 100 points.')"></div>
+                </div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
             </div>
             <div class="share-box">
@@ -1198,26 +1214,37 @@
         document.body.style.overflow='';
     }
 
-    function showScoreTip(e) {
-        var zone = document.getElementById('score-hover-zone');
-        var tt   = document.getElementById('score-tooltip-popup');
-        if (!zone || !tt) return;
-        var rect = zone.getBoundingClientRect();
-        tt.style.display = 'block';
-        // Tooltip'i zone'un üstüne ortala
-        var ttW = 240;
-        var left = rect.left + (rect.width / 2) - (ttW / 2);
-        var top  = rect.top - tt.offsetHeight - 10;
+    var activeAnnZone = null;
+    function showAnnPopup(e, title, body) {
+        e.stopPropagation();
+        // active zone
+        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
+        e.currentTarget.classList.add('active');
+        activeAnnZone = e.currentTarget;
+        // popup içerik
+        document.getElementById('ann-popup-title').textContent = title;
+        document.getElementById('ann-popup-body').innerHTML = body;
+        var popup = document.getElementById('ann-popup');
+        popup.style.display = 'block';
+        // konumlandır - tıklanan zone'un üstünde
+        var rect = e.currentTarget.getBoundingClientRect();
+        var pw = 250, ph = popup.offsetHeight || 120;
+        var left = rect.left + (rect.width / 2) - (pw / 2);
+        var top  = rect.top - ph - 10;
         if (left < 8) left = 8;
-        if (left + ttW > window.innerWidth - 8) left = window.innerWidth - ttW - 8;
+        if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
         if (top < 8) top = rect.bottom + 10;
-        tt.style.left = left + 'px';
-        tt.style.top  = top  + 'px';
+        popup.style.left = left + 'px';
+        popup.style.top  = top  + 'px';
     }
-    function hideScoreTip() {
-        var tt = document.getElementById('score-tooltip-popup');
-        if (tt) tt.style.display = 'none';
+    function closeAnnPopup() {
+        document.getElementById('ann-popup').style.display = 'none';
+        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
     }
+    document.addEventListener('click', function(e) {
+        var popup = document.getElementById('ann-popup');
+        if (popup && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
+    });
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
@@ -1234,11 +1261,10 @@
     </div>
 </div>
 
-<div id="score-tooltip-popup" style="position:fixed;display:none;background:rgba(10,15,30,0.97);border:1px solid rgba(59,130,246,0.45);border-radius:14px;padding:14px 18px;width:240px;z-index:9999;backdrop-filter:blur(12px);pointer-events:none">
-    <div style="font-size:0.68rem;font-weight:800;letter-spacing:0.12em;color:#3b82f6;margin-bottom:10px;text-transform:uppercase">InBody Score</div>
-    <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:#e2e8f0;margin-bottom:6px">📊 It shows your InBody score.</div>
-    <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:#e2e8f0;margin-bottom:6px">👨 For men it should be <strong style="color:#3b82f6;margin-left:4px">over 80</strong></div>
-    <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:#e2e8f0">👩 For women it should be <strong style="color:#ec4899;margin-left:4px">over 70</strong></div>
+<div id="ann-popup">
+    <button class="ann-popup-close" onclick="closeAnnPopup()">✕</button>
+    <div class="ann-popup-title" id="ann-popup-title"></div>
+    <div class="ann-popup-body" id="ann-popup-body"></div>
 </div>
 </body>
 </html>
