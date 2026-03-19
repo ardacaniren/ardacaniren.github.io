@@ -236,6 +236,16 @@
         .modal-error { font-size: 0.78rem; color: #f87171; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; text-align: center; display: none; }
         .modal-success { font-size: 0.78rem; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; text-align: center; display: none; }
 
+
+        /* ── ÖLÇÜM NOTU ── */
+        .featured-note-bar { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface2); border-top:1px solid var(--border); }
+        .featured-note-input { flex:1; background:transparent; border:none; outline:none; color:var(--text); font-size:0.82rem; font-family:'Inter',sans-serif; }
+        .featured-note-input::placeholder { color:var(--muted); }
+        .featured-note-save { background:#3b82f6; color:white; border:none; padding:5px 14px; border-radius:8px; font-size:0.75rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; white-space:nowrap; }
+        .featured-note-save:hover { background:#2563eb; }
+        .thumb-note-dot { position:absolute; top:4px; right:4px; width:8px; height:8px; background:#3b82f6; border-radius:50%; border:1px solid var(--surface); }
+        .note-tooltip { position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#e2e8f0; font-size:0.72rem; padding:6px 10px; border-radius:8px; white-space:nowrap; max-width:200px; white-space:normal; text-align:center; pointer-events:none; opacity:0; transition:opacity 0.15s; z-index:10; margin-bottom:6px; }
+        .thumb:hover .note-tooltip { opacity:1; }
         @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
@@ -363,6 +373,13 @@
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
+                <button class="score-info-btn" onclick="toggleScoreTooltip(event)" title="InBody Score Info">ℹ</button>
+                <div class="score-tooltip" id="score-tooltip">
+                    <div class="score-tooltip-title">InBody Score</div>
+                    <div class="score-tooltip-row"><span class="score-tooltip-icon">📊</span><span>It shows your InBody score.</span></div>
+                    <div class="score-tooltip-row"><span class="score-tooltip-icon">👨</span><span>For men it should be <strong>over 80</strong></span></div>
+                    <div class="score-tooltip-row"><span class="score-tooltip-icon">👩</span><span>For women it should be <strong>over 70</strong></span></div>
+                </div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
             </div>
             <div class="share-box">
@@ -845,7 +862,7 @@
             });
             if(ids.length===0)throw new Error('No links');
             imageLinks=ids; imageDates=dates; currentIndex=0;
-            loadFeatured(0); buildCarousel();
+            loadFeatured(0); buildCarousel(); loadNoteForCurrent();
             document.getElementById('update-time').textContent=new Date().toLocaleTimeString(currentLang==='tr'?'tr-TR':'en-GB',{hour:'2-digit',minute:'2-digit'});
         } catch(e){console.error(e);showState('error');}
         finally{btn.classList.remove('spinning');btn.disabled=false;}
@@ -1186,6 +1203,16 @@
         document.getElementById('pdf-frame').src='';
         document.body.style.overflow='';
     }
+
+    function toggleScoreTooltip(e) {
+        e.stopPropagation();
+        var tt = document.getElementById('score-tooltip');
+        tt.classList.toggle('visible');
+    }
+    document.addEventListener('click', function() {
+        var tt = document.getElementById('score-tooltip');
+        if (tt) tt.classList.remove('visible');
+    });
 
     // Init
     applyLang();
