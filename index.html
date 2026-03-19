@@ -416,7 +416,7 @@
                 <div style="font-size:1.8rem;font-weight:800;color:#f1f5f9;margin-bottom:0.4rem">InBody Test Centers</div>
                 <div style="font-size:0.88rem;color:rgba(241,245,249,0.55)">Find your nearest authorized InBody measurement center</div>
             </div>
-            <button onclick="showApplyForm()" style="background:#800020;color:white;border:none;padding:12px 24px;border-radius:12px;font-size:0.875rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">Apply to Become a Center</button>
+            <button onclick="showApplicationsPanel()" style="background:#1e3a5f;color:white;border:none;padding:12px 24px;border-radius:12px;font-size:0.875rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap"><i class="fas fa-clipboard-list" style="margin-right:8px"></i>View Applications</button>
         </div>
         <div style="padding:1.5rem 2rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
             <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;flex:1;max-width:380px">
@@ -478,7 +478,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
     /* CENTERS */
-    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json';
+    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json&gid=538154086';
     var allApplications = [];
     var currentAppFilter = 'pending';
     var approvedCenters = [];
