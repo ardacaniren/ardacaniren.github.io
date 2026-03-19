@@ -531,13 +531,19 @@
             if (!json.table || !json.table.rows) { renderCenters(); return; }
             json.table.rows.forEach(function(row, idx) {
                 if (!row.c || !row.c[0] || !row.c[0].v) return;
-                var st = localStorage.getItem('app_status_' + idx) || 'pending';
-                var ml = localStorage.getItem('app_map_' + idx) || '';
+                var date  = row.c[0] ? row.c[0].v : '';
+                var name  = row.c[1] ? row.c[1].v : '';
+                var email = row.c[2] ? row.c[2].v : '';
+                // Stabil key: tarih + email kombinasyonu
+                var key = 'app_' + (date + '_' + email).replace(/[^a-zA-Z0-9]/g, '_');
+                var st = localStorage.getItem(key + '_status') || 'pending';
+                var ml = localStorage.getItem(key + '_map') || '';
                 allApplications.push({
                     idx: idx,
-                    date: row.c[0] ? row.c[0].v : '',
-                    name: row.c[1] ? row.c[1].v : '',
-                    email: row.c[2] ? row.c[2].v : '',
+                    key: key,
+                    date: date,
+                    name: name,
+                    email: email,
                     phone: row.c[3] ? row.c[3].v : '',
                     company: row.c[4] ? row.c[4].v : '',
                     city: row.c[5] ? row.c[5].v : '',
@@ -636,10 +642,12 @@
         });
     }
     function setAppStatus(idx, status) {
+        var app = allApplications.find(function(a){ return a.idx === idx; });
+        if (!app) return;
         var mi = document.getElementById('mapinput_' + idx);
         var ml = mi ? mi.value.trim() : '';
-        localStorage.setItem('app_status_' + idx, status);
-        if (ml) localStorage.setItem('app_map_' + idx, ml);
+        localStorage.setItem(app.key + '_status', status);
+        if (ml) localStorage.setItem(app.key + '_map', ml);
         basviruGetir();
     }
 
