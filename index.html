@@ -294,12 +294,12 @@
             </div>
             <div class="login-field">
                 <label data-i18n="password">Password</label>
-                <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password">
+                <input type="password" id="login-pass" placeholder="Password" autocomplete="current-password">
             </div>
             <div class="login-error" id="login-error">❌ Incorrect username or password</div>
             <button class="login-btn" onclick="loginCheck()" data-i18n="login_btn">Sign In</button>
             <div class="login-forgot" onclick="showReset()" data-i18n="forgot_pw">Forgot Password</div>
-            <div class="kvkk-note" data-i18n="kvkk">🛡️ This panel is protected under KVKK/GDPR.</div>
+            <div class="kvkk-note" data-i18n="kvkk">This panel is protected under KVKK/GDPR.</div>
             <div style="text-align:center;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05)"><button onclick="showApplyForm()" style="background:none;border:none;color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-map-marker-alt"></i> Apply to Become a Center</button></div>
         </div>
         <div class="login-box" id="login-box-reset" style="display:none">
@@ -1148,7 +1148,7 @@ const STRINGS = {
         login_title:'Administrator Login',login_sub:'Sign in to access the panel',
         username:'Username',password:'Password',login_btn:'Sign In',
         login_error:'❌ Incorrect username or password',forgot_pw:'Forgot Password',
-        kvkk:'🛡️ This panel is protected under KVKK/GDPR.',
+        kvkk:'This panel is protected under KVKK/GDPR.',
         reset_title:'Reset Password',reset_sub:'Verify current password and set a new one',
         current_pw:'Current Password',new_pw:'New Password',new_pw2:'Confirm New Password',
         reset_ok:'✓ Password updated!',reset_btn:'Update Password',back_login:'← Back to Login',
@@ -1167,7 +1167,7 @@ const STRINGS = {
         login_title:'Yönetici Girişi',login_sub:'Panele erişmek için giriş yapın',
         username:'Kullanıcı Adı',password:'Şifre',login_btn:'Giriş Yap',
         login_error:'❌ Kullanıcı adı veya şifre hatalı',forgot_pw:'Şifremi Unuttum',
-        kvkk:'🛡️ Bu panel KVKK kapsamında korunmaktadır.',
+        kvkk:'Bu panel KVKK kapsamında korunmaktadır.',
         reset_title:'Şifre Sıfırlama',reset_sub:'Mevcut şifrenizi doğrulayıp yenisini belirleyin',
         current_pw:'Mevcut Şifre',new_pw:'Yeni Şifre',new_pw2:'Yeni Şifre Tekrar',
         reset_ok:'✓ Şifre güncellendi!',reset_btn:'Şifreyi Güncelle',back_login:'← Giriş Ekranına Dön',
@@ -1187,7 +1187,14 @@ let currentLang = localStorage.getItem('ib_lang') || 'en';
 function t(k){ return (STRINGS[currentLang]&&STRINGS[currentLang][k])||STRINGS.en[k]||k; }
 function applyLang(){
     document.documentElement.lang=currentLang;
-    document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.getAttribute('data-i18n')));
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+        var key = el.getAttribute('data-i18n');
+        if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA'){
+            el.placeholder = t(key);
+        } else {
+            el.textContent = t(key);
+        }
+    });
     document.querySelectorAll('.lang-opt,.login-lang-opt').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===currentLang));
     if(allFiles.length)renderFiles();
     if(imageLinks.length)buildCarousel();
@@ -1203,7 +1210,6 @@ function applyTheme(th){
     document.getElementById('theme-btn').textContent=th==='dark'?'🌙':'☀️';
 }
 function toggleTheme(){ applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); }
-applyTheme(localStorage.getItem('ib_theme')||'dark');
 
 /* ═══════════════════════════════════════════════
    TABS
@@ -1221,12 +1227,6 @@ function switchTab(tab){
 /* ═══════════════════════════════════════════════
    LOGIN
 ═══════════════════════════════════════════════ */
-if(sessionStorage.getItem('inbody_auth')==='1'){
-    document.getElementById('login-overlay').style.display='none';
-    setTimeout(veriGetir,100);
-} else {
-    document.getElementById('login-overlay').style.display='flex';
-}
 document.addEventListener('keydown',function(e){
     if(e.key==='Enter'&&document.getElementById('login-overlay').style.display!=='none'
         &&document.getElementById('login-box-main').style.display!=='none')loginCheck();
@@ -1606,10 +1606,19 @@ function moveAnnPreview(e){
 }
 
 /* ═══════════════════════════════════════════════
-   INIT
+   INIT — runs after full DOM is parsed
 ═══════════════════════════════════════════════ */
-applyLang();
-if(sessionStorage.getItem('inbody_auth')==='1')setTimeout(addAdminCenterBtn,300);
+document.addEventListener('DOMContentLoaded', function() {
+    applyTheme(localStorage.getItem('ib_theme') || 'dark');
+    applyLang();
+    if (sessionStorage.getItem('inbody_auth') === '1') {
+        document.getElementById('login-overlay').style.display = 'none';
+        setTimeout(veriGetir, 100);
+        setTimeout(addAdminCenterBtn, 300);
+    } else {
+        document.getElementById('login-overlay').style.display = 'flex';
+    }
+});
 </script>
 
 <!-- Apply Form Overlay -->
