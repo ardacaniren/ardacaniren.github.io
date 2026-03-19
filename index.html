@@ -26,7 +26,6 @@
 
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; }
 
-        /* HEADER */
         header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: var(--header-bg); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .logo { display: flex; align-items: center; gap: 12px; }
         .logo-wordmark { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; font-size: 1.4rem; color: #800020; letter-spacing: -0.02em; }
@@ -43,29 +42,35 @@
         .lang-opt.active { background: #3b82f6; color: white; }
         .lang-opt:not(.active):hover { color: var(--text); }
 
-        /* TABS */
         .tabs { display: flex; gap: 4px; padding: 0 2rem; background: var(--header-bg); border-bottom: 1px solid var(--border); }
         .tab { display: flex; align-items: center; gap: 7px; padding: 0.75rem 1.25rem; font-size: 0.82rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: 0.15s; margin-bottom: -1px; }
         .tab:hover { color: var(--text); }
         .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
         .tab i { font-size: 0.85rem; }
 
-        /* PAGES */
         .page { display: none; flex: 1; }
         .page.active { display: flex; flex-direction: column; }
 
-        /* MAIN — InBody */
         .inbody-main { flex: 1; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; max-width: 900px; margin: 0 auto; width: 100%; }
         .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #3b82f6; display: flex; align-items: center; gap: 8px; width: 100%; }
         .section-label::after { content:''; flex:1; height:1px; background: var(--border); }
         .section-label.muted { color: var(--muted); }
         .new-dot { width: 8px; height: 8px; border-radius: 50%; background: #800020; display: inline-block; flex-shrink: 0; animation: pulse-badge 1.5s ease infinite; }
 
-        /* FEATURED CARD */
         .featured-card { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--card-shadow); }
         .featured-img-wrap { position: relative; display: flex; align-items: center; justify-content: center; cursor: zoom-in; background: var(--bg); padding: 1.5rem; min-height: 300px; }
         #featured-img { width: 100%; height: auto; display: none; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .zoom-hint { position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 8px; font-size: 0.7rem; color: rgba(255,255,255,0.7); display: none; pointer-events: none; }
+
+        /* AI Analysis badge on image */
+        .ai-status-badge { position: absolute; top: 20px; left: 20px; z-index: 20; display: flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; backdrop-filter: blur(8px); border: 1px solid; transition: all 0.3s; pointer-events: none; }
+        .ai-status-badge.idle { background: rgba(100,116,139,0.2); border-color: rgba(100,116,139,0.3); color: #94a3b8; display: none; }
+        .ai-status-badge.loading { background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.4); color: #93c5fd; display: flex; }
+        .ai-status-badge.ready { background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.4); color: #6ee7b7; display: flex; }
+        .ai-status-badge.error { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #fca5a5; display: flex; }
+        .ai-spin { width: 10px; height: 10px; border: 2px solid rgba(147,197,253,0.3); border-top-color: #93c5fd; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         .share-box { padding: 1.25rem 1.5rem; background: var(--surface2); border-top: 1px solid var(--border); }
         .share-title { font-size: 0.8rem; font-weight: 600; margin-bottom: 0.85rem; color: #06b6d4; display: flex; align-items: center; gap: 8px; }
         .email-row { display: flex; gap: 8px; max-width: 420px; }
@@ -80,14 +85,10 @@
         .btn-refresh { display: flex; align-items: center; gap: 6px; background: #3b82f6; color: white; border: none; padding: 8px 18px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.15s; }
         .btn-refresh:hover { background: #2563eb; }
         .btn-refresh.spinning i { animation: spin 0.7s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* CAROUSEL */
         .carousel-wrap { width: 100%; }
         .carousel { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; padding-bottom: 4px; }
-        .carousel::-webkit-scrollbar { height: 4px; }
-        .carousel::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
-        .thumb { flex-shrink: 0; width: 150px; scroll-snap-align: start; border-radius: 12px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: 0.2s; background: var(--surface); box-shadow: var(--card-shadow); position: relative; }
+        .thumb { flex-shrink: 0; scroll-snap-align: start; border-radius: 12px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: 0.2s; background: var(--surface); box-shadow: var(--card-shadow); position: relative; }
         .thumb:hover { border-color: #3b82f6; transform: translateY(-3px); }
         .thumb.active { border-color: #06b6d4; }
         .thumb img { width: 100%; height: 105px; object-fit: cover; display: block; }
@@ -98,12 +99,10 @@
         .new-badge { position: absolute; top: 6px; left: 6px; background: #800020; color: white; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; padding: 3px 7px; border-radius: 6px; text-transform: uppercase; z-index: 2; animation: pulse-badge 2s ease infinite; }
         @keyframes pulse-badge { 0%,100%{box-shadow:0 2px 8px rgba(128,0,32,0.5)} 50%{box-shadow:0 2px 16px rgba(128,0,32,0.9)} }
 
-        /* LOADER */
         .loader-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
         .spinner { width: 42px; height: 42px; border: 3px solid var(--border); border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.7s linear infinite; }
         .loader-text { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; font-weight: 500; }
 
-        /* ── FILES PAGE ── */
         .files-main { flex: 1; padding: 2rem; max-width: 960px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 1.5rem; }
         .files-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
         .files-search { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px 14px; flex: 1; max-width: 340px; }
@@ -114,13 +113,11 @@
         .view-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: 0.15s; }
         .view-btn.active, .view-btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
 
-        /* Folder filter */
         .folder-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
         .folder-pill { padding: 5px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; transition: 0.15s; }
         .folder-pill.active { background: #3b82f6; color: white; border-color: #3b82f6; }
         .folder-pill:hover:not(.active) { color: var(--text); }
 
-        /* File grid */
         .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
         .files-list-view { display: flex; flex-direction: column; gap: 6px; }
 
@@ -139,7 +136,6 @@
         .file-btn-dl { background: rgba(16,185,129,0.12); color: #10b981; }
         .file-btn-dl:hover { background: #10b981; color: white; }
 
-        /* List view */
         .file-row { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; transition: 0.15s; }
         .file-row:hover { border-color: #3b82f6; }
         .file-row-icon { font-size: 1.4rem; flex-shrink: 0; width: 32px; text-align: center; }
@@ -150,7 +146,6 @@
         .file-row-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: 0.15s; }
         .file-row-btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
 
-        /* FOLDER VIEW */
         .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
         .folder-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.2s; text-align: center; min-height: 207px; }
         .folder-card:hover { border-color: #3b82f6; transform: translateY(-3px); box-shadow: var(--card-shadow); }
@@ -166,7 +161,6 @@
         .files-empty i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
         .files-empty p { font-size: 0.9rem; }
 
-        /* LIGHTBOX */
         .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; cursor: zoom-out; }
         .lightbox.open { display: flex; }
         .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; border-radius: 8px; transition: transform 0.2s; }
@@ -177,7 +171,6 @@
         .zoom-btn:hover { background: rgba(255,255,255,0.2); }
         .zoom-level { font-size: 0.75rem; color: rgba(255,255,255,0.6); min-width: 44px; text-align: center; }
 
-        /* PDF viewer */
         .pdf-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; flex-direction: column; }
         .pdf-overlay.open { display: flex; }
         .pdf-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: #111827; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
@@ -190,7 +183,6 @@
         .pdf-btn-close:hover { background: rgba(255,255,255,0.15); color: white; }
         iframe#pdf-frame { flex: 1; border: none; }
 
-        /* LOGIN */
         .login-overlay { position: fixed; inset: 0; z-index: 9999; background: #0a0f1e; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
         .login-wrapper { width: 100%; max-width: 360px; }
         .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem 1.75rem; width: 100%; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 20px 50px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06); }
@@ -218,7 +210,6 @@
         .login-lang-opt { font-size: 0.7rem; font-weight: 700; color: #334155; cursor: pointer; padding: 3px 8px; border-radius: 6px; border: 1px solid transparent; transition: 0.15s; font-family: 'Inter', sans-serif; background: transparent; }
         .login-lang-opt.active { color: #3b82f6; border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.08); }
 
-        /* AYARLAR */
         .modal-overlay { position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex; }
         .modal-box { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 1.1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.5); }
@@ -236,35 +227,52 @@
         .modal-error { font-size: 0.78rem; color: #f87171; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; text-align: center; display: none; }
         .modal-success { font-size: 0.78rem; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; text-align: center; display: none; }
 
+        /* \u2500\u2500 ANNOTATION ZONES \u2500\u2500 */
+        .annotation-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
+        .ann-zone { position: absolute; pointer-events: all; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
+        .ann-zone:hover { background: rgba(59,130,246,0.08); outline: 1px solid rgba(59,130,246,0.25); }
+        .ann-zone.active { background: rgba(59,130,246,0.12); outline: 2px solid rgba(59,130,246,0.5); }
 
-        /* ── ÖLÇÜM NOTU ── */
+        /* Zone status indicator dots */
+        .zone-indicator { position: absolute; top: 4px; right: 4px; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.3); display: none; z-index: 16; }
+        .zone-indicator.good { background: #10b981; display: block; }
+        .zone-indicator.warn { background: #eab308; display: block; }
+        .zone-indicator.bad  { background: #ef4444; display: block; }
+
+        /* Hover mini preview */
+        .ann-preview { position: fixed; z-index: 9998; background: rgba(10,15,30,0.95); border: 1px solid rgba(59,130,246,0.35); border-radius: 12px; padding: 12px 16px; max-width: 240px; pointer-events: none; display: none; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+        .ann-preview-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; color: #3b82f6; text-transform: uppercase; margin-bottom: 8px; }
+        .ann-preview-hint { font-size: 0.75rem; color: #e2e8f0; line-height: 1.5; }
+
+        /* \u2500\u2500 AI ANNOTATION POPUP \u2500\u2500 */
+        #ann-popup { position: fixed; z-index: 9999; background: rgba(8,12,28,0.97); border: 1px solid rgba(59,130,246,0.4); border-radius: 16px; padding: 0; width: 300px; display: none; backdrop-filter: blur(16px); box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04); animation: annFadeIn 0.18s ease; overflow: hidden; }
+        @keyframes annFadeIn { from { opacity:0; transform:translateY(8px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+        .ann-popup-header { padding: 12px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .ann-popup-zone-title { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; color: #3b82f6; text-transform: uppercase; }
+        .ann-popup-status { display: flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 12px; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+        .ann-popup-status.good { background: rgba(16,185,129,0.18); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+        .ann-popup-status.warn { background: rgba(234,179,8,0.18); color: #fde047; border: 1px solid rgba(234,179,8,0.3); }
+        .ann-popup-status.bad  { background: rgba(239,68,68,0.18); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+        .ann-popup-status.loading { background: rgba(59,130,246,0.18); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+        .ann-popup-status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+        .ann-popup-body { padding: 12px 16px; }
+        .ann-popup-value { font-size: 1.2rem; font-weight: 800; color: #f1f5f9; margin-bottom: 3px; letter-spacing: -0.02em; }
+        .ann-popup-range { font-size: 0.68rem; color: #64748b; margin-bottom: 10px; }
+        .ann-popup-comment { font-size: 0.8rem; color: #cbd5e1; line-height: 1.65; }
+        .ann-popup-comment.ai-loading { color: #64748b; font-style: italic; display: flex; align-items: center; gap: 8px; }
+        .ann-popup-ai-badge { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; color: #3b82f6; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); padding: 2px 7px; border-radius: 6px; text-transform: uppercase; margin-top: 10px; display: inline-block; }
+        .ann-popup-close { background: none; border: none; color: #475569; cursor: pointer; font-size: 1rem; line-height: 1; padding: 2px; transition: color 0.15s; }
+        .ann-popup-close:hover { color: #94a3b8; }
+
         .featured-note-bar { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface2); border-top:1px solid var(--border); }
         .featured-note-input { flex:1; background:transparent; border:none; outline:none; color:var(--text); font-size:0.82rem; font-family:'Inter',sans-serif; }
         .featured-note-input::placeholder { color:var(--muted); }
         .featured-note-save { background:#3b82f6; color:white; border:none; padding:5px 14px; border-radius:8px; font-size:0.75rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; white-space:nowrap; }
         .featured-note-save:hover { background:#2563eb; }
-        .thumb-note-dot { position:absolute; top:4px; right:4px; width:8px; height:8px; background:#3b82f6; border-radius:50%; border:1px solid var(--surface); }
-        .note-tooltip { position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#e2e8f0; font-size:0.72rem; padding:6px 10px; border-radius:8px; white-space:nowrap; max-width:200px; white-space:normal; text-align:center; pointer-events:none; opacity:0; transition:opacity 0.15s; z-index:10; margin-bottom:6px; }
-        .thumb:hover .note-tooltip { opacity:1; }
-        /* ── ANNOTATION ZONES ── */
-        .annotation-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
-        .ann-zone { position: absolute; pointer-events: all; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
-        .ann-zone:hover { background: rgba(59,130,246,0.1); outline: 1px solid rgba(59,130,246,0.3); }
-        .ann-zone.active { background: rgba(59,130,246,0.15); outline: 2px solid rgba(59,130,246,0.6); }
 
-        /* Hover mini preview */
-        .ann-preview { position: fixed; z-index: 9998; background: rgba(10,15,30,0.95); border: 1px solid rgba(59,130,246,0.35); border-radius: 12px; padding: 12px 16px; max-width: 240px; pointer-events: none; display: none; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .ann-preview-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; color: #3b82f6; text-transform: uppercase; margin-bottom:8px; }
-        .ann-preview-hint { font-size: 0.75rem; color: #e2e8f0; line-height:1.5; }
-
-        /* Popup */
-        #ann-popup { position: fixed; z-index: 9999; background: rgba(10,15,30,0.97); border: 1px solid rgba(59,130,246,0.5); border-radius: 14px; padding: 14px 18px; width: 260px; display: none; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); animation: annFadeIn 0.15s ease; }
-        @keyframes annFadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-        .ann-popup-title { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; color: #3b82f6; margin-bottom: 10px; text-transform: uppercase; }
-        .ann-popup-body { font-size: 0.82rem; color: #e2e8f0; line-height: 1.6; }
-        .ann-popup-body strong { color: #93c5fd; }
-        .ann-popup-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; line-height: 1; }
-        @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
+        @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } #ann-popup { width: 260px; } }
     </style>
 </head>
 <body>
@@ -286,12 +294,12 @@
             </div>
             <div class="login-field">
                 <label data-i18n="password">Password</label>
-                <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password">
+                <input type="password" id="login-pass" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022" autocomplete="current-password">
             </div>
-            <div class="login-error" id="login-error">❌ Incorrect username or password</div>
+            <div class="login-error" id="login-error">\u274c Incorrect username or password</div>
             <button class="login-btn" onclick="loginCheck()" data-i18n="login_btn">Sign In</button>
             <div class="login-forgot" onclick="showReset()" data-i18n="forgot_pw">Forgot Password</div>
-            <div class="kvkk-note" data-i18n="kvkk">🛡️ This panel is protected under KVKK/GDPR.</div>
+            <div class="kvkk-note" data-i18n="kvkk">\ud83d\udee1\ufe0f This panel is protected under KVKK/GDPR.</div>
             <div style="text-align:center;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05)"><button onclick="showApplyForm()" style="background:none;border:none;color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-map-marker-alt"></i> Apply to Become a Center</button></div>
         </div>
         <div class="login-box" id="login-box-reset" style="display:none">
@@ -311,9 +319,9 @@
                 <input type="password" id="reset-new2" placeholder="Confirm new password">
             </div>
             <div class="login-error" id="reset-error"></div>
-            <div class="login-success" id="reset-success">✓ Password updated!</div>
+            <div class="login-success" id="reset-success">\u2713 Password updated!</div>
             <button class="login-btn" onclick="resetPass()" data-i18n="reset_btn">Update Password</button>
-            <div class="login-forgot" onclick="showLogin()" data-i18n="back_login">← Back to Login</div>
+            <div class="login-forgot" onclick="showLogin()" data-i18n="back_login">\u2190 Back to Login</div>
         </div>
     </div>
 </div>
@@ -341,7 +349,7 @@
             <input type="password" id="new-pass2" placeholder="Confirm new password">
         </div>
         <div class="modal-error" id="settings-error"></div>
-        <div class="modal-success" id="settings-success">✓ Updated!</div>
+        <div class="modal-success" id="settings-success">\u2713 Updated!</div>
         <div class="modal-actions">
             <button class="btn-secondary" onclick="closeSettings()" data-i18n="cancel">Cancel</button>
             <button class="btn-primary" onclick="saveSettings()" data-i18n="save">Save</button>
@@ -362,7 +370,7 @@
             <button class="lang-opt active" onclick="setLang('en')">EN</button>
             <button class="lang-opt" onclick="setLang('tr')">TR</button>
         </div>
-        <button class="btn-icon" id="theme-btn" onclick="toggleTheme()">🌙</button>
+        <button class="btn-icon" id="theme-btn" onclick="toggleTheme()">\ud83c\udf19</button>
         <button class="btn-icon" onclick="openSettings()"><i class="fas fa-cog" style="font-size:0.85rem;color:var(--muted)"></i></button>
     </div>
 </header>
@@ -385,108 +393,128 @@
     <div class="inbody-main">
         <div class="section-label" id="main-label" data-i18n="latest_result">Latest Measurement</div>
         <div class="featured-card">
-            <div class="featured-img-wrap" onclick="featuredClick()">
+            <div class="featured-img-wrap" id="featured-img-wrap" onclick="featuredClick(event)">
                 <div class="loader-wrap" id="main-loader">
                     <div class="spinner"></div>
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
 
+                <!-- AI Status Badge -->
+                <div class="ai-status-badge idle" id="ai-status-badge">
+                    <div class="ai-spin" id="ai-spin" style="display:none"></div>
+                    <span id="ai-status-text">AI Ready</span>
+                </div>
+
                 <div class="annotation-layer" id="annotation-layer">
-
-                    <div class="ann-zone" style="top:2%;left:0;width:53%;height:7%"
-                        data-title="Patient Info"
-                        data-body="🪪 <strong>ID:</strong> arda_can_iren (Arda Can İren)<br>📏 <strong>Height:</strong> 189 cm<br>🎂 <strong>Age:</strong> 25<br>⚧ <strong>Gender:</strong> Male<br>📅 <strong>Test Date:</strong> 19.03.2026 08:34"
+                    <div class="ann-zone" id="zone-patient"
+                        data-zone-key="patient"
+                        style="top:2%;left:0;width:53%;height:7%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Patient Info',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:9%;left:0;width:53%;height:19%"
-                        data-title="Body Composition Analysis"
-                        data-body="💧 <strong>Total Body Water:</strong> 44.1 L (44.2–54.0) ⚠️ slightly low<br>🧬 <strong>Protein:</strong> 12.0 kg (11.9–14.5) ✅<br>🦴 <strong>Minerals:</strong> 4.13 kg (4.09–4.99) ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg (9.4–18.9) ✅<br>⚖️ <strong>Weight:</strong> 71.4 kg ✅"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-patient"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-body-comp"
+                        data-zone-key="body_composition"
+                        style="top:9%;left:0;width:53%;height:19%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Composition Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:28%;left:0;width:53%;height:11%"
-                        data-title="Muscle-Fat Analysis"
-                        data-body="⚖️ <strong>Weight:</strong> 71.4 kg<br>💪 <strong>SMM:</strong> 34.2 kg ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg ✅<br><br>Ideal: muscle bar longer than fat bar. Yours is excellent!"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-body_composition"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-muscle-fat"
+                        data-zone-key="muscle_fat"
+                        style="top:28%;left:0;width:53%;height:11%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Muscle-Fat Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:39%;left:0;width:53%;height:9%"
-                        data-title="Obesity Analysis"
-                        data-body="📏 <strong>BMI:</strong> 20.0 kg/m² — Normal (18.5–22.9) ✅<br>📉 <strong>PBF:</strong> 15.7% — Excellent ✅<br><br>Men normal PBF: 10–20% | Women: 18–28%"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-muscle_fat"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-obesity"
+                        data-zone-key="obesity"
+                        style="top:39%;left:0;width:53%;height:9%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Obesity Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:48%;left:0;width:53%;height:21%"
-                        data-title="Segmental Lean Analysis"
-                        data-body="🦾 Lean mass per segment (100% = ideal):<br><br>Right Arm: 3.13 kg — 92.1%<br>Left Arm: 3.24 kg — 95.5%<br>Trunk: 26.2 kg — 96.7%<br>Right Leg: 11.73 kg — <strong style='color:#10b981'>113.7%</strong> 💪<br>Left Leg: 10.81 kg — <strong style='color:#10b981'>114.5%</strong> 💪"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-obesity"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-segmental-lean"
+                        data-zone-key="segmental_lean"
+                        style="top:48%;left:0;width:53%;height:21%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Segmental Lean Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:69%;left:0;width:53%;height:7%"
-                        data-title="ECW Ratio Analysis"
-                        data-body="💦 <strong>ECW Ratio: 0.370</strong><br><br>Normal: 0.360–0.390 ✅<br><br>High values (>0.400) may suggest inflammation or overtraining."
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-segmental_lean"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-ecw"
+                        data-zone-key="ecw_ratio"
+                        style="top:69%;left:0;width:53%;height:7%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'ECW Ratio Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:76%;left:0;width:53%;height:19%"
-                        data-title="Body Composition History"
-                        data-body="📈 Last 8 measurements:<br><br>⚖️ Weight: 70.7→71.3→71.2→71.3→71.2→70.6→71.0→<strong>71.4</strong> kg<br>💪 SMM: 34.7→34.5→34.4→34.5→34.4→34.0→34.6→<strong>34.2</strong> kg<br>🫀 PBF: 13.8→15.0→14.9→14.8→14.9→15.0→14.4→<strong>15.7%</strong>"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-ecw_ratio"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-history"
+                        data-zone-key="history"
+                        style="top:76%;left:0;width:53%;height:19%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Composition History',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:2%;right:0;width:47%;height:16%"
-                        data-title="InBody Score"
-                        data-body="📊 <strong>Score: 73/100</strong><br><br>Overall body composition score.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>⚡ A muscular person may score over 100."
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-history"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-score"
+                        data-zone-key="inbody_score"
+                        style="top:2%;right:0;width:47%;height:16%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'InBody Score',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:18%;right:0;width:47%;height:16%"
-                        data-title="Visceral Fat Area"
-                        data-body="🫃 <strong>VFA: 41.8 cm²</strong><br><br>✅ Normal: under 100 cm²<br>⚠️ Caution: 100–150 cm²<br>🚨 High Risk: over 150 cm²<br><br>Your score is excellent!"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-inbody_score"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-vfa"
+                        data-zone-key="vfa"
+                        style="top:18%;right:0;width:47%;height:16%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Visceral Fat Area',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:34%;right:0;width:47%;height:9%"
-                        data-title="Weight Control"
-                        data-body="🎯 <strong>Target Weight: 78.6 kg</strong><br><br>Weight Control: <strong>+7.2 kg</strong><br>Fat Control: +0.6 kg<br>Muscle Control: +6.6 kg<br><br>Focus on muscle gain rather than fat."
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-vfa"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-weight-ctrl"
+                        data-zone-key="weight_control"
+                        style="top:34%;right:0;width:47%;height:9%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Weight Control',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:43%;right:0;width:47%;height:8%"
-                        data-title="Body Balance Evaluation"
-                        data-body="⚖️ Upper Body: <strong>Balanced</strong> ✅<br>Lower Body: <strong>Balanced</strong> ✅<br>Upper-Lower: <strong>Slightly Unbalanced</strong> ⚠️<br><br>Balanced segments reduce injury risk."
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-weight_control"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-balance"
+                        data-zone-key="balance"
+                        style="top:43%;right:0;width:47%;height:8%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Balance Evaluation',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:51%;right:0;width:47%;height:11%"
-                        data-title="Segmental Fat Analysis"
-                        data-body="🫀 Fat per segment:<br><br>Right Arm: 0.6 kg (77.8%)<br>Left Arm: 0.5 kg (73.7%)<br>Trunk: 5.3 kg (<strong style='color:#ef4444'>107.5%</strong>) ⚠️<br>Right Leg: 1.9 kg (93.0%)<br>Left Leg: 1.9 kg (93.8%)"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-balance"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-seg-fat"
+                        data-zone-key="segmental_fat"
+                        style="top:51%;right:0;width:47%;height:11%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Segmental Fat Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:62%;right:0;width:47%;height:13%"
-                        data-title="Research Parameters"
-                        data-body="🔬 Advanced metrics:<br><br>💧 ICW: 27.8 L (27.4–33.4) ✅<br>💧 ECW: 16.3 L (16.8–20.6) ⚠️<br>🔥 BMR: <strong>1670 kcal</strong><br>📐 WHR: 0.84 ✅<br>🧬 BCM: 39.8 kg<br>📏 SMI: 7.8 kg/m²"
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-segmental_fat"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-research"
+                        data-zone-key="research"
+                        style="top:62%;right:0;width:47%;height:13%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Research Parameters',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:75%;right:0;width:47%;height:7%"
-                        data-title="Whole Body Phase Angle"
-                        data-body="⚡ <strong>Phase Angle: 6.0°</strong><br><br>✅ Men normal: 5.0–7.5°<br>✅ Women normal: 4.5–6.5°<br><br>Higher = healthier, more hydrated cells."
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-research"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-phase"
+                        data-zone-key="phase_angle"
+                        style="top:75%;right:0;width:47%;height:7%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Whole Body Phase Angle',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:82%;right:0;width:47%;height:14%"
-                        data-title="Impedance"
-                        data-body="📡 Bioelectrical impedance values (Ω) across frequencies:<br><br>1 kHz: RA 418.7 | LA 395.9 | TR 36.3<br>5 kHz: RA 408.0 | LA 386.3 | TR 34.9<br>50 kHz: RA 356.2 | LA 339.9 | TR 29.7<br><br>Lower impedance at higher frequencies = better cellular hydration."
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-phase_angle"></div>
+                    </div>
+                    <div class="ann-zone" id="zone-impedance"
+                        data-zone-key="impedance"
+                        style="top:82%;right:0;width:47%;height:14%"
                         onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Impedance',this.dataset.body)"></div>
-
+                        onclick="handleZoneClick(event,this)">
+                        <div class="zone-indicator" id="ind-impedance"></div>
+                    </div>
                 </div>
-                </div>
-                <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
+
+                <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">\ud83d\udd0d Click to enlarge</div>
             </div>
             <div class="share-box">
                 <div class="share-title"><i class="fas fa-paper-plane"></i> <span data-i18n="send_title">Send Report to Client</span></div>
@@ -498,7 +526,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <div class="update-text"><span data-i18n="updated">Updated:</span> <span id="update-time">—</span></div>
+                <div class="update-text"><span data-i18n="updated">Updated:</span> <span id="update-time">\u2014</span></div>
                 <button class="btn-refresh" id="btn-refresh" onclick="veriGetir()">
                     <i class="fas fa-sync-alt"></i> <span data-i18n="refresh">Refresh</span>
                 </button>
@@ -554,7 +582,6 @@
             <p>No approved centers yet.</p>
         </div>
     </div>
-
     <div id="applications-panel" style="display:none;flex:1;flex-direction:column;padding:1.5rem 2rem;gap:1rem;max-width:900px;margin:0 auto;width:100%">
         <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:12px">
@@ -575,10 +602,10 @@
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <span class="lb-close" onclick="closeLightbox()">✕</span>
+    <span class="lb-close" onclick="closeLightbox()">\u2715</span>
     <img id="lightbox-img" src="" alt="">
     <div class="zoom-controls" onclick="event.stopPropagation()">
-        <button class="zoom-btn" onclick="zoomLightbox(-0.25)">−</button>
+        <button class="zoom-btn" onclick="zoomLightbox(-0.25)">\u2212</button>
         <span class="zoom-level" id="zoom-level">100%</span>
         <button class="zoom-btn" onclick="zoomLightbox(0.25)">+</button>
     </div>
@@ -598,789 +625,86 @@
     <iframe id="pdf-frame" src=""></iframe>
 </div>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-    /* CENTERS */
-    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json&gid=538154086';
-    var allApplications = [];
-    var currentAppFilter = 'pending';
-    var approvedCenters = [];
+<!-- Annotation Hover Preview -->
+<div id="ann-preview-box" class="ann-preview">
+    <div class="ann-preview-title" id="ann-preview-title"></div>
+    <div class="ann-preview-hint" id="ann-preview-hint"></div>
+</div>
 
-    function showApplyForm() {
-        var ov = document.getElementById('apply-overlay');
-        if (ov) { ov.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-    }
-    function hideApplyForm() {
-        var ov = document.getElementById('apply-overlay');
-        if (ov) { ov.style.display = 'none'; document.body.style.overflow = ''; }
-    }
-    function showPublicCenters() {
-        document.getElementById('applications-panel').style.display = 'none';
-        document.getElementById('centers-public').style.display = 'flex';
-    }
-    function showApplicationsPanel() {
-        document.getElementById('centers-public').style.display = 'none';
-        document.getElementById('applications-panel').style.display = 'flex';
-        basviruGetir();
-    }
-    function filterCenters() { renderCenters(); }
-    function filterApps(f) {
-        currentAppFilter = f;
-        ['pending','approved','rejected','all'].forEach(function(x) {
-            var el = document.getElementById('apptab-' + x);
-            if (!el) return;
-            if (x === f) { el.style.background = 'var(--surface)'; el.style.color = 'var(--text)'; }
-            else { el.style.background = 'transparent'; el.style.color = 'var(--muted)'; }
-        });
-        renderApplications();
-    }
-    function addAdminCenterBtn() {
-        if (document.getElementById('admin-center-btn')) return;
-        var btn = document.createElement('button');
-        btn.id = 'admin-center-btn';
-        btn.className = 'btn-icon';
-        btn.title = 'Applications';
-        btn.innerHTML = '<i class="fas fa-clipboard-list" style="font-size:0.85rem;color:var(--muted)"></i>';
-        btn.onclick = function() { switchTab('centers'); setTimeout(showApplicationsPanel, 100); };
-        var th = document.getElementById('theme-btn');
-        if (th) th.parentNode.insertBefore(btn, th);
-    }
-    async function merkezleriGetir() {
-        try {
-            var res = await fetch(FORM_JSON_URL + '&_=' + Date.now());
-            var raw = await res.text();
-            var json = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1));
-            allApplications = [];
-            if (!json.table || !json.table.rows) { renderCenters(); return; }
-            json.table.rows.forEach(function(row, idx) {
-                if (!row.c || !row.c[0] || !row.c[0].v) return;
-                var date  = row.c[0] ? row.c[0].v : '';
-                var name  = row.c[1] ? row.c[1].v : '';
-                var email = row.c[2] ? row.c[2].v : '';
-                // Stabil key: tarih + email kombinasyonu
-                var key = 'app_' + (date + '_' + email).replace(/[^a-zA-Z0-9]/g, '_');
-                var st = localStorage.getItem(key + '_status') || 'pending';
-                var ml = localStorage.getItem(key + '_map') || '';
-                allApplications.push({
-                    idx: idx,
-                    key: key,
-                    date: date,
-                    name: name,
-                    email: email,
-                    phone: row.c[3] ? row.c[3].v : '',
-                    company: row.c[4] ? row.c[4].v : '',
-                    city: row.c[5] ? row.c[5].v : '',
-                    status: st,
-                    mapLink: ml
-                });
-            });
-            approvedCenters = allApplications.filter(function(a) { return a.status === 'approved'; });
-            renderCenters();
-        } catch(e) { console.error('Centers error:', e); }
-    }
-    function renderCenters() {
-        var grid = document.getElementById('centers-grid');
-        var empty = document.getElementById('centers-empty');
-        var countEl = document.getElementById('centers-count');
-        if (!grid) return;
-        var query = '';
-        var searchEl = document.getElementById('center-search');
-        if (searchEl) query = searchEl.value.toLowerCase();
-        var filtered = approvedCenters.filter(function(c) {
-            return !query || c.name.toLowerCase().indexOf(query) > -1 || c.city.toLowerCase().indexOf(query) > -1 || c.company.toLowerCase().indexOf(query) > -1;
-        });
-        if (countEl) countEl.textContent = filtered.length + (filtered.length !== 1 ? ' centers' : ' center');
-        grid.innerHTML = '';
-        if (filtered.length === 0) { if (empty) empty.style.display = 'block'; return; }
-        if (empty) empty.style.display = 'none';
-        filtered.forEach(function(c) {
-            var card = document.createElement('div');
-            card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.2s;cursor:default';
-            card.onmouseenter = function() { this.style.borderColor = '#3b82f6'; this.style.transform = 'translateY(-3px)'; };
-            card.onmouseleave = function() { this.style.borderColor = 'var(--border)'; this.style.transform = ''; };
-            var mapHtml = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--muted)">&#128205;</div>';
-            if (c.mapLink) {
-                mapHtml = '<iframe src="https://maps.google.com/maps?q=' + encodeURIComponent(c.city + ' ' + c.company) + '&output=embed&z=15" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;pointer-events:none"></iframe>';
-            }
-            var mapsBtn = '';
-            if (c.mapLink) {
-                mapsBtn = '<a href="' + c.mapLink + '" target="_blank" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Maps</button></a>';
-            }
-            card.innerHTML =
-                '<div style="height:160px;background:var(--surface2);overflow:hidden">' + mapHtml + '</div>' +
-                '<div style="padding:1.25rem">' +
-                    '<div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:3px">' + c.name + '</div>' +
-                    '<div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:10px">' + c.company + '</div>' +
-                    '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">' + c.city + '</div>' +
-                    '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">' + c.phone + '</div>' +
-                    '<div style="font-size:0.78rem;color:var(--muted)">' + c.email + '</div>' +
-                '</div>' +
-                '<div style="display:flex;gap:8px;padding:1rem 1.25rem;border-top:1px solid var(--border);background:var(--surface2)">' +
-                    mapsBtn +
-                    '<a href="mailto:' + c.email + '" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(16,185,129,0.1);color:#10b981;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Contact</button></a>' +
-                '</div>';
-            grid.appendChild(card);
-        });
-    }
-    async function basviruGetir() { await merkezleriGetir(); renderApplications(); }
-    function renderApplications() {
-        var list = document.getElementById('app-list');
-        if (!list) return;
-        list.innerHTML = '';
-        var filtered = allApplications.filter(function(a) {
-            return currentAppFilter === 'all' || a.status === currentAppFilter;
-        });
-        if (filtered.length === 0) {
-            list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)">No applications found.</div>';
-            return;
-        }
-        filtered.forEach(function(a) {
-            var sc = a.status === 'approved' ? '#10b981' : (a.status === 'rejected' ? '#ef4444' : '#eab308');
-            var sb = a.status === 'approved' ? 'rgba(16,185,129,0.15)' : (a.status === 'rejected' ? 'rgba(239,68,68,0.15)' : 'rgba(234,179,8,0.15)');
-            var card = document.createElement('div');
-            card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:1rem';
-            var mapInputHtml = '';
-            if (a.status === 'pending') {
-                mapInputHtml = '<div style="margin-top:8px"><input id="mapinput_' + a.idx + '" type="text" value="' + (a.mapLink || '') + '" placeholder="Google Maps link (optional)" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:7px 10px;color:var(--input-color);font-size:0.78rem;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"></div>';
-            }
-            var adminBtnsHtml = '';
-            if (a.status === 'pending') {
-                adminBtnsHtml =
-                    '<button onclick="setAppStatus(' + a.idx + ', \'approved\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(16,185,129,0.1);color:#10b981">Approve</button>' +
-                    '<button onclick="setAppStatus(' + a.idx + ', \'rejected\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(239,68,68,0.1);color:#ef4444">Reject</button>';
-            }
-            card.innerHTML =
-                '<div style="flex:1">' +
-                    '<div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:3px">' + a.name + '</div>' +
-                    '<div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:8px">' + a.company + '</div>' +
-                    '<div style="font-size:0.75rem;color:var(--muted)">' + a.city + ' | ' + a.phone + ' | ' + a.email + '</div>' +
-                    mapInputHtml +
-                    '<div style="font-size:0.68rem;color:var(--muted);margin-top:6px">' + a.date + '</div>' +
-                '</div>' +
-                '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end">' +
-                    '<span style="padding:4px 10px;border-radius:20px;font-size:0.68rem;font-weight:700;text-transform:uppercase;background:' + sb + ';color:' + sc + '">' + a.status + '</span>' +
-                    adminBtnsHtml +
-                '</div>';
-            list.appendChild(card);
-        });
-    }
-    function setAppStatus(idx, status) {
-        var app = allApplications.find(function(a){ return a.idx === idx; });
-        if (!app) return;
-        var mi = document.getElementById('mapinput_' + idx);
-        var ml = mi ? mi.value.trim() : '';
-        localStorage.setItem(app.key + '_status', status);
-        if (ml) localStorage.setItem(app.key + '_map', ml);
-        basviruGetir();
-    }
-
-    const INBODY_SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
-    const FILES_SHEET_ID  = '1tZasqIMvD0sZw14qCnm8A22T4jIwGXvc3c1rqIZSOfo';
-    const INBODY_JSON = 'https://docs.google.com/spreadsheets/d/' + INBODY_SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Sheet1';
-    const FILES_JSON  = 'https://docs.google.com/spreadsheets/d/' + FILES_SHEET_ID  + '/gviz/tq?tqx=out:json&sheet=Sheet1';
-    emailjs.init("Q3bN3o4fJ_93E57W7");
-
-    function getUser() { return localStorage.getItem('ib_user') || 'admin'; }
-    function getPass() { return localStorage.getItem('ib_pass') || '0000'; }
-
-    let imageLinks = [], imageDates = [], currentIndex = 0, lbScale = 1;
-    let allFiles = [], currentFolder = 'all', currentView = 'list';
-
-    /* ── DİL ── */
-    const STRINGS = {
-        en: {
-            login_title:'Administrator Login', login_sub:'Sign in to access the panel',
-            username:'Username', password:'Password', login_btn:'Sign In',
-            login_error:'❌ Incorrect username or password', forgot_pw:'Forgot Password',
-            kvkk:'🛡️ This panel is protected under KVKK/GDPR.',
-            reset_title:'Reset Password', reset_sub:'Verify current password and set a new one',
-            current_pw:'Current Password', new_pw:'New Password', new_pw2:'Confirm New Password',
-            reset_ok:'✓ Password updated!', reset_btn:'Update Password', back_login:'← Back to Login',
-            settings:'Settings', username_label:'Username', new_username:'New Username',
-            change_pw:'Change Password', settings_ok:'✓ Updated!', cancel:'Cancel', save:'Save',
-            panel_title:'Panel', live:'LIVE', tab_inbody:'InBody', tab_files:'Files',
-            latest_result:'Latest Measurement', loading:'LOADING...', zoom_hint:'🔍 Click to enlarge',
-            send_title:'Send Report to Client', send_btn:'Send', updated:'Updated:', refresh:'Refresh',
-            history:'Past Analyses', latest:'LATEST', measurement:'Measurement',
-            err_wrong_pw:'❌ Incorrect current password!', err_empty_pw:'❌ New password cannot be empty!',
-            err_pw_match:'❌ Passwords do not match!', err_nothing:'❌ Nothing to update.',
-            download:'Download', close:'Close', view:'View', all_folders:'All',
-            files_empty:'No files found in this folder.', files_loading:'Loading files...',
-        },
-        tr: {
-            login_title:'Yönetici Girişi', login_sub:'Panele erişmek için giriş yapın',
-            username:'Kullanıcı Adı', password:'Şifre', login_btn:'Giriş Yap',
-            login_error:'❌ Kullanıcı adı veya şifre hatalı', forgot_pw:'Şifremi Unuttum',
-            kvkk:'🛡️ Bu panel KVKK kapsamında korunmaktadır.',
-            reset_title:'Şifre Sıfırlama', reset_sub:'Mevcut şifrenizi doğrulayıp yenisini belirleyin',
-            current_pw:'Mevcut Şifre', new_pw:'Yeni Şifre', new_pw2:'Yeni Şifre Tekrar',
-            reset_ok:'✓ Şifre güncellendi!', reset_btn:'Şifreyi Güncelle', back_login:'← Giriş Ekranına Dön',
-            settings:'Ayarlar', username_label:'Kullanıcı Adı', new_username:'Yeni Kullanıcı Adı',
-            change_pw:'Şifre Değiştir', settings_ok:'✓ Güncellendi!', cancel:'İptal', save:'Kaydet',
-            panel_title:'Panel', live:'CANLI', tab_inbody:'InBody', tab_files:'Dosyalar',
-            latest_result:'Son Ölçüm Sonucu', loading:'YÜKLENİYOR...', zoom_hint:'🔍 Büyütmek için tıkla',
-            send_title:'Raporu Danışana Gönder', send_btn:'Gönder', updated:'Güncelleme:', refresh:'Yenile',
-            history:'Geçmiş Analizler', latest:'SON', measurement:'Ölçüm',
-            err_wrong_pw:'❌ Mevcut şifre hatalı!', err_empty_pw:'❌ Yeni şifre boş olamaz!',
-            err_pw_match:'❌ Şifreler eşleşmiyor!', err_nothing:'❌ Değiştirilecek bir şey girilmedi.',
-            download:'İndir', close:'Kapat', view:'Görüntüle', all_folders:'Tümü',
-            files_empty:'Bu klasörde dosya bulunamadı.', files_loading:'Dosyalar yükleniyor...',
-        }
-    };
-    let currentLang = localStorage.getItem('ib_lang') || 'en';
-    function t(k) { return (STRINGS[currentLang]&&STRINGS[currentLang][k])||STRINGS.en[k]||k; }
-    function applyLang() {
-        document.documentElement.lang = currentLang;
-        document.querySelectorAll('[data-i18n]').forEach(function(el){ el.textContent = t(el.getAttribute('data-i18n')); });
-        document.querySelectorAll('.lang-opt,.login-lang-opt').forEach(function(b){ b.classList.toggle('active', b.textContent.trim().toLowerCase()===currentLang); });
-        if (allFiles.length) renderFiles();
-        if (imageLinks.length) buildCarousel();
-    }
-    function setLang(l) { currentLang=l; localStorage.setItem('ib_lang',l); applyLang(); }
-
-    /* ── TEMA ── */
-    function applyTheme(th) {
-        document.documentElement.setAttribute('data-theme', th);
-        localStorage.setItem('ib_theme', th);
-        document.getElementById('theme-btn').textContent = th==='dark'?'🌙':'☀️';
-    }
-    function toggleTheme() { applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); }
-    applyTheme(localStorage.getItem('ib_theme')||'dark');
-
-    /* ── TABS ── */
-    function switchTab(tab) {
-        document.querySelectorAll('.tab').forEach(function(el){ el.classList.remove('active'); });
-        document.querySelectorAll('.page').forEach(function(el){ el.classList.remove('active'); });
-        document.getElementById('tab-'+tab).classList.add('active');
-        document.getElementById('page-'+tab).classList.add('active');
-        if (tab==='files' && allFiles.length===0) dosyalariGetir();
-        if (tab==='files' && allFiles.length>0) showFolderGrid();
-        if (tab==='centers') merkezleriGetir();
-    }
-
-    /* ── LOGIN ── */
-    if (sessionStorage.getItem('inbody_auth')==='1') {
-        document.getElementById('login-overlay').style.display='none';
-        setTimeout(veriGetir, 100);
-    }
-    document.addEventListener('keydown', function(e) {
-        if (e.key==='Enter' && document.getElementById('login-overlay').style.display!=='none'
-            && document.getElementById('login-box-main').style.display!=='none') loginCheck();
-        if (e.key==='Escape') { closeLightbox({target:document.getElementById('lightbox')}); closeSettings(); closePdf(); }
-        if (e.key==='+'||e.key==='=') zoomLightbox(0.25);
-        if (e.key==='-') zoomLightbox(-0.25);
-    });
-    function loginCheck() {
-        var u=document.getElementById('login-user').value.trim();
-        var p=document.getElementById('login-pass').value.trim();
-        var err=document.getElementById('login-error');
-        if (u===getUser()&&p===getPass()) {
-            sessionStorage.setItem('inbody_auth','1');
-            document.getElementById('login-overlay').style.display='none';
-            veriGetir();
-            setTimeout(addAdminCenterBtn, 500);
-        } else {
-            err.textContent=t('login_error'); err.style.display='block';
-            ['login-user','login-pass'].forEach(function(id){
-                var el=document.getElementById(id);
-                el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
-            });
-        }
-    }
-    function showReset() {
-        document.getElementById('login-box-main').style.display='none';
-        document.getElementById('login-box-reset').style.display='flex';
-        document.getElementById('reset-error').style.display='none';
-        document.getElementById('reset-success').style.display='none';
-        ['reset-current','reset-new','reset-new2'].forEach(function(id){document.getElementById(id).value='';});
-    }
-    function showLogin() { document.getElementById('login-box-reset').style.display='none'; document.getElementById('login-box-main').style.display='flex'; }
-    function resetPass() {
-        var cur=document.getElementById('reset-current').value.trim();
-        var np=document.getElementById('reset-new').value.trim();
-        var np2=document.getElementById('reset-new2').value.trim();
-        var err=document.getElementById('reset-error'); var suc=document.getElementById('reset-success');
-        err.style.display='none'; suc.style.display='none';
-        if(cur!==getPass()){err.textContent=t('err_wrong_pw');err.style.display='block';return;}
-        if(!np){err.textContent=t('err_empty_pw');err.style.display='block';return;}
-        if(np!==np2){err.textContent=t('err_pw_match');err.style.display='block';return;}
-        localStorage.setItem('ib_pass',np); suc.textContent=t('reset_ok'); suc.style.display='block';
-        setTimeout(showLogin,1500);
-    }
-
-    /* ── AYARLAR ── */
-    function openSettings() {
-        ['new-username','current-pass','new-pass','new-pass2'].forEach(function(id){document.getElementById(id).value='';});
-        document.getElementById('settings-error').style.display='none';
-        document.getElementById('settings-success').style.display='none';
-        document.getElementById('settings-modal').classList.add('open');
-    }
-    function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
-    function saveSettings() {
-        var nu=document.getElementById('new-username').value.trim();
-        var cp=document.getElementById('current-pass').value.trim();
-        var np=document.getElementById('new-pass').value.trim();
-        var np2=document.getElementById('new-pass2').value.trim();
-        var err=document.getElementById('settings-error'); var suc=document.getElementById('settings-success');
-        err.style.display='none'; suc.style.display='none';
-        var changed=false;
-        if(nu){localStorage.setItem('ib_user',nu);changed=true;}
-        if(cp||np||np2){
-            if(cp!==getPass()){err.textContent=t('err_wrong_pw');err.style.display='block';return;}
-            if(!np){err.textContent=t('err_empty_pw');err.style.display='block';return;}
-            if(np!==np2){err.textContent=t('err_pw_match');err.style.display='block';return;}
-            localStorage.setItem('ib_pass',np);changed=true;
-        }
-        if(changed){suc.textContent=t('settings_ok');suc.style.display='block';setTimeout(closeSettings,1500);}
-        else{err.textContent=t('err_nothing');err.style.display='block';}
-    }
-
-    /* ── BİLDİRİM SESİ ── */
-    function playNewMeasurementSound() {
-        try {
-            var ctx=new(window.AudioContext||window.webkitAudioContext)();
-            [{freq:523.25,start:0,dur:0.15},{freq:659.25,start:0.18,dur:0.15},{freq:783.99,start:0.36,dur:0.25}]
-            .forEach(function(n){
-                var osc=ctx.createOscillator(); var gain=ctx.createGain();
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.type='sine'; osc.frequency.value=n.freq;
-                gain.gain.setValueAtTime(0,ctx.currentTime+n.start);
-                gain.gain.linearRampToValueAtTime(0.28,ctx.currentTime+n.start+0.02);
-                gain.gain.linearRampToValueAtTime(0,ctx.currentTime+n.start+n.dur);
-                osc.start(ctx.currentTime+n.start); osc.stop(ctx.currentTime+n.start+n.dur+0.05);
-            });
-        } catch(e){}
-    }
-
-    /* ── INBODY VERİ ── */
-    async function veriGetir() {
-        var btn=document.getElementById('btn-refresh');
-        btn.classList.add('spinning'); btn.disabled=true; showState('loading');
-        try {
-            var res=await fetch(INBODY_JSON+'&_='+Date.now());
-            var raw=await res.text();
-            var json=JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
-            var ids=[],dates=[];
-            json.table.rows.forEach(function(row){
-                if(!row.c||!row.c[0]||!row.c[0].v)return;
-                var id=extractFileId(row.c[0].v.toString().trim());
-                if(id&&ids.indexOf(id)===-1){ids.push(id);dates.push((row.c[1]&&row.c[1].v)?row.c[1].v.toString().trim():'');}
-            });
-            if(ids.length===0)throw new Error('No links');
-            imageLinks=ids; imageDates=dates; currentIndex=0;
-            loadFeatured(0); buildCarousel(); loadNoteForCurrent();
-            document.getElementById('update-time').textContent=new Date().toLocaleTimeString(currentLang==='tr'?'tr-TR':'en-GB',{hour:'2-digit',minute:'2-digit'});
-        } catch(e){console.error(e);showState('error');}
-        finally{btn.classList.remove('spinning');btn.disabled=false;}
-    }
-    function extractFileId(url){
-        var a=url.split('id=')[1];if(a)return a.split('&')[0].split('"')[0].trim();
-        var b=url.split('/d/')[1];if(b)return b.split('/')[0].split('?')[0].trim();
-        return null;
-    }
-    function loadFeatured(index){
-        currentIndex=index; showState('loading');
-        var img=document.getElementById('featured-img');
-        img.onload=function(){showState('image');}; img.onerror=function(){showState('error');};
-        img.src='https://drive.google.com/thumbnail?id='+imageLinks[index]+'&sz=w1200&_='+Date.now();
-        document.querySelectorAll('.thumb').forEach(function(el,i){el.classList.toggle('active',i===index);});
-        if(index===0&&imageLinks[0]){
-            localStorage.setItem('ib_last_seen',imageLinks[0]);
-            var b=document.querySelector('.new-badge');if(b)b.remove();
-            var d=document.querySelector('.new-dot');if(d)d.remove();
-        }
-    }
-    function buildCarousel(){
-        var c=document.getElementById('carousel'); c.innerHTML='';
-        var isNew=imageLinks[0]&&imageLinks[0]!==localStorage.getItem('ib_last_seen');
-        if(isNew)playNewMeasurementSound();
-        var lbl=document.getElementById('main-label');
-        var od=lbl.querySelector('.new-dot');if(od)od.remove();
-        if(isNew){var dot=document.createElement('span');dot.className='new-dot';lbl.insertBefore(dot,lbl.firstChild);}
-        imageLinks.forEach(function(id,i){
-            var th=document.createElement('div'); th.className='thumb'+(i===0?' active':'');
-            th.onclick=function(){loadFeatured(i);};
-            if(i===0&&isNew){var badge=document.createElement('div');badge.className='new-badge';badge.textContent=t('latest');th.appendChild(badge);}
-            var img=document.createElement('img'); img.src='https://drive.google.com/thumbnail?id='+id+'&sz=w320'; img.loading='lazy';
-            var label=document.createElement('div'); label.className='thumb-label';
-            var raw=(imageDates[i]&&imageDates[i]!=='')?imageDates[i]:'';
-            var dp='',tp='';
-            if(raw){var pts=raw.split(' ');dp=pts[0]||'';tp=pts[1]||'';}
-            else{dp=i===0?t('latest')+' '+t('measurement'):(i+1)+'. '+t('measurement');}
-            label.innerHTML=(i===0?'<span class="thumb-tag">'+t('latest')+'</span> ':'')+dp+(tp?'<br><span class="thumb-time">'+tp+'</span>':'');
-            th.appendChild(img); th.appendChild(label); c.appendChild(th);
-        });
-    }
-    function showState(s){
-        document.getElementById('main-loader').style.display=s==='loading'?'flex':'none';
-        document.getElementById('featured-img').style.display=s==='image'?'block':'none';
-        document.getElementById('zoom-hint').style.display=s==='image'?'block':'none';
-        if(s==='loading')document.querySelector('.loader-text').textContent=t('loading');
-    }
-
-    /* ── LIGHTBOX ── */
-    function featuredClick(){
-        if(document.getElementById('featured-img').style.display==='none')return;
-        lbScale=1;
-        var li=document.getElementById('lightbox-img');
-        li.style.transform='scale(1)';
-        li.src='https://drive.google.com/thumbnail?id='+imageLinks[currentIndex]+'&sz=w2000&_='+Date.now();
-        document.getElementById('lightbox').classList.add('open');
-        document.getElementById('zoom-level').textContent='100%';
-        document.body.style.overflow='hidden';
-    }
-    function closeLightbox(e){
-        if(e&&e.target!==document.getElementById('lightbox')&&!e.target.classList.contains('lb-close'))return;
-        document.getElementById('lightbox').classList.remove('open');
-        document.body.style.overflow='';
-    }
-    function zoomLightbox(d){
-        lbScale=Math.min(4,Math.max(0.4,lbScale+d));
-        document.getElementById('lightbox-img').style.transform='scale('+lbScale+')';
-        document.getElementById('zoom-level').textContent=Math.round(lbScale*100)+'%';
-    }
-
-    /* ── E-POSTA ── */
-    async function epostaGonder(){
-        var email=document.getElementById('target-email').value.trim();
-        var btn=document.getElementById('send-btn');
-        if(!email||!email.includes('@')){alert(t('send_btn')==='Send'?'Please enter a valid email!':'Geçerli bir e-posta girin!');return;}
-        btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> ...';
-        var link='https://drive.google.com/thumbnail?id='+imageLinks[currentIndex]+'&sz=w1200';
-        emailjs.send('service_olohhky','template_65gzwms',{to_email:email,resim_linki:link})
-            .then(function(){alert(currentLang==='tr'?'Rapor gönderildi!':'Report sent!');document.getElementById('target-email').value='';})
-            .catch(function(){alert(currentLang==='tr'?'Gönderim başarısız!':'Failed to send!');})
-            .finally(function(){btn.disabled=false;btn.innerHTML='<i class="fas fa-envelope"></i> <span>'+t('send_btn')+'</span>';});
-    }
-
-    /* ── FILES ── */
-    function getMimeIcon(mime){
-        if(!mime)return{icon:'fa-file',color:'#64748b'};
-        if(mime==='application/pdf')return{icon:'fa-file-pdf',color:'#ef4444'};
-        if(mime.indexOf('image/')===0)return{icon:'fa-file-image',color:'#8b5cf6'};
-        if(mime.indexOf('video/')===0)return{icon:'fa-file-video',color:'#f59e0b'};
-        if(mime.indexOf('audio/')===0)return{icon:'fa-file-audio',color:'#10b981'};
-        if(mime.includes('word')||mime.includes('document'))return{icon:'fa-file-word',color:'#3b82f6'};
-        if(mime.includes('sheet')||mime.includes('excel'))return{icon:'fa-file-excel',color:'#22c55e'};
-        if(mime.includes('presentation')||mime.includes('powerpoint'))return{icon:'fa-file-powerpoint',color:'#f97316'};
-        if(mime.includes('zip')||mime.includes('rar')||mime.includes('compressed'))return{icon:'fa-file-archive',color:'#eab308'};
-        if(mime.includes('text'))return{icon:'fa-file-alt',color:'#94a3b8'};
-        return{icon:'fa-file',color:'#64748b'};
-    }
-
-    async function dosyalariGetir(){
-        var container=document.getElementById('files-container');
-        container.innerHTML='<div class="files-empty"><i class="fas fa-spinner fa-spin" style="font-size:2rem;opacity:0.5"></i><p style="margin-top:1rem">'+t('files_loading')+'</p></div>';
-        try {
-            var res=await fetch(FILES_JSON+'&_='+Date.now());
-            var raw=await res.text();
-            var json=JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
-            allFiles=[];
-            if(!json.table||!json.table.rows){renderFiles();return;}
-            json.table.rows.forEach(function(row){
-                if(!row.c||!row.c[0]||!row.c[0].v)return;
-                // skip header row
-                if(row.c[0].v==='name')return;
-                allFiles.push({
-                    name:      (row.c[0]&&row.c[0].v)?row.c[0].v:'',
-                    mime:      (row.c[1]&&row.c[1].v)?row.c[1].v:'',
-                    viewLink:  (row.c[2]&&row.c[2].v)?row.c[2].v:'',
-                    dlLink:    (row.c[3]&&row.c[3].v)?row.c[3].v:'',
-                    date:      (row.c[4]&&row.c[4].v)?row.c[4].v:'',
-                    folder:    (row.c[5]&&row.c[5].v)?row.c[5].v:'/',
-                });
-            });
-            showFolderGrid();
-        } catch(e){
-            console.error(e);
-            container.innerHTML='<div class="files-empty"><i class="fas fa-exclamation-triangle"></i><p>Could not load files. Make sure AppScript has run at least once.</p></div>';
-        }
-    }
-
-    function buildFolderTabs(){
-        // Show folder grid view
-        showFolderGrid();
-    }
-
-    function showFolderGrid() {
-        currentFolder = 'grid';
-        var bc = document.getElementById('breadcrumb');
-        bc.innerHTML = '<span class="breadcrumb-item active"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span>';
-
-        var folders = [...new Set(allFiles.map(function(f){return f.folder;}))].sort();
-        var container = document.getElementById('files-container');
-        container.className = 'folder-grid';
-        container.innerHTML = '';
-
-        folders.forEach(function(folderName) {
-            if (folderName === '/') return;
-            var count = allFiles.filter(function(x){ return x.folder === folderName; }).length;
-            var card = document.createElement('div');
-            card.className = 'folder-card';
-            card.innerHTML =
-                '<div class="folder-card-icon">📁</div>' +
-                '<div class="folder-card-name">' + folderName + '</div>' +
-                '<div class="folder-card-count">' + count + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
-            card.onclick = function(){ openFolder(folderName); };
-            container.appendChild(card);
-        });
-
-        // Kök klasördeki dosyaları direkt kart olarak göster
-        var rootFiles = allFiles.filter(function(f){ return f.folder === '/'; });
-        rootFiles.forEach(function(f) {
-            var mi = getMimeIcon(f.mime);
-            var isImage = f.mime && f.mime.indexOf('image/') === 0;
-            var isPdf   = f.mime === 'application/pdf';
-            var thumbId = '';
-            if (isPdf) { var pm = f.viewLink.match(/\/d\/([^\/]+)\//); if (pm) thumbId = pm[1]; }
-            else if (isImage) { var im = f.viewLink.match(/id=([^&]+)/); if (im) thumbId = im[1]; }
-            var thumbSrc = thumbId ? 'https://drive.google.com/thumbnail?id=' + thumbId + '&sz=w400' : '';
-
-            var card = document.createElement('div');
-            card.className = 'file-card';
-            if (thumbSrc) {
-                card.innerHTML = '<div class="file-preview" style="background:var(--surface)">'
-                    + '<img src="' + thumbSrc + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" '
-                    + 'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
-                    + '<div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center">'
-                    + '<i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div></div>';
-            } else {
-                card.innerHTML = '<div class="file-preview"><i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div>';
-            }
-            card.innerHTML +=
-                '<div class="file-info">'
-                + '<div class="file-name" title="' + f.name + '">' + f.name + '</div>'
-                + '<div class="file-meta"><span>' + f.date + '</span></div>'
-                + '</div>'
-                + '<div class="file-actions">'
-                + '<button class="file-btn file-btn-view" onclick="openFile(event,\'' + f.viewLink + '\',\'' + f.name.replace(/'/g,"\'") + '\',\'' + f.mime + '\',\'' + f.dlLink + '\')"><i class="fas fa-eye"></i> ' + t('view') + '</button>'
-                + '<a href="' + f.dlLink + '" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-btn file-btn-dl"><i class="fas fa-download"></i> ' + t('download') + '</button></a>'
-                + '</div>';
-            container.appendChild(card);
-        });
-
-        // If only one folder or there are root files, also show root
-        var rootFiles = allFiles.filter(function(f){ return f.folder === '/'; });
-        if (rootFiles.length > 0 && folders.indexOf('/') === -1) {
-            var card = document.createElement('div');
-            card.className = 'folder-card';
-            card.innerHTML =
-                '<div class="folder-card-icon">📂</div>' +
-                '<div class="folder-card-name">' + (currentLang === 'tr' ? 'Genel' : 'General') + '</div>' +
-                '<div class="folder-card-count">' + rootFiles.length + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
-            card.onclick = function(){ openFolder('/'); };
-            container.appendChild(card);
-        }
-    }
-
-    function openFolder(folderName) {
-        currentFolder = folderName;
-        // Breadcrumb
-        var bc = document.getElementById('breadcrumb');
-        bc.innerHTML =
-            '<span class="breadcrumb-item" onclick="showFolderGrid()"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span>' +
-            '<span class="breadcrumb-sep">›</span>' +
-            '<span class="breadcrumb-item active">📁 ' + folderName + '</span>';
-        renderFiles();
-    }
-
-    function filterFiles(){
-        if (currentFolder === 'grid') { showFolderGrid(); return; }
-        renderFiles();
-    }
-
-    function setView(v){
-        currentView=v;
-        document.getElementById('view-grid').classList.toggle('active',v==='grid');
-        document.getElementById('view-list').classList.toggle('active',v==='list');
-        renderFiles();
-    }
-
-    function renderFiles(){
-        var query=document.getElementById('file-search')?document.getElementById('file-search').value.toLowerCase():'';
-        var filtered=allFiles.filter(function(f){
-            var folderMatch=currentFolder==='all'||f.folder===currentFolder;
-            var searchMatch=!query||f.name.toLowerCase().includes(query)||f.folder.toLowerCase().includes(query);
-            return folderMatch&&searchMatch;
-        });
-
-        var container=document.getElementById('files-container');
-        if(filtered.length===0){
-            container.innerHTML='<div class="files-empty"><i class="fas fa-folder-open"></i><p>'+t('files_empty')+'</p></div>';
-            return;
-        }
-
-        if(currentView==='grid'){
-            container.className='files-grid';
-            container.innerHTML='';
-            filtered.forEach(function(f){ container.appendChild(makeFileCard(f)); });
-        } else {
-            container.className='files-list-view';
-            container.innerHTML='';
-            filtered.forEach(function(f){ container.appendChild(makeFileRow(f)); });
-        }
-    }
-
-    function makeFileCard(f){
-        var mi=getMimeIcon(f.mime);
-        var card=document.createElement('div');
-        card.className='file-card';
-
-        var preview='';
-        var isImage = f.mime && f.mime.indexOf('image/') === 0;
-        var isPdf   = f.mime === 'application/pdf';
-        if (isImage || isPdf) {
-            var thumbId = '';
-            if (isPdf) {
-                var pm = f.viewLink.match(/\/d\/([^\/]+)\//);
-                if (pm) thumbId = pm[1];
-            } else {
-                var im = f.viewLink.match(/id=([^&]+)/);
-                if (im) thumbId = im[1];
-            }
-            var thumbSrc = thumbId ? 'https://drive.google.com/thumbnail?id=' + thumbId + '&sz=w400' : '';
-            if (thumbSrc) {
-                preview = '<div class="file-preview" style="background:var(--surface)">'
-                    + '<img src="' + thumbSrc + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" '
-                    + 'onerror="this.parentNode.style.background=\'var(--surface2)\';this.style.display=\'none\';this.parentNode.querySelector(\'.file-icon-fb\').style.display=\'flex\'">'
-                    + '<div class="file-icon-fb" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center">'
-                    + '<i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div>'
-                    + '</div>';
-            } else {
-                preview = '<div class="file-preview"><i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div>';
-            }
-        } else {
-            preview='<div class="file-preview"><i class="fas '+mi.icon+' file-icon" style="color:'+mi.color+'"></i></div>';
-        }
-
-        card.innerHTML=preview+
-            '<div class="file-info">'+
-                '<div class="file-name" title="'+f.name+'">'+f.name+'</div>'+
-                '<div class="file-meta"><span>'+f.folder+'</span><span>'+f.date+'</span></div>'+
-            '</div>'+
-            '<div class="file-actions">'+
-                '<button class="file-btn file-btn-view" onclick="openFile(event,\''+escQ(f.viewLink)+'\',\''+escQ(f.name)+'\',\''+escQ(f.mime)+'\',\''+escQ(f.dlLink)+'\')"><i class="fas fa-eye"></i> '+t('view')+'</button>'+
-                '<a href="'+f.dlLink+'" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-btn file-btn-dl"><i class="fas fa-download"></i> '+t('download')+'</button></a>'+
-            '</div>';
-        return card;
-    }
-
-    function makeFileRow(f){
-        var mi=getMimeIcon(f.mime);
-        var row=document.createElement('div');
-        row.className='file-row';
-        row.innerHTML=
-            '<div class="file-row-icon"><i class="fas '+mi.icon+'" style="color:'+mi.color+'"></i></div>'+
-            '<div class="file-row-info">'+
-                '<div class="file-row-name">'+f.name+'</div>'+
-                '<div class="file-row-meta">'+f.folder+' · '+f.date+'</div>'+
-            '</div>'+
-            '<div class="file-row-actions">'+
-                '<button class="file-row-btn" title="'+t('view')+'" onclick="openFile(event,\''+escQ(f.viewLink)+'\',\''+escQ(f.name)+'\',\''+escQ(f.mime)+'\',\''+escQ(f.dlLink)+'\')"><i class="fas fa-eye"></i></button>'+
-                '<a href="'+f.dlLink+'" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-row-btn" title="'+t('download')+'"><i class="fas fa-download"></i></button></a>'+
-            '</div>';
-        return row;
-    }
-
-    function escQ(s){ return (s||'').replace(/'/g,"\\'"); }
-
-    function openFile(e, viewLink, name, mime, dlLink){
-        e.stopPropagation();
-        if(mime&&mime.indexOf('image/')===0){
-            lbScale=1;
-            document.getElementById('lightbox-img').src=viewLink;
-            document.getElementById('lightbox-img').style.transform='scale(1)';
-            document.getElementById('lightbox').classList.add('open');
-            document.getElementById('zoom-level').textContent='100%';
-            document.body.style.overflow='hidden';
-        } else if(mime==='application/pdf'){
-            document.getElementById('pdf-title').textContent=name;
-            document.getElementById('pdf-frame').src=viewLink;
-            document.getElementById('pdf-dl-btn').href=dlLink;
-            document.getElementById('pdf-overlay').classList.add('open');
-            document.body.style.overflow='hidden';
-        } else {
-            window.open(viewLink,'_blank');
-        }
-    }
-
-    function closePdf(){
-        document.getElementById('pdf-overlay').classList.remove('open');
-        document.getElementById('pdf-frame').src='';
-        document.body.style.overflow='';
-    }
-
-    var activeAnnZone = null;
-    function showAnnPreview(e, el) {
-        var box = document.getElementById('ann-preview-box');
-        document.getElementById('ann-preview-title').textContent = el.dataset.title || '';
-        document.getElementById('ann-preview-hint').innerHTML = el.dataset.body || el.dataset.hint || '';
-        box.style.display = 'block';
-        moveAnnPreview(e);
-    }
-    function hideAnnPreview() {
-        document.getElementById('ann-preview-box').style.display = 'none';
-    }
-    function moveAnnPreview(e) {
-        var box = document.getElementById('ann-preview-box');
-        var x = e.clientX + 14, y = e.clientY - 60;
-        if (x + 210 > window.innerWidth) x = e.clientX - 215;
-        if (y < 8) y = e.clientY + 14;
-        box.style.left = x + 'px';
-        box.style.top  = y + 'px';
-    }
-    function showAnnPopup(e, title, body) {
-        e.stopPropagation();
-        // active zone
-        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
-        e.currentTarget.classList.add('active');
-        activeAnnZone = e.currentTarget;
-        // popup içerik
-        document.getElementById('ann-popup-title').textContent = title;
-        document.getElementById('ann-popup-body').innerHTML = body;
-        var popup = document.getElementById('ann-popup');
-        popup.style.display = 'block';
-        hideAnnPreview();
-        // konumlandır - tıklanan zone'un üstünde
-        var rect = e.currentTarget.getBoundingClientRect();
-        var pw = 250, ph = popup.offsetHeight || 120;
-        var left = rect.left + (rect.width / 2) - (pw / 2);
-        var top  = rect.top - ph - 10;
-        if (left < 8) left = 8;
-        if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
-        if (top < 8) top = rect.bottom + 10;
-        popup.style.left = left + 'px';
-        popup.style.top  = top  + 'px';
-    }
-    function closeAnnPopup() {
-        document.getElementById('ann-popup').style.display = 'none';
-        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
-    }
-    document.addEventListener('click', function(e) {
-        var popup = document.getElementById('ann-popup');
-        if (popup && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
-    });
-    // Init
-    applyLang();
-    if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
-
-</script>
-
-<div id="apply-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
-    <div style="background:var(--surface);border-radius:20px;width:100%;max-width:640px;height:85vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0">
-            <div style="font-size:1rem;font-weight:700;color:var(--text)">Center Registration Request</div>
-            <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1">&#x2715;</button>
+<!-- AI Annotation Popup -->
+<div id="ann-popup">
+    <div class="ann-popup-header">
+        <div class="ann-popup-zone-title" id="ann-popup-zone-title">\u2014</div>
+        <div style="display:flex;align-items:center;gap:6px">
+            <div class="ann-popup-status loading" id="ann-popup-status">
+                <div class="ann-popup-status-dot"></div>
+                <span id="ann-popup-status-text">Analyzing</span>
+            </div>
+            <button class="ann-popup-close" onclick="closeAnnPopup()">\u2715</button>
         </div>
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
+    </div>
+    <div class="ann-popup-body">
+        <div class="ann-popup-value" id="ann-popup-value" style="display:none"></div>
+        <div class="ann-popup-range" id="ann-popup-range" style="display:none"></div>
+        <div class="ann-popup-comment" id="ann-popup-comment"></div>
+        <div class="ann-popup-ai-badge" id="ann-popup-ai-badge" style="display:none">\u2726 AI Analysis</div>
     </div>
 </div>
 
-<div id="ann-preview-box" class="ann-preview"><div class="ann-preview-title" id="ann-preview-title"></div><div class="ann-preview-hint" id="ann-preview-hint"></div></div>
-<div id="ann-popup">
-    <button class="ann-popup-close" onclick="closeAnnPopup()">✕</button>
-    <div class="ann-popup-title" id="ann-popup-title"></div>
-    <div class="ann-popup-body" id="ann-popup-body"></div>
-</div>
-</body>
-</html>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+   CENTERS
+\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json&gid=538154086';
+var allApplications = [], currentAppFilter = 'pending', approvedCenters = [];
+
+function showApplyForm() { var ov=document.getElementById('apply-overlay'); if(ov){ov.style.display='flex';document.body.style.overflow='hidden';} }
+function hideApplyForm() { var ov=document.getElementById('apply-overlay'); if(ov){ov.style.display='none';document.body.style.overflow='';} }
+function showPublicCenters() { document.getElementById('applications-panel').style.display='none'; document.getElementById('centers-public').style.display='flex'; }
+function showApplicationsPanel() { document.getElementById('centers-public').style.display='none'; document.getElementById('applications-panel').style.display='flex'; basviruGetir(); }
+function filterCenters() { renderCenters(); }
+function filterApps(f) {
+    currentAppFilter=f;
+    ['pending','approved','rejected','all'].forEach(function(x){
+        var el=document.getElementById('apptab-'+x); if(!el)return;
+        if(x===f){el.style.background='var(--surface)';el.style.color='var(--text)';}
+        else{el.style.background='transparent';el.style.color='var(--muted)';}
+    });
+    renderApplications();
+}
+function addAdminCenterBtn() {
+    if(document.getElementById('admin-center-btn'))return;
+    var btn=document.createElement('button'); btn.id='admin-center-btn'; btn.className='btn-icon'; btn.title='Applications';
+    btn.innerHTML='<i class="fas fa-clipboard-list" style="font-size:0.85rem;color:var(--muted)"></i>';
+    btn.onclick=function(){switchTab('centers');setTimeout(showApplicationsPanel,100);};
+    var th=document.getElementById('theme-btn'); if(th)th.parentNode.insertBefore(btn,th);
+}
+async function merkezleriGetir() {
+    try {
+        var res=await fetch(FORM_JSON_URL+'&_='+Date.now()); var raw=await res.text();
+        var json=JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
+        allApplications=[];
+        if(!json.table||!json.table.rows){renderCenters();return;}
+        json.table.rows.forEach(function(row,idx){
+            if(!row.c||!row.c[0]||!row.c[0].v)return;
+            var date=row.c[0]?row.c[0].v:''; var email=row.c[2]?row.c[2].v:'';
+            var key='app_'+(date+'_'+email).replace(/[^a-zA-Z0-9]/g,'_');
+            var st=localStorage.getItem(key+'_status')||'pending'; var ml=localStorage.getItem(key+'_map')||'';
+            allApplications.push({idx,key,date,name:row.c[1]?row.c[1].v:'',email,phone:row.c[3]?row.c[3].v:'',company:row.c[4]?row.c[4].v:'',city:row.c[5]?row.c[5].v:'',status:st,mapLink:ml});
+        });
+        approvedCenters=allApplications.filter(function(a){return a.status==='approved';});
+        renderCenters();
+    } catch(e){console.error('Centers error:',e);}
+}
+function renderCenters() {
+    var grid=document.getElementById('centers-grid'); var empty=document.getElementById('centers-empty'); var countEl=document.getElementById('centers-count');
+    if(!grid)return;
+    var query=''; var searchEl=document.getElementById('center-search'); if(searchEl)query=searchEl.value.toLowerCase();
+    var filtered=approvedCenters.filter(function(c){return!query||c.name.toLowerCase().indexOf(query)>-1||c.city.toLowerCase().indexOf(query)>-1||c.company.toLowerCase().indexOf(query)>-1;});
+    if(countEl)countEl.textContent=filtered.length+(filtered.length!==1?' centers':' center');
+    grid.innerHTML='';
+    if(filtered.length===0){if(empty)empty.style.display='block';return;}
+    if(empty)empty.style.display='none';
+    filtered.forEach(function(c){
+        var card=document.createElement('div'); card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.2
