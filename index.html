@@ -873,30 +873,20 @@ Required JSON structure (include ALL fields you can find, use null for not found
   "pbf_history": [13.8, 15.0, 14.9, 14.8, 14.9, 15.0, 14.4, 15.7]
 }`;
 
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        const response = await fetch('https://workerardaproxy.ardacaniren.workers.dev', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 2000,
-                system: systemPrompt,
-                messages: [{
-                    role: 'user',
-                    content: [{
-                        type: 'image',
-                        source: { type: 'base64', media_type: mediaType, data: base64 }
-                    }, {
-                        type: 'text',
-                        text: 'Extract all InBody measurement values from this report image. Return ONLY the JSON object.'
-                    }]
-                }]
+                image_base64: base64,
+                media_type: mediaType,
+                system_prompt: systemPrompt,
+                user_prompt: 'Extract all InBody measurement values from this report image. Return ONLY the JSON object, no markdown.'
             })
         });
 
         const result = await response.json();
-        const rawText = result.content.map(b => b.text || '').join('').trim();
-        // Strip any markdown fences
-        const cleaned = rawText.replace(/^```(?:json)?/,'').replace(/```$/,'').trim();
+        const rawText = (result.text || '').trim();
+        const cleaned = rawText.replace(/^```(?:json)?[\r\n]*/,'').replace(/[\r\n]*```$/,'').trim();
         const data = JSON.parse(cleaned);
 
         aiCache[fileId] = { status: 'ready', data };
@@ -996,18 +986,16 @@ Write a concise, personalized 2-3 sentence interpretation of this section's data
 - Keep it under 60 words
 Respond with ONLY the comment text.`;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://workerardaproxy.ardacaniren.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 150,
-            messages: [{ role: 'user', content: prompt }]
+            user_prompt: prompt
         })
     });
 
     const result = await response.json();
-    return result.content.map(b => b.text || '').join('').trim();
+    return (result.text || '').trim();
 }
 
 /* ═══════════════════════════════════════════════
