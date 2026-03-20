@@ -779,21 +779,7 @@ const ZONE_META = {
     impedance:      { title: 'Impedance',                 extract: ['impedance_1khz','impedance_5khz','impedance_50khz'] },
 };
 
-// Convert Google Drive image URL to base64
-async function imageUrlToBase64(driveFileId) {
-    const url = 'https://drive.google.com/thumbnail?id='+driveFileId+'&sz=w1200';
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64 = reader.result.split(',')[1];
-            resolve({ base64, mediaType: blob.type || 'image/jpeg' });
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
-}
+// Image fetching handled by Cloudflare Worker
 
 // Set AI status badge
 function setAIBadge(state, text) {
@@ -812,92 +798,75 @@ async function analyzeImageWithAI(fileId) {
     aiCache[fileId] = { status: 'loading', data: null };
     setAIBadge('loading', currentLang === 'tr' ? 'AI Analiz Ediyor...' : 'AI Analyzing...');
 
-    try {
-        const { base64, mediaType } = await imageUrlToBase64(fileId);
+    const systemPrompt = `You are an expert InBody body composition analyzer.
+Analyze the InBody measurement report image and extract ALL visible numerical values.
+Respond ONLY with a valid JSON object, no markdown, no explanation, no extra text.
 
-        const systemPrompt = `You are an expert InBody body composition analyzer. 
-Analyze the InBody measurement report image and extract ALL visible numerical values and their statuses.
-Respond ONLY with a valid JSON object — no markdown, no explanation, no extra text.
-
-Required JSON structure (include ALL fields you can find, use null for not found):
+Required JSON structure (use null for fields not found):
 {
-  "name": "patient name if visible",
-  "id": "patient ID",
-  "height": "e.g. 189 cm",
-  "age": "e.g. 25",
-  "gender": "Male/Female",
-  "test_date": "e.g. 19.03.2026 08:34",
-
-  "weight": { "value": 71.4, "unit": "kg", "normal_min": null, "normal_max": null },
-  "total_body_water": { "value": 44.1, "unit": "L", "normal_min": 44.2, "normal_max": 54.0 },
-  "protein": { "value": 12.0, "unit": "kg", "normal_min": 11.9, "normal_max": 14.5 },
-  "minerals": { "value": 4.13, "unit": "kg", "normal_min": 4.09, "normal_max": 4.99 },
-  "body_fat_mass": { "value": 11.2, "unit": "kg", "normal_min": 9.4, "normal_max": 18.9 },
-  "smm": { "value": 34.2, "unit": "kg", "normal_min": null, "normal_max": null },
-  "bmi": { "value": 20.0, "unit": "kg/m²", "normal_min": 18.5, "normal_max": 22.9 },
-  "pbf": { "value": 15.7, "unit": "%", "normal_min": 10, "normal_max": 20 },
-  "inbody_score": { "value": 73, "unit": "/100", "normal_min": 80, "normal_max": null },
-  "vfa": { "value": 41.8, "unit": "cm²", "normal_min": null, "normal_max": 100 },
-  "ecw_ratio": { "value": 0.370, "unit": "", "normal_min": 0.360, "normal_max": 0.390 },
-  "phase_angle": { "value": 6.0, "unit": "°", "normal_min": 5.0, "normal_max": 7.5 },
-  "bmr": { "value": 1670, "unit": "kcal", "normal_min": null, "normal_max": null },
-  "whr": { "value": 0.84, "unit": "", "normal_min": null, "normal_max": 0.90 },
-  "icw": { "value": 27.8, "unit": "L", "normal_min": 27.4, "normal_max": 33.4 },
-  "ecw": { "value": 16.3, "unit": "L", "normal_min": 16.8, "normal_max": 20.6 },
-  "bcm": { "value": 39.8, "unit": "kg", "normal_min": null, "normal_max": null },
-  "smi": { "value": 7.8, "unit": "kg/m²", "normal_min": null, "normal_max": null },
-
-  "target_weight": { "value": 78.6, "unit": "kg" },
-  "weight_control": { "value": 7.2, "unit": "kg" },
-  "fat_control": { "value": 0.6, "unit": "kg" },
-  "muscle_control": { "value": 6.6, "unit": "kg" },
-
-  "right_arm_lean": { "value": 3.13, "unit": "kg", "percent": 92.1 },
-  "left_arm_lean": { "value": 3.24, "unit": "kg", "percent": 95.5 },
-  "trunk_lean": { "value": 26.2, "unit": "kg", "percent": 96.7 },
-  "right_leg_lean": { "value": 11.73, "unit": "kg", "percent": 113.7 },
-  "left_leg_lean": { "value": 10.81, "unit": "kg", "percent": 114.5 },
-
-  "right_arm_fat": { "value": 0.6, "unit": "kg", "percent": 77.8 },
-  "left_arm_fat": { "value": 0.5, "unit": "kg", "percent": 73.7 },
-  "trunk_fat": { "value": 5.3, "unit": "kg", "percent": 107.5 },
-  "right_leg_fat": { "value": 1.9, "unit": "kg", "percent": 93.0 },
-  "left_leg_fat": { "value": 1.9, "unit": "kg", "percent": 93.8 },
-
-  "upper_balance": "Balanced",
-  "lower_balance": "Balanced",
-  "upper_lower_balance": "Slightly Unbalanced",
-
-  "weight_history": [70.7, 71.3, 71.2, 71.3, 71.2, 70.6, 71.0, 71.4],
-  "smm_history": [34.7, 34.5, 34.4, 34.5, 34.4, 34.0, 34.6, 34.2],
-  "pbf_history": [13.8, 15.0, 14.9, 14.8, 14.9, 15.0, 14.4, 15.7]
+  "name": null, "id": null, "height": null, "age": null, "gender": null, "test_date": null,
+  "weight": { "value": null, "unit": "kg", "normal_min": null, "normal_max": null },
+  "total_body_water": { "value": null, "unit": "L", "normal_min": null, "normal_max": null },
+  "protein": { "value": null, "unit": "kg", "normal_min": null, "normal_max": null },
+  "minerals": { "value": null, "unit": "kg", "normal_min": null, "normal_max": null },
+  "body_fat_mass": { "value": null, "unit": "kg", "normal_min": null, "normal_max": null },
+  "smm": { "value": null, "unit": "kg", "normal_min": null, "normal_max": null },
+  "bmi": { "value": null, "unit": "kg/m2", "normal_min": 18.5, "normal_max": 22.9 },
+  "pbf": { "value": null, "unit": "%", "normal_min": 10, "normal_max": 20 },
+  "inbody_score": { "value": null, "unit": "/100", "normal_min": 80, "normal_max": null },
+  "vfa": { "value": null, "unit": "cm2", "normal_min": null, "normal_max": 100 },
+  "ecw_ratio": { "value": null, "unit": "", "normal_min": 0.360, "normal_max": 0.390 },
+  "phase_angle": { "value": null, "unit": "deg", "normal_min": 5.0, "normal_max": 7.5 },
+  "bmr": { "value": null, "unit": "kcal", "normal_min": null, "normal_max": null },
+  "whr": { "value": null, "unit": "", "normal_min": null, "normal_max": 0.90 },
+  "icw": { "value": null, "unit": "L", "normal_min": null, "normal_max": null },
+  "ecw": { "value": null, "unit": "L", "normal_min": null, "normal_max": null },
+  "bcm": { "value": null, "unit": "kg", "normal_min": null, "normal_max": null },
+  "smi": { "value": null, "unit": "kg/m2", "normal_min": null, "normal_max": null },
+  "target_weight": { "value": null, "unit": "kg" },
+  "weight_control": { "value": null, "unit": "kg" },
+  "fat_control": { "value": null, "unit": "kg" },
+  "muscle_control": { "value": null, "unit": "kg" },
+  "right_arm_lean": { "value": null, "unit": "kg", "percent": null },
+  "left_arm_lean": { "value": null, "unit": "kg", "percent": null },
+  "trunk_lean": { "value": null, "unit": "kg", "percent": null },
+  "right_leg_lean": { "value": null, "unit": "kg", "percent": null },
+  "left_leg_lean": { "value": null, "unit": "kg", "percent": null },
+  "right_arm_fat": { "value": null, "unit": "kg", "percent": null },
+  "left_arm_fat": { "value": null, "unit": "kg", "percent": null },
+  "trunk_fat": { "value": null, "unit": "kg", "percent": null },
+  "right_leg_fat": { "value": null, "unit": "kg", "percent": null },
+  "left_leg_fat": { "value": null, "unit": "kg", "percent": null },
+  "upper_balance": null, "lower_balance": null, "upper_lower_balance": null,
+  "weight_history": [], "smm_history": [], "pbf_history": []
 }`;
 
+    try {
         const response = await fetch('https://workerardaproxy.ardacaniren.workers.dev', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                image_base64: base64,
-                media_type: mediaType,
+                drive_file_id: fileId,
                 system_prompt: systemPrompt,
-                user_prompt: 'Extract all InBody measurement values from this report image. Return ONLY the JSON object, no markdown.'
+                user_prompt: 'Extract all InBody measurement values from this report image. Return ONLY the JSON object.'
             })
         });
 
         const result = await response.json();
+        if (result.error) throw new Error(result.error);
         const rawText = (result.text || '').trim();
         const cleaned = rawText.replace(/^```(?:json)?[\r\n]*/,'').replace(/[\r\n]*```$/,'').trim();
         const data = JSON.parse(cleaned);
 
         aiCache[fileId] = { status: 'ready', data };
-        setAIBadge('ready', currentLang === 'tr' ? '✓ AI Hazır' : '✓ AI Ready');
+        setAIBadge('ready', currentLang === 'tr' ? '\u2713 AI Hazir' : '\u2713 AI Ready');
         updateZoneIndicators(data);
         return aiCache[fileId];
 
     } catch (err) {
         console.error('AI analysis error:', err);
         aiCache[fileId] = { status: 'error', data: null };
-        setAIBadge('error', currentLang === 'tr' ? 'AI Hatası' : 'AI Error');
+        setAIBadge('error', currentLang === 'tr' ? 'AI Hatasi' : 'AI Error');
         return aiCache[fileId];
     }
 }
