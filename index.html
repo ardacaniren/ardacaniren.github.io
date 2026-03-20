@@ -853,10 +853,17 @@ Required JSON structure (use null for fields not found):
         });
 
         const result = await response.json();
-        if (result.error) throw new Error(result.error);
+        if (result.error) throw new Error('Worker error: ' + result.error);
         const rawText = (result.text || '').trim();
-        const cleaned = rawText.replace(/^```(?:json)?[\r\n]*/,'').replace(/[\r\n]*```$/,'').trim();
-        const data = JSON.parse(cleaned);
+        if (!rawText) throw new Error('Empty response from AI');
+        // Strip markdown fences if present
+        const cleaned = rawText.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim();
+        // Extract JSON object from response
+        const jsonStart = cleaned.indexOf('{');
+        const jsonEnd = cleaned.lastIndexOf('}');
+        if (jsonStart === -1 || jsonEnd === -1) throw new Error('No JSON in response');
+        const jsonStr = cleaned.slice(jsonStart, jsonEnd + 1);
+        const data = JSON.parse(jsonStr);
 
         aiCache[fileId] = { status: 'ready', data };
         setAIBadge('ready', currentLang === 'tr' ? '\u2713 AI Hazir' : '\u2713 AI Ready');
