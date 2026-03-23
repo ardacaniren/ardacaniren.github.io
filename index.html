@@ -1378,9 +1378,20 @@
 
         try {
             var directUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
-            var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(directUrl);
-            var fetchRes = await fetch(proxyUrl);
-            if (!fetchRes.ok) throw new Error('Fetch failed: ' + fetchRes.status);
+            // Birden fazla proxy dene
+            var proxies = [
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent(directUrl),
+                'https://corsproxy.io/?' + encodeURIComponent(directUrl),
+                'https://proxy.cors.sh/' + directUrl,
+            ];
+            var fetchRes = null;
+            for (var pi = 0; pi < proxies.length; pi++) {
+                try {
+                    var r = await fetch(proxies[pi], { signal: AbortSignal.timeout(8000) });
+                    if (r.ok) { fetchRes = r; break; }
+                } catch(pe) { console.warn('Proxy ' + pi + ' failed:', pe.message); }
+            }
+            if (!fetchRes) throw new Error('All proxies failed');
             var blob = await fetchRes.blob();
             var base64 = await new Promise(function(resolve, reject) {
                 var reader = new FileReader();
