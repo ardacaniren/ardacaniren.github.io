@@ -1328,7 +1328,13 @@
                 });
                 if(obj['Test Date / Time']) allMeasurements.push(obj);
             });
-            // Şu an gösterilen görseli güncelle
+            // Debug: ilk ölçümün anahtarlarını logla
+            if(allMeasurements.length>0) {
+                console.log('CSV Keys:', Object.keys(allMeasurements[0]).slice(0,20));
+                console.log('Sample weight:', allMeasurements[0]['Weight']);
+                console.log('Sample score:', allMeasurements[0]['InBody Score']);
+                console.log('Sample TBW:', allMeasurements[0]['TBW (Total Body Water)']);
+            }
             updateAnnotationsFromCSV(currentIndex);
         } catch(e) { console.error('Silent CSV load error:',e); }
     }
