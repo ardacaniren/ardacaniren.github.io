@@ -346,6 +346,12 @@
             <button class="btn-secondary" onclick="closeSettings()" data-i18n="cancel">Cancel</button>
             <button class="btn-primary" onclick="saveSettings()" data-i18n="save">Save</button>
         </div>
+        <div class="modal-divider">Claude API Key</div>
+        <div class="modal-field">
+            <input type="password" id="claude-key-input" placeholder="sk-ant-api03-..." style="font-size:0.72rem">
+            <button class="btn-primary" onclick="saveApiKey()" style="margin-top:8px;width:100%">Save API Key</button>
+        </div>
+        </div>
     </div>
 </div>
 
@@ -1564,6 +1570,15 @@ Return ONLY the JSON, no explanation.`;
     }
     function loadNoteForCurrent() { /* notes not implemented */ }
 
+    function saveApiKey() {
+        var ck = document.getElementById('claude-key-input');
+        if (ck && ck.value.trim().startsWith('sk-ant')) {
+            localStorage.setItem('claude_api_key', ck.value.trim());
+            ck.value = '';
+            ck.placeholder = 'Saved! ✓';
+            setTimeout(function(){ ck.placeholder = 'sk-ant-api03-...'; }, 2000);
+        }
+    }
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
