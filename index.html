@@ -397,7 +397,7 @@
         <i class="fas fa-map-marker-alt"></i> <span>Centers</span>
     </div>
     <div class="tab" id="tab-results" onclick="switchTab('results')">
-        <i class="fas fa-chart-bar"></i> <span>Results</span>
+        <i class="fas fa-chart-bar"></i> <span data-i18n="tab_results">Results</span>
     </div>
 </div>
 
@@ -500,6 +500,10 @@
 
 <!-- PAGE: RESULTS -->
 <div class="page" id="page-results">
+    <div id="results-selector" style="display:none;padding:1rem 2rem;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="font-size:0.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Measurement</div>
+        <div id="results-selector-pills" style="display:flex;gap:6px;flex-wrap:wrap;flex:1"></div>
+    </div>
     <div id="results-loading" style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:1rem;color:var(--muted)">
         <div class="spinner"></div>
         <div style="font-size:0.85rem">Loading results...</div>
@@ -1179,24 +1183,60 @@
     var RESULT_JSON_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/gviz/tq?tqx=out:json';
     var resultData = {};
 
+    var allMeasurements = [], currentMeasIdx = 0;
+
     async function resultsGetir() {
         document.getElementById('results-loading').style.display='flex';
         document.getElementById('results-content').style.display='none';
         document.getElementById('results-empty').style.display='none';
+        document.getElementById('results-selector').style.display='none';
         try {
             var res=await fetch(RESULT_JSON_URL+'&_='+Date.now());
             var raw=await res.text();
             var json=JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
-            resultData={};
+            allMeasurements=[];
             if(!json.table||!json.table.rows||json.table.rows.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
+            // Satır 1: başlıklar, satır 2+: veriler
+            var headers=json.table.cols.map(function(c){return c.label||'';});
             json.table.rows.forEach(function(row){
-                if(!row.c||!row.c[0]||!row.c[0].v) return;
-                var key=row.c[0].v.toString().trim();
-                var val=row.c[1]?(row.c[1].v||'').toString().trim():'';
-                resultData[key]=val;
+                if(!row.c) return;
+                var obj={};
+                row.c.forEach(function(cell,i){
+                    obj[headers[i]]=(cell&&cell.v!=null)?cell.v.toString().trim():'';
+                });
+                if(obj['Test Date / Time']) allMeasurements.push(obj);
             });
+            if(allMeasurements.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
+            currentMeasIdx=0;
+            resultData=allMeasurements[0];
+            buildMeasurementPills();
             renderResults();
         } catch(e) { console.error('Results error:',e); document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; }
+    }
+
+    function buildMeasurementPills() {
+        var pills=document.getElementById('results-selector-pills');
+        if(!pills) return;
+        pills.innerHTML='';
+        allMeasurements.forEach(function(m,i){
+            var date=m['Test Date / Time']||('Measurement '+(i+1));
+            var pill=document.createElement('div');
+            pill.style.cssText='padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:0.15s;'+(i===currentMeasIdx?'background:#3b82f6;color:white;border-color:#3b82f6':'background:var(--surface2);color:var(--muted)');
+            pill.textContent=date.length>16?date.slice(0,16):date;
+            pill.onclick=(function(idx,el){
+                return function(){
+                    currentMeasIdx=idx;
+                    resultData=allMeasurements[idx];
+                    document.querySelectorAll('#results-selector-pills > div').forEach(function(p){
+                        p.style.background='var(--surface2)'; p.style.color='var(--muted)'; p.style.borderColor='var(--border)';
+                    });
+                    el.style.background='#3b82f6'; el.style.color='white'; el.style.borderColor='#3b82f6';
+                    renderResults();
+                };
+            })(i,pill);
+            pills.appendChild(pill);
+        });
+        document.getElementById('results-selector').style.display='flex';
     }
     function rv(key) { return parseFloat((resultData[key]||'0').replace(',','.'))||0; }
     function rs(key) { return resultData[key]||'-'; }
