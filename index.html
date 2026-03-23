@@ -1141,7 +1141,9 @@
     }
 
     function numVal(m, key) {
-        return parseFloat((m[key]||'0').replace(',','.'))||0;
+        var v = m[key];
+        if (v === undefined || v === '' || v === '-') return 0;
+        return parseFloat(v.replace(',','.'))||0;
     }
 
     function statusIcon(val, low, high) {
@@ -1165,6 +1167,7 @@
     function updateAnnotationsFromCSV(imageIndex) {
         var m = findMeasurementForImage(imageIndex);
         if (!m) return;
+        console.log('ALL KEYS:', JSON.stringify(m));
 
         var zones = document.querySelectorAll('.ann-zone');
         zones.forEach(function(z) {
