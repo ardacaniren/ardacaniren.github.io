@@ -1360,7 +1360,12 @@
         if (popup && popup.style.display !== 'none' && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
     });
 
-    async function loadAllMeasurements() {
+        async function resultsGetirSilent() {
+        await loadAllMeasurements();
+        updateAnnotationsFromCSV(currentIndex);
+    }
+
+async function loadAllMeasurements() {
         try {
             var res = await fetch(RESULT_WEBAPP_URL + '?_=' + Date.now());
             var data = await res.json();
