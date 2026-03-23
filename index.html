@@ -1317,35 +1317,9 @@
     }
 
     async function resultsGetirSilent() {
-        if (allMeasurements && allMeasurements.length > 0) return; // zaten yüklü
-        try {
-            var res=await fetch(RESULT_JSON_URL+'&_='+Date.now());
-            var raw=await res.text();
-            var json=JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
-            allMeasurements=[];
-            if(!json.table||!json.table.rows) return;
-            var headers=json.table.cols.map(function(c){return (c.label||'').trim();});
-            if (!headers[0] && json.table.rows.length > 0) {
-                headers=(json.table.rows[0].c||[]).map(function(c){return c&&c.v?c.v.toString().trim():'';});
-                json.table.rows=json.table.rows.slice(1);
-            }
-            json.table.rows.forEach(function(row){
-                if(!row.c) return;
-                var obj={};
-                row.c.forEach(function(cell,i){
-                    if(headers[i]) obj[headers[i]]=(cell&&cell.v!=null)?cell.v.toString().replace(',','.').trim():'';
-                });
-                if(obj['Test Date / Time']) allMeasurements.push(obj);
-            });
-            // Debug: ilk ölçümün anahtarlarını logla
-            if(allMeasurements.length>0) {
-                console.log('CSV Keys:', Object.keys(allMeasurements[0]).slice(0,20));
-                console.log('Sample weight:', allMeasurements[0]['Weight']);
-                console.log('Sample score:', allMeasurements[0]['InBody Score']);
-                console.log('Sample TBW:', allMeasurements[0]['TBW (Total Body Water)']);
-            }
-            updateAnnotationsFromCSV(currentIndex);
-        } catch(e) { console.error('Silent CSV load error:',e); }
+        if (allMeasurements && allMeasurements.length > 0) return;
+        await loadAllMeasurements();
+        updateAnnotationsFromCSV(currentIndex);
     }
 
     var activeAnnZone = null;
@@ -1397,6 +1371,32 @@
         var popup = document.getElementById('ann-popup');
         if (popup && popup.style.display !== 'none' && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
     });
+
+    async function loadAllMeasurements() {
+        try {
+            var res = await fetch(RESULT_CSV_URL + '&_=' + Date.now());
+            var raw = await res.text();
+            var lines = raw.split('\n').filter(function(l){ return l.trim(); });
+            if (lines.length < 2) return;
+            var headers = parseCSVLine(lines[0]);
+            allMeasurements = [];
+            for (var i = 1; i < lines.length; i++) {
+                var vals = parseCSVLine(lines[i]);
+                var obj = {};
+                headers.forEach(function(h, j){
+                    var v = (vals[j]||'').trim().replace(/^"|"$/g,'');
+                    // Date(YYYY.M,D) formatını temizle - bu sayısal değil, boş bırak
+                    if (/^Date\(/.test(v)) v = '';
+                    // Virgüllü sayıları düzelt
+                    obj[h] = v.replace(',','.');
+                });
+                if (obj['Test Date / Time']) allMeasurements.push(obj);
+            }
+            console.log('Loaded', allMeasurements.length, 'measurements,', Object.keys(allMeasurements[0]||{}).length, 'keys');
+            console.log('Sample - Weight:', allMeasurements[0] && allMeasurements[0]['Weight'], 'Protein:', allMeasurements[0] && allMeasurements[0]['Protein'], 'BFM:', allMeasurements[0] && allMeasurements[0]['BFM (Body Fat Mass)']);
+        } catch(e) { console.error('loadAllMeasurements error:', e); }
+    }
+
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn,300);
@@ -1510,18 +1510,8 @@
         document.getElementById('results-empty').style.display='none';
         document.getElementById('results-selector').style.display='none';
         try {
-            var res = await fetch(RESULT_CSV_URL + '&_=' + Date.now());
-            var raw = await res.text();
-            var lines = raw.split('\n').filter(function(l){ return l.trim(); });
-            allMeasurements = [];
-            if (lines.length < 2) { document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; return; }
-            var headers = parseCSVLine(lines[0]);
-            for (var i = 1; i < lines.length; i++) {
-                var vals = parseCSVLine(lines[i]);
-                var obj = {};
-                headers.forEach(function(h, j){ obj[h] = (vals[j]||'').replace(',','.').trim(); });
-                if (obj['Test Date / Time']) allMeasurements.push(obj);
-            }
+            await loadAllMeasurements();
+            if (allMeasurements.length === 0) { document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; return; }
             if(allMeasurements.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
             currentMeasIdx=0;
             resultData=allMeasurements[0];
