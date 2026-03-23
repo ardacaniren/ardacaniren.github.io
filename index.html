@@ -236,6 +236,52 @@
         .modal-error { font-size: 0.78rem; color: #f87171; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; text-align: center; display: none; }
         .modal-success { font-size: 0.78rem; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; text-align: center; display: none; }
 
+        /* RESULTS */
+        .res-hero{padding:2rem 2.5rem;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+        .res-hero-name{font-size:1.8rem;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-0.02em}
+        .res-hero-meta{display:flex;gap:1.5rem;flex-wrap:wrap}
+        .res-hero-meta span{font-size:0.75rem;color:var(--muted)}
+        .res-score-wrap{display:flex;flex-direction:column;align-items:flex-end}
+        .res-score-num{font-size:4.5rem;font-weight:900;line-height:1;letter-spacing:-0.04em}
+        .res-score-sub{font-size:0.6rem;color:var(--muted);text-align:right;margin-top:2px;text-transform:uppercase;letter-spacing:0.1em}
+        .res-score-badge{font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;margin-top:6px;display:inline-block}
+        .res-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);padding:0 2rem;overflow-x:auto}
+        .res-tab{padding:0.875rem 1.25rem;font-size:0.78rem;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:0.15s;white-space:nowrap}
+        .res-tab.active{color:#3b82f6;border-bottom-color:#3b82f6}
+        .res-tab-panel{display:none;padding:2rem 2.5rem}
+        .res-tab-panel.active{display:block}
+        .res-sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:1.25rem}
+        .res-sec-title{font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-0.02em}
+        .res-sec-line{flex:1;height:1px;background:var(--border)}
+        .res-bar-row{display:grid;grid-template-columns:150px 1fr 80px;align-items:center;gap:16px;margin-bottom:10px}
+        .res-bar-name{font-size:0.78rem;font-weight:500;color:var(--text)}
+        .res-bar-track{height:6px;background:var(--surface2);border-radius:3px;position:relative}
+        .res-bar-normal{position:absolute;height:100%;background:rgba(59,130,246,0.1);border-radius:3px}
+        .res-bar-fill{position:absolute;height:100%;border-radius:3px;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
+        .res-bar-val{font-size:0.75rem;color:var(--muted);text-align:right;font-weight:600}
+        .res-bar-range{font-size:0.62rem;color:var(--muted);opacity:0.6;grid-column:2/3;margin-top:-4px}
+        .res-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+        .res-stat{background:var(--surface);padding:1.25rem;position:relative;transition:background 0.15s}
+        .res-stat:hover{background:var(--surface2)}
+        .res-stat-val{font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-0.03em;line-height:1}
+        .res-stat-unit{font-size:0.62rem;color:var(--muted);font-weight:500}
+        .res-stat-name{font-size:0.65rem;color:var(--muted);margin-top:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em}
+        .res-stat-tag{position:absolute;top:10px;right:10px;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:4px}
+        .tag-ok{background:rgba(16,185,129,0.12);color:#10b981}
+        .tag-low{background:rgba(234,179,8,0.12);color:#eab308}
+        .tag-high{background:rgba(239,68,68,0.12);color:#ef4444}
+        .res-segments{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+        .res-seg{background:var(--surface);padding:1.25rem 1rem;text-align:center}
+        .res-seg-name{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:10px}
+        .res-seg-kg{font-size:1.2rem;font-weight:800;color:var(--text)}
+        .res-seg-unit{font-size:0.6rem;color:var(--muted)}
+        .res-seg-pct{font-size:0.78rem;font-weight:700;margin-top:4px}
+        .res-seg-bar{height:3px;background:var(--surface2);border-radius:2px;margin-top:8px;overflow:hidden}
+        .res-seg-bar-fill{height:100%;border-radius:2px}
+        .res-wc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+        .res-wc-cell{background:var(--surface);padding:1.25rem 1.5rem}
+        .res-wc-label{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px}
+        .res-wc-val{font-size:1.8rem;font-weight:800;letter-spacing:-0.03em}
         @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
@@ -264,6 +310,7 @@
             <button class="login-btn" onclick="loginCheck()" data-i18n="login_btn">Sign In</button>
             <div class="login-forgot" onclick="showReset()" data-i18n="forgot_pw">Forgot Password</div>
             <div class="kvkk-note" data-i18n="kvkk">🛡️ This panel is protected under KVKK/GDPR.</div>
+            <div style="text-align:center;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05)"><button onclick="showApplyForm()" style="background:none;border:none;color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-map-marker-alt"></i> Apply to Become a Center</button></div>
         </div>
         <div class="login-box" id="login-box-reset" style="display:none">
             <div class="login-logo"><span class="login-wordmark">InBody</span></div>
@@ -346,6 +393,12 @@
     <div class="tab" id="tab-files" onclick="switchTab('files')">
         <i class="fas fa-folder-open"></i> <span data-i18n="tab_files">Files</span>
     </div>
+    <div class="tab" id="tab-centers" onclick="switchTab('centers')">
+        <i class="fas fa-map-marker-alt"></i> <span>Centers</span>
+    </div>
+    <div class="tab" id="tab-results" onclick="switchTab('results')">
+        <i class="fas fa-chart-bar"></i> <span>Results</span>
+    </div>
 </div>
 
 <!-- PAGE: INBODY -->
@@ -400,6 +453,61 @@
         </div>
         <div class="breadcrumb" id="breadcrumb"></div>
         <div id="files-container"></div>
+    </div>
+</div>
+
+<!-- PAGE: CENTERS -->
+<div class="page" id="page-centers">
+    <div id="centers-public" style="flex:1;display:flex;flex-direction:column">
+        <div style="background:linear-gradient(135deg,#0a0f1e,#1a1040);padding:2.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--border)">
+            <div>
+                <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.2em;color:#3b82f6;margin-bottom:0.5rem">AUTHORIZED CENTERS</div>
+                <div style="font-size:1.8rem;font-weight:800;color:#f1f5f9;margin-bottom:0.4rem">InBody Test Centers</div>
+                <div style="font-size:0.88rem;color:rgba(241,245,249,0.55)">Find your nearest authorized InBody measurement center</div>
+            </div>
+            <button onclick="showApplicationsPanel()" style="background:#1e3a5f;color:white;border:none;padding:12px 24px;border-radius:12px;font-size:0.875rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap"><i class="fas fa-clipboard-list" style="margin-right:8px"></i>View Applications</button>
+        </div>
+        <div style="padding:1.5rem 2rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+            <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;flex:1;max-width:380px">
+                <i class="fas fa-search" style="color:var(--muted)"></i>
+                <input type="text" id="center-search" placeholder="Search by city or name..." oninput="filterCenters()" style="background:transparent;border:none;outline:none;color:var(--text);font-size:0.875rem;font-family:Inter,sans-serif;width:100%">
+            </div>
+            <div id="centers-count" style="font-size:0.78rem;color:var(--muted)"></div>
+        </div>
+        <div id="centers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:0 2rem 2rem"></div>
+        <div id="centers-empty" style="display:none;text-align:center;padding:4rem 2rem;color:var(--muted)">
+            <i class="fas fa-map-marker-alt" style="font-size:3rem;opacity:0.3;display:block;margin-bottom:1rem"></i>
+            <p>No approved centers yet.</p>
+        </div>
+    </div>
+    <div id="applications-panel" style="display:none;flex:1;flex-direction:column;padding:1.5rem 2rem;gap:1rem;max-width:900px;margin:0 auto;width:100%">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:12px">
+                <button onclick="showPublicCenters()" style="display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:10px;font-size:0.8rem;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-arrow-left"></i> Back</button>
+                <div style="font-size:1rem;font-weight:700;color:var(--text)"><i class="fas fa-clipboard-list"></i> Applications</div>
+            </div>
+            <button onclick="basviruGetir()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:10px;cursor:pointer"><i class="fas fa-sync-alt"></i></button>
+        </div>
+        <div style="display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content">
+            <div id="apptab-pending"  onclick="filterApps('pending')"  style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text)">Pending</div>
+            <div id="apptab-approved" onclick="filterApps('approved')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">Approved</div>
+            <div id="apptab-rejected" onclick="filterApps('rejected')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">Rejected</div>
+            <div id="apptab-all"      onclick="filterApps('all')"      style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">All</div>
+        </div>
+        <div id="app-list" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+</div>
+
+<!-- PAGE: RESULTS -->
+<div class="page" id="page-results">
+    <div id="results-loading" style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:1rem;color:var(--muted)">
+        <div class="spinner"></div>
+        <div style="font-size:0.85rem">Loading results...</div>
+    </div>
+    <div id="results-content" style="display:none;flex:1;flex-direction:column;overflow-y:auto"></div>
+    <div id="results-empty" style="display:none;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:1rem;color:var(--muted)">
+        <i class="fas fa-file-csv" style="font-size:3rem;opacity:0.3"></i>
+        <p>No CSV data found. Upload a CSV to the Drive folder.</p>
     </div>
 </div>
 
@@ -511,6 +619,8 @@
         document.getElementById('page-'+tab).classList.add('active');
         if (tab==='files' && allFiles.length===0) dosyalariGetir();
         if (tab==='files' && allFiles.length>0) showFolderGrid();
+        if (tab==='centers') merkezleriGetir();
+        if (tab==='results') resultsGetir();
     }
 
     /* ── LOGIN ── */
@@ -533,6 +643,7 @@
             sessionStorage.setItem('inbody_auth','1');
             document.getElementById('login-overlay').style.display='none';
             veriGetir();
+            setTimeout(addAdminCenterBtn,500);
         } else {
             err.textContent=t('login_error'); err.style.display='block';
             ['login-user','login-pass'].forEach(function(id){
@@ -966,6 +1077,229 @@
 
     // Init
     applyLang();
+    if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn,300);
+
+    /* CENTERS */
+    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json&gid=538154086';
+    var allApplications = [], currentAppFilter = 'pending', approvedCenters = [];
+
+    function showApplyForm() { var o=document.getElementById('apply-overlay'); if(o){o.style.display='flex';document.body.style.overflow='hidden';} }
+    function hideApplyForm() { var o=document.getElementById('apply-overlay'); if(o){o.style.display='none';document.body.style.overflow='';} }
+    function showPublicCenters() { document.getElementById('applications-panel').style.display='none'; document.getElementById('centers-public').style.display='flex'; }
+    function showApplicationsPanel() { document.getElementById('centers-public').style.display='none'; document.getElementById('applications-panel').style.display='flex'; basviruGetir(); }
+    function filterCenters() { renderCenters(); }
+    function filterApps(f) {
+        currentAppFilter = f;
+        ['pending','approved','rejected','all'].forEach(function(x) {
+            var el = document.getElementById('apptab-'+x);
+            if (!el) return;
+            if (x===f) { el.style.background='var(--surface)'; el.style.color='var(--text)'; }
+            else { el.style.background='transparent'; el.style.color='var(--muted)'; }
+        });
+        renderApplications();
+    }
+    function addAdminCenterBtn() {
+        if (document.getElementById('admin-center-btn')) return;
+        var btn = document.createElement('button');
+        btn.id = 'admin-center-btn'; btn.className = 'btn-icon'; btn.title = 'Applications';
+        btn.innerHTML = '<i class="fas fa-clipboard-list" style="font-size:0.85rem;color:var(--muted)"></i>';
+        btn.onclick = function() { switchTab('centers'); setTimeout(showApplicationsPanel,100); };
+        var th = document.getElementById('theme-btn');
+        if (th) th.parentNode.insertBefore(btn, th);
+    }
+    async function merkezleriGetir() {
+        try {
+            var res = await fetch(FORM_JSON_URL+'&_='+Date.now());
+            var raw = await res.text();
+            var json = JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
+            allApplications = [];
+            if (!json.table||!json.table.rows) { renderCenters(); return; }
+            json.table.rows.forEach(function(row,idx) {
+                if (!row.c||!row.c[0]||!row.c[0].v) return;
+                var date=row.c[0]?row.c[0].v:'', email=row.c[2]?row.c[2].v:'';
+                var key='app_'+(date+'_'+email).replace(/[^a-zA-Z0-9]/g,'_');
+                var st=localStorage.getItem(key+'_status')||'pending';
+                var ml=localStorage.getItem(key+'_map')||'';
+                allApplications.push({idx:idx,key:key,date:date,name:row.c[1]?row.c[1].v:'',email:email,phone:row.c[3]?row.c[3].v:'',company:row.c[4]?row.c[4].v:'',city:row.c[5]?row.c[5].v:'',status:st,mapLink:ml});
+            });
+            approvedCenters = allApplications.filter(function(a){return a.status==='approved';});
+            renderCenters();
+        } catch(e) { console.error('Centers error:',e); }
+    }
+    function renderCenters() {
+        var grid=document.getElementById('centers-grid'), empty=document.getElementById('centers-empty'), countEl=document.getElementById('centers-count');
+        if (!grid) return;
+        var query=''; var s=document.getElementById('center-search'); if(s) query=s.value.toLowerCase();
+        var filtered=approvedCenters.filter(function(c){return !query||c.name.toLowerCase().indexOf(query)>-1||c.city.toLowerCase().indexOf(query)>-1||c.company.toLowerCase().indexOf(query)>-1;});
+        if(countEl) countEl.textContent=filtered.length+(filtered.length!==1?' centers':' center');
+        grid.innerHTML='';
+        if(filtered.length===0){if(empty)empty.style.display='block';return;}
+        if(empty) empty.style.display='none';
+        filtered.forEach(function(c){
+            var card=document.createElement('div');
+            card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.2s';
+            card.onmouseenter=function(){this.style.borderColor='#3b82f6';this.style.transform='translateY(-3px)';};
+            card.onmouseleave=function(){this.style.borderColor='var(--border)';this.style.transform='';};
+            var mapHtml='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--muted)">&#128205;</div>';
+            if(c.mapLink) mapHtml='<iframe src="https://maps.google.com/maps?q='+encodeURIComponent(c.city+' '+c.company)+'&output=embed&z=15" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;pointer-events:none"></iframe>';
+            var mapsBtn=c.mapLink?'<a href="'+c.mapLink+'" target="_blank" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Maps</button></a>':'';
+            card.innerHTML='<div style="height:160px;background:var(--surface2);overflow:hidden">'+mapHtml+'</div><div style="padding:1.25rem"><div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:3px">'+c.name+'</div><div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:10px">'+c.company+'</div><div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">'+c.city+'</div><div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">'+c.phone+'</div><div style="font-size:0.78rem;color:var(--muted)">'+c.email+'</div></div><div style="display:flex;gap:8px;padding:1rem 1.25rem;border-top:1px solid var(--border);background:var(--surface2)">'+mapsBtn+'<a href="mailto:'+c.email+'" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(16,185,129,0.1);color:#10b981;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Contact</button></a></div>';
+            grid.appendChild(card);
+        });
+    }
+    async function basviruGetir() { await merkezleriGetir(); renderApplications(); }
+    function renderApplications() {
+        var list=document.getElementById('app-list');
+        if(!list) return;
+        list.innerHTML='';
+        var filtered=allApplications.filter(function(a){return currentAppFilter==='all'||a.status===currentAppFilter;});
+        if(filtered.length===0){list.innerHTML='<div style="text-align:center;padding:3rem;color:var(--muted)">No applications found.</div>';return;}
+        filtered.forEach(function(a){
+            var sc=a.status==='approved'?'#10b981':a.status==='rejected'?'#ef4444':'#eab308';
+            var sb=a.status==='approved'?'rgba(16,185,129,0.15)':a.status==='rejected'?'rgba(239,68,68,0.15)':'rgba(234,179,8,0.15)';
+            var card=document.createElement('div');
+            card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:1rem';
+            var mapInput=a.status==='pending'?'<div style="margin-top:8px"><input id="mapinput_'+a.idx+'" type="text" value="'+(a.mapLink||'')+'" placeholder="Google Maps link (optional)" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:7px 10px;color:var(--input-color);font-size:0.78rem;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"></div>':'';
+            var adminBtns=a.status==='pending'?'<button onclick="setAppStatus('+a.idx+',\'approved\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(16,185,129,0.1);color:#10b981">Approve</button><button onclick="setAppStatus('+a.idx+',\'rejected\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(239,68,68,0.1);color:#ef4444">Reject</button>':'';
+            card.innerHTML='<div style="flex:1"><div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:3px">'+a.name+'</div><div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:8px">'+a.company+'</div><div style="font-size:0.75rem;color:var(--muted)">'+a.city+' | '+a.phone+' | '+a.email+'</div>'+mapInput+'<div style="font-size:0.68rem;color:var(--muted);margin-top:6px">'+a.date+'</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end"><span style="padding:4px 10px;border-radius:20px;font-size:0.68rem;font-weight:700;text-transform:uppercase;background:'+sb+';color:'+sc+'">'+a.status+'</span>'+adminBtns+'</div>';
+            list.appendChild(card);
+        });
+    }
+    function setAppStatus(idx,status) {
+        var app=allApplications.find(function(a){return a.idx===idx;});
+        if(!app) return;
+        var mi=document.getElementById('mapinput_'+idx);
+        var ml=mi?mi.value.trim():'';
+        localStorage.setItem(app.key+'_status',status);
+        if(ml) localStorage.setItem(app.key+'_map',ml);
+        basviruGetir();
+    }
+
+    /* RESULTS */
+    var RESULT_JSON_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/gviz/tq?tqx=out:json';
+    var resultData = {};
+
+    async function resultsGetir() {
+        document.getElementById('results-loading').style.display='flex';
+        document.getElementById('results-content').style.display='none';
+        document.getElementById('results-empty').style.display='none';
+        try {
+            var res=await fetch(RESULT_JSON_URL+'&_='+Date.now());
+            var raw=await res.text();
+            var json=JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
+            resultData={};
+            if(!json.table||!json.table.rows||json.table.rows.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
+            json.table.rows.forEach(function(row){
+                if(!row.c||!row.c[0]||!row.c[0].v) return;
+                var key=row.c[0].v.toString().trim();
+                var val=row.c[1]?(row.c[1].v||'').toString().trim():'';
+                resultData[key]=val;
+            });
+            renderResults();
+        } catch(e) { console.error('Results error:',e); document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; }
+    }
+    function rv(key) { return parseFloat((resultData[key]||'0').replace(',','.'))||0; }
+    function rs(key) { return resultData[key]||'-'; }
+    function getTag(val,low,high) {
+        if(!low&&!high) return '';
+        if(val<low) return '<span class="res-stat-tag tag-low">&#8595; Low</span>';
+        if(val>high) return '<span class="res-stat-tag tag-high">&#8593; High</span>';
+        return '<span class="res-stat-tag tag-ok">&#10003;</span>';
+    }
+    function scoreColor(s){return s>=80?'#10b981':s>=70?'#f59e0b':'#ef4444';}
+    function pctColor(p){return p>=100?'#10b981':p>=80?'#f59e0b':'#ef4444';}
+    function resBar(name,val,low,high,unit){
+        var max=high*1.4, pct=Math.min(val/max*100,100);
+        var nStart=(low/max*100).toFixed(1), nWidth=((high-low)/max*100).toFixed(1);
+        var color=val<low?'#f59e0b':val>high?'#ef4444':'#10b981';
+        return '<div class="res-bar-row"><div class="res-bar-name">'+name+'</div><div class="res-bar-track"><div class="res-bar-normal" style="left:'+nStart+'%;width:'+nWidth+'%"></div><div class="res-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div><div class="res-bar-val">'+val.toFixed(1)+' '+unit+'</div><div class="res-bar-range">Normal: '+low+'&#8211;'+high+' '+unit+'</div></div>';
+    }
+    function resStat(name,val,unit,low,high){
+        var dv=typeof val==='number'?(val%1===0?val:val.toFixed(1)):val;
+        var tag=(low||high)?getTag(parseFloat(val),low,high):'';
+        return '<div class="res-stat">'+tag+'<div class="res-stat-val">'+dv+'<span class="res-stat-unit"> '+unit+'</span></div><div class="res-stat-name">'+name+'</div></div>';
+    }
+    function resSeg(name,kg,pct){
+        var color=pctColor(pct), barW=Math.min(pct,130)/130*100;
+        return '<div class="res-seg"><div class="res-seg-name">'+name+'</div><div class="res-seg-kg">'+kg.toFixed(2)+'<span class="res-seg-unit"> kg</span></div><div class="res-seg-pct" style="color:'+color+'">'+pct.toFixed(1)+'%</div><div class="res-seg-bar"><div class="res-seg-bar-fill" style="width:'+barW+'%;background:'+color+'"></div></div></div>';
+    }
+    function resTab(el,panelId){
+        document.querySelectorAll('.res-tab').forEach(function(t){t.classList.remove('active');});
+        document.querySelectorAll('.res-tab-panel').forEach(function(p){p.classList.remove('active');});
+        el.classList.add('active');
+        var panel=document.getElementById(panelId); if(panel) panel.classList.add('active');
+    }
+    function renderResults(){
+        document.getElementById('results-loading').style.display='none';
+        var score=rv('InBody Score'), weight=rv('Weight'), wLow=rv('Lower Limit (Weight Normal Range)'), wHigh=rv('Upper Limit (Weight Normal Range)');
+        var tbw=rv('TBW (Total Body Water)'), protein=rv('Protein'), minerals=rv('Minerals');
+        var bfm=rv('BFM (Body Fat Mass)'), ffm=rv('FFM (Fat Free Mass)'), smm=rv('SMM (Skeletal Muscle Mass)');
+        var bmi=rv('BMI (Body Mass Index)'), pbf=rv('PBF (Percent Body Fat)'), bmr=rv('BMR (Basal Metabolic Rate)');
+        var vfa=rv('VFA (Visceral Fat Area)'), ecwR=rv('ECW/TBW'), whr=rv('WHR (Waist-Hip Ratio)');
+        var targetW=rv('Target Weight'), wCtrl=rv('Weight Control'), bfmCtrl=rv('BFM Control'), ffmCtrl=rv('FFM Control');
+        var recCal=rv('Recommended Calorie Intake'), bcm=rv('BCM (Body Cell Mass)'), smi=rv('SMI (Skeletal Muscle Index)');
+        var name=rs('Name')!=='-'?rs('Name'):'ID: '+rs('ID');
+        var testDate=rs('Test Date / Time'), gender=rs('Gender'), age=rs('Age'), height=rs('Height');
+        var raKg=rv('FFM of Right Arm'),raPct=rv('FFM% of Right Arm'),laKg=rv('FFM of Left Arm'),laPct=rv('FFM% of Left Arm');
+        var trKg=rv('FFM of Trunk'),trPct=rv('FFM% of Trunk'),rlKg=rv('FFM of Right Leg'),rlPct=rv('FFM% of Right Leg');
+        var llKg=rv('FFM of Left Leg'),llPct=rv('FFM% of Left Leg');
+        var sc=scoreColor(score);
+        var badge=score>=80?['#10b981','rgba(16,185,129,0.12)','Excellent']:score>=70?['#f59e0b','rgba(245,158,11,0.12)','Good']:['#ef4444','rgba(239,68,68,0.12)','Needs Work'];
+        var wc=wCtrl>=0?'+'+wCtrl.toFixed(1):wCtrl.toFixed(1);
+        var bfc=bfmCtrl>=0?'+'+bfmCtrl.toFixed(1):bfmCtrl.toFixed(1);
+        var ffc=ffmCtrl>=0?'+'+ffmCtrl.toFixed(1):ffmCtrl.toFixed(1);
+        var html='';
+        html+='<div class="res-hero"><div><div class="res-hero-name">'+name+'</div><div class="res-hero-meta"><span>&#128197; '+testDate+'</span><span>&#128207; '+height+' cm</span><span>&#127874; '+age+' yrs</span><span>'+gender+'</span></div></div>';
+        html+='<div class="res-score-wrap"><div class="res-score-num" style="color:'+sc+'">'+score+'</div><div class="res-score-sub">InBody Score / 100</div><div class="res-score-badge" style="color:'+badge[0]+';background:'+badge[1]+'">'+badge[2]+'</div></div></div>';
+        html+='<div class="res-tabs"><div class="res-tab active" onclick="resTab(this,\'res-p0\')">Composition</div><div class="res-tab" onclick="resTab(this,\'res-p1\')">Metrics</div><div class="res-tab" onclick="resTab(this,\'res-p2\')">Segments</div><div class="res-tab" onclick="resTab(this,\'res-p3\')">Weight</div><div class="res-tab" onclick="resTab(this,\'res-p4\')">Nutrition</div></div>';
+        html+='<div class="res-tab-panel active" id="res-p0"><div class="res-sec-head"><div class="res-sec-title">Body Composition</div><div class="res-sec-line"></div></div>';
+        html+=resBar('Total Body Water',tbw,rv('Lower Limit (TBW Normal Range)'),rv('Upper Limit (TBW Normal Range)'),'L');
+        html+=resBar('Protein',protein,rv('Lower Limit (Protein Normal Range)'),rv('Upper Limit (Protein Normal Range)'),'kg');
+        html+=resBar('Minerals',minerals,rv('Lower Limit (Minerals Normal Range)'),rv('Upper Limit (Minerals Normal Range)'),'kg');
+        html+=resBar('Body Fat Mass',bfm,rv('Lower Limit (BFM Normal Range)'),rv('Upper Limit (BFM Normal Range)'),'kg');
+        html+=resBar('Skeletal Muscle',smm,rv('Lower Limit (SMM Normal Range)'),rv('Upper Limit (SMM Normal Range)'),'kg');
+        html+=resBar('Weight',weight,wLow,wHigh,'kg');
+        html+='</div>';
+        html+='<div class="res-tab-panel" id="res-p1"><div class="res-sec-head"><div class="res-sec-title">Key Metrics</div><div class="res-sec-line"></div></div><div class="res-stats">';
+        html+=resStat('BMI',bmi,'kg/m&#178;',rv('Lower Limit (BMI Normal Range)'),rv('Upper Limit (BMI Normal Range)'));
+        html+=resStat('Body Fat %',pbf,'%',rv('Lower Limit (PBF Normal Range)'),rv('Upper Limit (PBF Normal Range)'));
+        html+=resStat('Muscle Mass',smm,'kg',rv('Lower Limit (SMM Normal Range)'),rv('Upper Limit (SMM Normal Range)'));
+        html+=resStat('Fat Free Mass',ffm,'kg',rv('Lower Limit (FFM Normal Range)'),rv('Upper Limit (FFM Normal Range)'));
+        html+=resStat('Visceral Fat',vfa,'cm&#178;');
+        html+=resStat('ECW/TBW',ecwR,'',0.36,0.39);
+        html+=resStat('WHR',whr,'',rv('Lower Limit (WHR Normal Range)'),rv('Upper Limit (WHR Normal Range)'));
+        html+=resStat('BMR',bmr,'kcal',rv('Lower Limit (BMR Normal Range)'),rv('Upper Limit (BMR Normal Range)'));
+        html+='</div></div>';
+        html+='<div class="res-tab-panel" id="res-p2"><div class="res-sec-head"><div class="res-sec-title">Segmental Lean Analysis</div><div class="res-sec-line"></div></div><div class="res-segments">';
+        html+=resSeg('R. Arm',raKg,raPct)+resSeg('L. Arm',laKg,laPct)+resSeg('Trunk',trKg,trPct)+resSeg('R. Leg',rlKg,rlPct)+resSeg('L. Leg',llKg,llPct);
+        html+='</div></div>';
+        html+='<div class="res-tab-panel" id="res-p3"><div class="res-sec-head"><div class="res-sec-title">Weight Control</div><div class="res-sec-line"></div></div><div class="res-wc-grid">';
+        html+='<div class="res-wc-cell"><div class="res-wc-label">Current</div><div class="res-wc-val" style="color:var(--text)">'+weight.toFixed(1)+'<span style="font-size:0.9rem;font-weight:400;color:var(--muted)"> kg</span></div></div>';
+        html+='<div class="res-wc-cell"><div class="res-wc-label">Target</div><div class="res-wc-val" style="color:#3b82f6">'+targetW.toFixed(1)+'<span style="font-size:0.9rem;font-weight:400;color:var(--muted)"> kg</span></div></div>';
+        html+='<div class="res-wc-cell"><div class="res-wc-label">Weight &#916;</div><div class="res-wc-val" style="color:'+(wCtrl>=0?'#10b981':'#ef4444')+'">'+wc+'<span style="font-size:0.9rem;font-weight:400;color:var(--muted)"> kg</span></div></div>';
+        html+='<div class="res-wc-cell"><div class="res-wc-label">Fat &#916;</div><div class="res-wc-val" style="color:'+(bfmCtrl<=0?'#10b981':'#ef4444')+'">'+bfc+'<span style="font-size:0.9rem;font-weight:400;color:var(--muted)"> kg</span></div></div>';
+        html+='<div class="res-wc-cell" style="grid-column:1/-1"><div class="res-wc-label">Muscle &#916;</div><div class="res-wc-val" style="color:'+(ffmCtrl>=0?'#10b981':'#ef4444')+'">'+ffc+'<span style="font-size:0.9rem;font-weight:400;color:var(--muted)"> kg</span></div></div>';
+        html+='</div></div>';
+        html+='<div class="res-tab-panel" id="res-p4"><div class="res-sec-head"><div class="res-sec-title">Nutrition &amp; Metabolism</div><div class="res-sec-line"></div></div><div class="res-stats">';
+        html+=resStat('BMR',bmr,'kcal',rv('Lower Limit (BMR Normal Range)'),rv('Upper Limit (BMR Normal Range)'));
+        html+=resStat('Rec. Calories',recCal,'kcal');
+        html+=resStat('Body Cell Mass',bcm,'kg',rv('Lower Limit (BCM Normal Range)'),rv('Upper Limit (BCM Normal Range)'));
+        html+=resStat('SMI',smi,'kg/m&#178;');
+        html+='</div></div>';
+        var el=document.getElementById('results-content');
+        el.innerHTML=html; el.style.display='flex'; el.style.flexDirection='column'; el.style.padding='0'; el.style.gap='0';
+    }
+
 </script>
+
+<div id="apply-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
+    <div style="background:var(--surface);border-radius:20px;width:100%;max-width:640px;height:85vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0">
+            <div style="font-size:1rem;font-weight:700;color:var(--text)">Center Registration Request</div>
+            <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer">&#x2715;</button>
+        </div>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
+    </div>
+</div>
 </body>
 </html>
