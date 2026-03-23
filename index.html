@@ -1371,18 +1371,12 @@
     const CLAUDE_API_KEY = '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';
     var lastAnalyzedSrc = '';
 
-    async function analyzeInBodyImage(imgEl) {
-        if (!imgEl || !imgEl.src || imgEl.src === lastAnalyzedSrc) return;
-        lastAnalyzedSrc = imgEl.src;
-
-        // Analiz göstergesi
+    async function analyzeWithFileId(fileId) {
+        if (!fileId || fileId === lastAnalyzedSrc) return;
+        lastAnalyzedSrc = fileId;
         showAnalysisStatus('analyzing');
 
         try {
-            // File ID'yi src'den çıkar, corsproxy üzerinden al
-            var srcMatch = imgEl.src.match(/id=([^&]+)/);
-            if (!srcMatch) throw new Error('No file ID');
-            var fileId = srcMatch[1];
             var directUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
             var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(directUrl);
             var fetchRes = await fetch(proxyUrl);
