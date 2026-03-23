@@ -1317,7 +1317,6 @@
     }
 
     async function resultsGetirSilent() {
-        if (allMeasurements && allMeasurements.length > 0) return;
         await loadAllMeasurements();
         updateAnnotationsFromCSV(currentIndex);
     }
