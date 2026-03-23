@@ -1379,10 +1379,11 @@
         showAnalysisStatus('analyzing');
 
         try {
-            // Drive thumbnail URL'ini direkt fetch et
-            var imageUrl = imgEl.src;
-            var fetchRes = await fetch(imageUrl, { mode: 'cors' });
-            if (!fetchRes.ok) throw new Error('Image fetch failed: ' + fetchRes.status);
+            // CORS proxy üzerinden resmi al
+            var imageUrl = imgEl.src.split('&_=')[0]; // cache buster kaldır
+            var proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(imageUrl);
+            var fetchRes = await fetch(proxyUrl);
+            if (!fetchRes.ok) throw new Error('Proxy fetch failed: ' + fetchRes.status);
             var blob = await fetchRes.blob();
             var base64 = await new Promise(function(resolve, reject) {
                 var reader = new FileReader();
