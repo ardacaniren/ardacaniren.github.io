@@ -1373,40 +1373,27 @@
 
     async function loadAllMeasurements() {
         try {
-            // gviz/tq ile çek - tüm kolonlar için range belirt
-            var baseUrl = 'https://docs.google.com/spreadsheets/d/' + RESULT_SHEET_ID + '/gviz/tq?tqx=out:json';
-            var res = await fetch(baseUrl + '&_=' + Date.now());
-            var raw = await res.text();
-            var json = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1));
-            
-            if (!json.table || !json.table.rows) return;
-            
-            // Başlıklar cols'dan gel
-            var headers = json.table.cols.map(function(c){ return (c.label||'').trim(); });
-            allMeasurements = [];
-            
-            json.table.rows.forEach(function(row) {
-                if (!row.c) return;
-                var obj = {};
-                row.c.forEach(function(cell, i) {
-                    if (!headers[i]) return;
-                    var v = '';
-                    if (cell && cell.v != null) {
-                        // Date objesini string'e çevir
-                        if (typeof cell.v === 'object' && cell.v instanceof Object) {
-                            v = cell.f || '';
-                        } else {
-                            v = cell.v.toString().replace(',', '.').trim();
-                        }
-                    }
-                    obj[headers[i]] = v;
-                });
-                if (obj['Test Date / Time']) allMeasurements.push(obj);
-            });
-            
+            var res = await fetch(RESULT_WEBAPP_URL + '?_=' + Date.now());
+            var data = await res.json();
+            allMeasurements = data.measurements || [];
             console.log('Loaded', allMeasurements.length, 'measurements,', Object.keys(allMeasurements[0]||{}).length, 'keys');
-            if (allMeasurements[0]) console.log('Weight:', allMeasurements[0]['Weight'], 'Score:', allMeasurements[0]['InBody Score'], 'Protein:', allMeasurements[0]['Protein']);
-        } catch(e) { console.error('loadAllMeasurements error:', e); }
+            if (allMeasurements[0]) console.log('Weight:', allMeasurements[0]['Weight'], 'Score:', allMeasurements[0]['InBody Score']);
+        } catch(e) {
+            console.error('fetch failed, trying JSONP:', e.message);
+            await new Promise(function(resolve) {
+                var cbName = 'ibcb_' + Date.now();
+                window[cbName] = function(data) {
+                    allMeasurements = data.measurements || [];
+                    console.log('JSONP loaded', allMeasurements.length, 'measurements');
+                    delete window[cbName];
+                    resolve();
+                };
+                var s = document.createElement('script');
+                s.src = RESULT_WEBAPP_URL + '?callback=' + cbName + '&_=' + Date.now();
+                s.onerror = function() { resolve(); };
+                document.head.appendChild(s);
+            });
+        }
     }
 
     // Init
@@ -1511,7 +1498,7 @@
 
     /* RESULTS */
     var RESULT_JSON_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/gviz/tq?tqx=out:json';
-    var RESULT_SHEET_ID = '1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y';
+    var RESULT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwustqC4VsB-m41GFYOzvEmEz6XG10sFLuoFuZgl3IJFlRT85tNYbl32cQPPzoQAHbi/exec';
     var resultData = {};
 
     var allMeasurements = [], currentMeasIdx = 0;
