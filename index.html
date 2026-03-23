@@ -1374,29 +1374,11 @@
 
     async function loadAllMeasurements() {
         try {
-            console.log('Fetching CSV from:', RESULT_CSV_URL);
-            var res = await fetch(RESULT_CSV_URL + '&_=' + Date.now());
-            console.log('CSV response status:', res.status, res.ok);
-            var raw = await res.text();
-            console.log('CSV raw length:', raw.length, 'first 100:', raw.slice(0,100));
-            var lines = raw.split('\n').filter(function(l){ return l.trim(); });
-            if (lines.length < 2) return;
-            var headers = parseCSVLine(lines[0]);
-            allMeasurements = [];
-            for (var i = 1; i < lines.length; i++) {
-                var vals = parseCSVLine(lines[i]);
-                var obj = {};
-                headers.forEach(function(h, j){
-                    var v = (vals[j]||'').trim().replace(/^"|"$/g,'');
-                    // Date(YYYY.M,D) formatını temizle - bu sayısal değil, boş bırak
-                    if (/^Date\(/.test(v)) v = '';
-                    // Virgüllü sayıları düzelt
-                    obj[h] = v.replace(',','.');
-                });
-                if (obj['Test Date / Time']) allMeasurements.push(obj);
-            }
+            var res = await fetch(RESULT_WEBAPP_URL + '?_=' + Date.now());
+            var data = await res.json();
+            allMeasurements = data.measurements || [];
             console.log('Loaded', allMeasurements.length, 'measurements,', Object.keys(allMeasurements[0]||{}).length, 'keys');
-            console.log('Sample - Weight:', allMeasurements[0] && allMeasurements[0]['Weight'], 'Protein:', allMeasurements[0] && allMeasurements[0]['Protein'], 'BFM:', allMeasurements[0] && allMeasurements[0]['BFM (Body Fat Mass)']);
+            if (allMeasurements[0]) console.log('Sample - Weight:', allMeasurements[0]['Weight'], 'Protein:', allMeasurements[0]['Protein'], 'Score:', allMeasurements[0]['InBody Score']);
         } catch(e) { console.error('loadAllMeasurements error:', e); }
     }
 
@@ -1502,7 +1484,7 @@
 
     /* RESULTS */
     var RESULT_JSON_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/gviz/tq?tqx=out:json';
-    var RESULT_CSV_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/export?format=csv';
+    var RESULT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwustqC4VsB-m41GFYOzvEmEz6XG10sFLuoFuZgl3IJFlRT85tNYbl32cQPPzoQAHbi/exec';
     var resultData = {};
 
     var allMeasurements = [], currentMeasIdx = 0;
