@@ -984,7 +984,8 @@
         var img=document.getElementById('featured-img');
         img.onload=function(){
             showState('image');
-            analyzeInBodyImage(img);
+            // Analizi 1 sn sonra tetikle - görüntü tam yüklensin
+            setTimeout(function(){ analyzeWithFileId(imageLinks[index]); }, 1000);
         };
         img.onerror=function(){showState('error');};
         img.src='https://drive.google.com/thumbnail?id='+imageLinks[index]+'&sz=w1200&_='+Date.now();
