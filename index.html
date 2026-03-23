@@ -911,6 +911,11 @@
 
     /* ── AYARLAR ── */
     function openSettings() {
+        var ck = document.getElementById('claude-key-input');
+        if (ck) {
+            var stored = localStorage.getItem('claude_api_key') || '';
+            ck.placeholder = stored ? '••••••••' + stored.slice(-4) : 'sk-ant-api03-...';
+        }
         ['new-username','current-pass','new-pass','new-pass2'].forEach(function(id){document.getElementById(id).value='';});
         document.getElementById('settings-error').style.display='none';
         document.getElementById('settings-success').style.display='none';
@@ -918,6 +923,10 @@
     }
     function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
     function saveSettings() {
+        var ck = document.getElementById('claude-key-input');
+        if (ck && ck.value.trim()) {
+            localStorage.setItem('claude_api_key', ck.value.trim());
+        }
         var nu=document.getElementById('new-username').value.trim();
         var cp=document.getElementById('current-pass').value.trim();
         var np=document.getElementById('new-pass').value.trim();
@@ -1368,7 +1377,7 @@
     });
 
     /* ── CLAUDE VISION ANALİZ ── */
-    const CLAUDE_API_KEY = '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';
+    const CLAUDE_API_KEY = localStorage.getItem('claude_api_key') || '';
     var lastAnalyzedSrc = '';
 
     async function analyzeWithFileId(fileId) {
