@@ -1437,6 +1437,8 @@ Return ONLY the JSON, no explanation.`;
             });
 
             var data = await response.json();
+            console.log('API response:', JSON.stringify(data).slice(0, 300));
+            if (!data.content || !data.content[0]) throw new Error('API error: ' + JSON.stringify(data));
             var text = data.content[0].text.trim();
             // JSON temizle
             text = text.replace(/```json|```/g, '').trim();
