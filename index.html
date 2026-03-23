@@ -1119,18 +1119,24 @@
     function findMeasurementForImage(imageIndex) {
         if (!allMeasurements || allMeasurements.length === 0) return null;
         var imgDate = imageDates[imageIndex];
-        if (!imgDate) return null;
-        // imageDates: "23.03.2026 10:31" — sadece DD.MM.YYYY HH:MM kısmını al
+        console.log('Finding for imgDate:', imgDate, 'index:', imageIndex);
+        if (!imgDate) return allMeasurements[0];
+
+        // imageDates format: "23.03.2026 10:31"
+        // CSV Test Date / Time format: "20260323103103"
         var imgPrefix = imgDate.slice(0,13); // "23.03.2026 10"
 
-        // CSV'lerde ara
         for (var i = 0; i < allMeasurements.length; i++) {
             var m = allMeasurements[i];
-            var csvDate = m['Test Date / Time'] || '';
+            var csvDate = (m['Test Date / Time'] || '').replace(/\D/g,'');
             var disp = csvDateToDisplay(csvDate);
-            if (disp.slice(0,13) === imgPrefix) return m;
+            console.log('CSV disp:', disp, 'prefix:', disp.slice(0,13));
+            if (disp.slice(0,13) === imgPrefix) {
+                console.log('MATCH found at index', i);
+                return m;
+            }
         }
-        // Bulamazsa en yakın tarihe göre eşleştir
+        console.log('No match, using first measurement');
         return allMeasurements[0];
     }
 
