@@ -1185,6 +1185,7 @@
                 body += interpret(score,70,100,'Low score — increase muscle mass','Great score!','Good score, keep it up!');
             }
             else if (title === 'Body Composition Analysis') {
+                body = '';
                 var tbw=numVal(m,'TBW (Total Body Water)'),tbwL=numVal(m,'Lower Limit (TBW Normal Range)'),tbwH=numVal(m,'Upper Limit (TBW Normal Range)');
                 var pro=numVal(m,'Protein'),proL=numVal(m,'Lower Limit (Protein Normal Range)'),proH=numVal(m,'Upper Limit (Protein Normal Range)');
                 var min=numVal(m,'Minerals'),minL=numVal(m,'Lower Limit (Minerals Normal Range)'),minH=numVal(m,'Upper Limit (Minerals Normal Range)');
@@ -1197,6 +1198,7 @@
                 body += '⚖️ <strong>Weight:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH);
             }
             else if (title === 'Muscle-Fat Analysis') {
+                body = '';
                 var smm=numVal(m,'SMM (Skeletal Muscle Mass)'),smmL=numVal(m,'Lower Limit (SMM Normal Range)'),smmH=numVal(m,'Upper Limit (SMM Normal Range)');
                 var bfm2=numVal(m,'BFM (Body Fat Mass)'),bfmL2=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH2=numVal(m,'Upper Limit (BFM Normal Range)');
                 body  = '💪 <strong>Muscle (SMM):</strong> '+smm.toFixed(1)+' kg'+statusIcon(smm,smmL,smmH)+'<br>';
@@ -1204,6 +1206,7 @@
                 body += interpret(smm,smmL,smmH,'Low muscle mass — increase resistance training','Excellent muscle mass!','Muscle mass is in ideal range');
             }
             else if (title === 'Obesity Analysis') {
+                body = '';
                 var bmi=numVal(m,'BMI (Body Mass Index)'),bmiL=numVal(m,'Lower Limit (BMI Normal Range)'),bmiH=numVal(m,'Upper Limit (BMI Normal Range)');
                 var pbf=numVal(m,'PBF (Percent Body Fat)'),pbfL=numVal(m,'Lower Limit (PBF Normal Range)'),pbfH=numVal(m,'Upper Limit (PBF Normal Range)');
                 body  = '📏 <strong>BMI:</strong> '+bmi.toFixed(1)+' kg/m² ('+bmiL+'–'+bmiH+')'+statusIcon(bmi,bmiL,bmiH)+'<br>';
@@ -1211,6 +1214,7 @@
                 body += interpret(pbf,pbfL,pbfH,'Body fat % is low','Body fat % is high — increase cardio','Body fat % is ideal');
             }
             else if (title === 'Visceral Fat Area') {
+                body = '';
                 var vfa=numVal(m,'VFA (Visceral Fat Area)');
                 var vfaStatus = vfa<100?'✅ Excellent! (<100 cm²)':vfa<150?'⚠️ Caution (100–150 cm²)':'🚨 High Risk (>150 cm²)';
                 body  = '🫃 <strong>Visceral Fat Area: '+vfa.toFixed(1)+' cm²</strong><br><br>';
@@ -1218,6 +1222,7 @@
                 body += vfa>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Abdominal fat may pose metabolic health risks</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Visceral fat is at a healthy level</div>';
             }
             else if (title === 'Weight Control') {
+                body = '';
                 var wt2=numVal(m,'Weight'),tgt=numVal(m,'Target Weight');
                 var wCtrl=numVal(m,'Weight Control'),bfCtrl=numVal(m,'BFM Control'),mCtrl=numVal(m,'FFM Control');
                 body  = '🎯 <strong>Current:</strong> '+wt2.toFixed(1)+' kg → <strong>Target:</strong> '+tgt.toFixed(1)+' kg<br><br>';
@@ -1234,6 +1239,7 @@
                 body += 'Lower: <strong>'+(m['Body Balance Evaluation Lower']||'–')+'</strong>';
             }
             else if (title === 'Segmental Lean Analysis') {
+                body = '';
                 var ra=numVal(m,'FFM of Right Arm'),raP=numVal(m,'FFM% of Right Arm');
                 var la=numVal(m,'FFM of Left Arm'),laP=numVal(m,'FFM% of Left Arm');
                 var tr=numVal(m,'FFM of Trunk'),trP=numVal(m,'FFM% of Trunk');
@@ -1248,6 +1254,7 @@
                 body += 'Left Leg: '+ll.toFixed(2)+' kg — '+pStr(llP);
             }
             else if (title === 'Segmental Fat Analysis') {
+                body = '';
                 var raF=numVal(m,'BFM of Right Arm'),raFP=numVal(m,'BFM% of Right Arm');
                 var laF=numVal(m,'BFM of Left Arm'),laFP=numVal(m,'BFM% of Left Arm');
                 var trF=numVal(m,'BFM of Trunk'),trFP=numVal(m,'BFM% of Trunk');
@@ -1262,11 +1269,13 @@
                 if (trFP>100) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Trunk fat is above ideal</div>';
             }
             else if (title === 'ECW Ratio Analysis') {
+                body = '';
                 var ecw=numVal(m,'ECW/TBW');
                 body  = '💦 <strong>ECW/TBW: '+ecw.toFixed(3)+'</strong><br><br>Normal: 0.360–0.390';
                 body += interpret(ecw,0.360,0.390,'Intracellular fluid is low','Risk of edema or inflammation — consult a doctor','Fluid balance is normal');
             }
             else if (title === 'Research Parameters') {
+                body = '';
                 var bmr=numVal(m,'BMR (Basal Metabolic Rate)'),bmrL=numVal(m,'Lower Limit (BMR Normal Range)'),bmrH=numVal(m,'Upper Limit (BMR Normal Range)');
                 var whr=numVal(m,'WHR (Waist-Hip Ratio)'),whrL=numVal(m,'Lower Limit (WHR Normal Range)'),whrH=numVal(m,'Upper Limit (WHR Normal Range)');
                 body  = '🔬 Research parameters:<br><br>';
@@ -1277,6 +1286,7 @@
                 body += '🍽️ <strong>Rec. Calories:</strong> '+numVal(m,'Recommended Calorie Intake')+' kcal';
             }
             else if (title === 'Whole Body Phase Angle') {
+                body = '';
                 var pa=numVal(m,'50kHz-Whole Body Phase Angle');
                 if (!pa) pa=numVal(m,'Whole Body Phase Angle');
                 body  = '⚡ <strong>Phase Angle: '+pa.toFixed(1)+'°</strong><br><br>';
@@ -1301,8 +1311,7 @@
 
 
     function showAnnPreview(e, el) {
-        // CSV yüklendiyse güncel veriyi göster
-        if (allMeasurements && allMeasurements.length > 0) updateAnnotationsFromCSV(currentIndex);
+        updateAnnotationsFromCSV(currentIndex);
         var box = document.getElementById('ann-preview-box');
         document.getElementById('ann-preview-title').textContent = el.dataset.title || '';
         document.getElementById('ann-preview-hint').innerHTML = el.dataset.body || el.dataset.title || '';
@@ -1321,11 +1330,13 @@
     }
     function showAnnPopup(e, title, body) {
         e.stopPropagation();
-        if (allMeasurements && allMeasurements.length > 0) updateAnnotationsFromCSV(currentIndex);
+        // Her zaman önce güncelle
+        updateAnnotationsFromCSV(currentIndex);
         document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
         e.currentTarget.classList.add('active');
         activeAnnZone = e.currentTarget;
-        var freshBody = e.currentTarget.dataset.body || body || '';
+        // update sonrası dataset.body'yi al
+        var freshBody = e.currentTarget.dataset.body || '';
         document.getElementById('ann-popup-title').textContent = title;
         document.getElementById('ann-popup-body').innerHTML = freshBody;
         var popup = document.getElementById('ann-popup');
