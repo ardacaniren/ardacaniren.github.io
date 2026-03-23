@@ -1149,9 +1149,9 @@
     function statusIcon(val, low, high) {
         if (!low && !high) return '';
         var isTR = currentLang === 'tr';
-        if (val < low) return ' <span style="color:#f59e0b">↓ '+(isTR?'Düşük':'Low')+'</span>';
-        if (val > high) return ' <span style="color:#ef4444">↑ '+(isTR?'Yüksek':'High')+'</span>';
-        return ' <span style="color:#10b981">✓ '+(isTR?'Normal':'Normal')+'</span>';
+        if (val < low) return ' <span style="color:#f59e0b">↓ '+('Low')+'</span>';
+        if (val > high) return ' <span style="color:#ef4444">↑ '+('High')+'</span>';
+        return ' <span style="color:#10b981">✓ '+('Normal')+'</span>';
     }
 
     function interpret(val, low, high, lowMsg, highMsg, normalMsg, lowMsgTR, highMsgTR, normalMsgTR) {
@@ -1175,153 +1175,131 @@
             var body = '';
 
             if (title === 'Patient Info') {
-                body = '🪪 <strong>'+( m['Name']||m['ID']||'-')+'</strong><br>📏 '+m['Height']+' cm | 🎂 '+m['Age']+' yrs | ⚧ '+m['Gender']+'<br>📅 '+m['Test Date / Time'];
+                body = '🪪 <strong>'+(m['Name']||m['ID']||'-')+'</strong><br>📏 '+m['Height']+' cm | 🎂 '+m['Age']+' yrs | ⚧ '+m['Gender']+'<br>📅 '+m['Test Date / Time'];
             }
             else if (title === 'InBody Score') {
                 var score = numVal(m,'InBody Score');
                 var sc = score>=80?'#10b981':score>=70?'#f59e0b':'#ef4444';
                 body = '📊 <strong style="color:'+sc+';font-size:1.2rem">'+score+'/100</strong><br><br>';
-                body += '👨 Erkekler için ideal: <strong>>80</strong><br>👩 Kadınlar için ideal: <strong>>70</strong>';
-                body += interpret(score, 70, 100, 'Skor düşük — kas kütlesi artırılmalı', 'Harika skor!', 'İyi bir skor, sürdür!');
+                body += '👨 Men target: <strong>>80</strong><br>👩 Women target: <strong>>70</strong>';
+                body += interpret(score,70,100,'Low score — increase muscle mass','Great score!','Good score, keep it up!');
             }
             else if (title === 'Body Composition Analysis') {
-                var tbw=numVal(m,'TBW (Total Body Water)'), tbwL=numVal(m,'Lower Limit (TBW Normal Range)'), tbwH=numVal(m,'Upper Limit (TBW Normal Range)');
-                var pro=numVal(m,'Protein'), proL=numVal(m,'Lower Limit (Protein Normal Range)'), proH=numVal(m,'Upper Limit (Protein Normal Range)');
-                var min=numVal(m,'Minerals'), minL=numVal(m,'Lower Limit (Minerals Normal Range)'), minH=numVal(m,'Upper Limit (Minerals Normal Range)');
-                var bfm=numVal(m,'BFM (Body Fat Mass)'), bfmL=numVal(m,'Lower Limit (BFM Normal Range)'), bfmH=numVal(m,'Upper Limit (BFM Normal Range)');
-                var wt=numVal(m,'Weight'), wtL=numVal(m,'Lower Limit (Weight Normal Range)'), wtH=numVal(m,'Upper Limit (Weight Normal Range)');
-                body = '💧 <strong>Vücut Suyu:</strong> '+tbw.toFixed(1)+' L ('+tbwL+'–'+tbwH+')'+statusIcon(tbw,tbwL,tbwH)+'<br>';
+                var tbw=numVal(m,'TBW (Total Body Water)'),tbwL=numVal(m,'Lower Limit (TBW Normal Range)'),tbwH=numVal(m,'Upper Limit (TBW Normal Range)');
+                var pro=numVal(m,'Protein'),proL=numVal(m,'Lower Limit (Protein Normal Range)'),proH=numVal(m,'Upper Limit (Protein Normal Range)');
+                var min=numVal(m,'Minerals'),minL=numVal(m,'Lower Limit (Minerals Normal Range)'),minH=numVal(m,'Upper Limit (Minerals Normal Range)');
+                var bfm=numVal(m,'BFM (Body Fat Mass)'),bfmL=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH=numVal(m,'Upper Limit (BFM Normal Range)');
+                var wt=numVal(m,'Weight'),wtL=numVal(m,'Lower Limit (Weight Normal Range)'),wtH=numVal(m,'Upper Limit (Weight Normal Range)');
+                body  = '💧 <strong>Body Water:</strong> '+tbw.toFixed(1)+' L ('+tbwL+'–'+tbwH+')'+statusIcon(tbw,tbwL,tbwH)+'<br>';
                 body += '🧬 <strong>Protein:</strong> '+pro.toFixed(1)+' kg ('+proL+'–'+proH+')'+statusIcon(pro,proL,proH)+'<br>';
-                body += '🦴 <strong>Mineral:</strong> '+min.toFixed(1)+' kg ('+minL+'–'+minH+')'+statusIcon(min,minL,minH)+'<br>';
-                body += '🫀 <strong>Yağ Kütlesi:</strong> '+bfm.toFixed(1)+' kg ('+bfmL+'–'+bfmH+')'+statusIcon(bfm,bfmL,bfmH)+'<br>';
+                body += '🦴 <strong>Minerals:</strong> '+min.toFixed(1)+' kg ('+minL+'–'+minH+')'+statusIcon(min,minL,minH)+'<br>';
+                body += '🫀 <strong>Body Fat:</strong> '+bfm.toFixed(1)+' kg ('+bfmL+'–'+bfmH+')'+statusIcon(bfm,bfmL,bfmH)+'<br>';
                 body += '⚖️ <strong>Weight:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH);
             }
             else if (title === 'Muscle-Fat Analysis') {
-                var smm=numVal(m,'SMM (Skeletal Muscle Mass)'), smmL=numVal(m,'Lower Limit (SMM Normal Range)'), smmH=numVal(m,'Upper Limit (SMM Normal Range)');
-                var bfm2=numVal(m,'BFM (Body Fat Mass)'), bfmL2=numVal(m,'Lower Limit (BFM Normal Range)'), bfmH2=numVal(m,'Upper Limit (BFM Normal Range)');
-                body = '💪 <strong>Kas (SMM):</strong> '+smm.toFixed(1)+' kg'+statusIcon(smm,smmL,smmH)+'<br>';
-                body += '🫀 <strong>Yağ Kütlesi:</strong> '+bfm2.toFixed(1)+' kg'+statusIcon(bfm2,bfmL2,bfmH2);
-                body += interpret(smm,smmL,smmH,
-                    'Low muscle mass — increase resistance training','High muscle mass, excellent!','Muscle mass is in ideal range',
-                    'Kas kütlesi düşük — direnç egzersizleri artırılmalı','Kas kütlesi yüksek, mükemmel!','Kas kütlesi ideal aralıkta');
+                var smm=numVal(m,'SMM (Skeletal Muscle Mass)'),smmL=numVal(m,'Lower Limit (SMM Normal Range)'),smmH=numVal(m,'Upper Limit (SMM Normal Range)');
+                var bfm2=numVal(m,'BFM (Body Fat Mass)'),bfmL2=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH2=numVal(m,'Upper Limit (BFM Normal Range)');
+                body  = '💪 <strong>Muscle (SMM):</strong> '+smm.toFixed(1)+' kg'+statusIcon(smm,smmL,smmH)+'<br>';
+                body += '🫀 <strong>Body Fat:</strong> '+bfm2.toFixed(1)+' kg'+statusIcon(bfm2,bfmL2,bfmH2);
+                body += interpret(smm,smmL,smmH,'Low muscle mass — increase resistance training','Excellent muscle mass!','Muscle mass is in ideal range');
             }
             else if (title === 'Obesity Analysis') {
-                var bmi=numVal(m,'BMI (Body Mass Index)'), bmiL=numVal(m,'Lower Limit (BMI Normal Range)'), bmiH=numVal(m,'Upper Limit (BMI Normal Range)');
-                var pbf=numVal(m,'PBF (Percent Body Fat)'), pbfL=numVal(m,'Lower Limit (PBF Normal Range)'), pbfH=numVal(m,'Upper Limit (PBF Normal Range)');
-                body = '📏 <strong>BMI:</strong> '+bmi.toFixed(1)+' kg/m² ('+bmiL+'–'+bmiH+')'+statusIcon(bmi,bmiL,bmiH)+'<br>';
-                body += '📉 <strong>Yağ Oranı:</strong> '+pbf.toFixed(1)+'% ('+pbfL+'–'+pbfH+')'+statusIcon(pbf,pbfL,pbfH);
-                body += interpret(pbf,pbfL,pbfH,
-                    'Body fat % is low','Body fat % is high — increase cardio','Body fat % is ideal',
-                    'Yağ oranı düşük','Yağ oranı yüksek — kardiyovasküler egzersiz artırılmalı','Yağ oranı ideal');
+                var bmi=numVal(m,'BMI (Body Mass Index)'),bmiL=numVal(m,'Lower Limit (BMI Normal Range)'),bmiH=numVal(m,'Upper Limit (BMI Normal Range)');
+                var pbf=numVal(m,'PBF (Percent Body Fat)'),pbfL=numVal(m,'Lower Limit (PBF Normal Range)'),pbfH=numVal(m,'Upper Limit (PBF Normal Range)');
+                body  = '📏 <strong>BMI:</strong> '+bmi.toFixed(1)+' kg/m² ('+bmiL+'–'+bmiH+')'+statusIcon(bmi,bmiL,bmiH)+'<br>';
+                body += '📉 <strong>Body Fat %:</strong> '+pbf.toFixed(1)+'% ('+pbfL+'–'+pbfH+')'+statusIcon(pbf,pbfL,pbfH);
+                body += interpret(pbf,pbfL,pbfH,'Body fat % is low','Body fat % is high — increase cardio','Body fat % is ideal');
             }
             else if (title === 'Visceral Fat Area') {
                 var vfa=numVal(m,'VFA (Visceral Fat Area)');
-                var isTR4 = currentLang==='tr';
-                var vfaStatus = vfa<100?(isTR4?'✅ Mükemmel! (<100 cm²)':'✅ Excellent! (<100 cm²)'):vfa<150?(isTR4?'⚠️ Dikkat (100–150 cm²)':'⚠️ Caution (100–150 cm²)'):(isTR4?'🚨 Yüksek Risk (>150 cm²)':'🚨 High Risk (>150 cm²)');
-                body = '🫃 <strong>'+(isTR4?'İç Yağ Alanı':'Visceral Fat Area')+': '+vfa.toFixed(1)+' cm²</strong><br><br>';
-                body += vfaStatus+'<br><br>'+(isTR4?'Normal: 100 cm² altı':'Normal: under 100 cm²');
-                if (vfa > 100) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ '+(isTR4?'Karın bölgesi yağlanması metabolik risk oluşturabilir':'Abdominal fat may pose metabolic health risks')+'</div>';
-                else body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ '+(isTR4?'İç yağ sağlıklı seviyede':'Visceral fat is at a healthy level')+'</div>';
+                var vfaStatus = vfa<100?'✅ Excellent! (<100 cm²)':vfa<150?'⚠️ Caution (100–150 cm²)':'🚨 High Risk (>150 cm²)';
+                body  = '🫃 <strong>Visceral Fat Area: '+vfa.toFixed(1)+' cm²</strong><br><br>';
+                body += vfaStatus+'<br><br>Normal: under 100 cm²';
+                body += vfa>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Abdominal fat may pose metabolic health risks</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Visceral fat is at a healthy level</div>';
             }
             else if (title === 'Weight Control') {
-                var wt2=numVal(m,'Weight'), tgt=numVal(m,'Target Weight');
-                var wCtrl=numVal(m,'Weight Control'), bfCtrl=numVal(m,'BFM Control'), mCtrl=numVal(m,'FFM Control');
-                body = '🎯 <strong>Mevcut:</strong> '+wt2.toFixed(1)+' kg → <strong>Hedef:</strong> '+tgt.toFixed(1)+' kg<br><br>';
-                body += 'Kilo farkı: <strong style="color:'+(wCtrl>=0?'#10b981':'#ef4444')+'">'+(wCtrl>=0?'+':'')+wCtrl.toFixed(1)+' kg</strong><br>';
-                body += 'Yağ kontrolü: <strong style="color:#3b82f6">'+(bfCtrl>=0?'+':'')+bfCtrl.toFixed(1)+' kg</strong><br>';
-                body += 'Kas kontrolü: <strong style="color:#10b981">'+(mCtrl>=0?'+':'')+mCtrl.toFixed(1)+' kg</strong>';
-                var isTR3 = currentLang==='tr';
-                if (Math.abs(wt2-tgt) < 1) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ '+(isTR3?'Hedef kiloya çok yakın!':'Very close to target weight!')+'</div>';
-                else if (wt2 > tgt) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+(isTR3?(wt2-tgt).toFixed(1)+' kg hedef kilonun üzerinde':(wt2-tgt).toFixed(1)+' kg above target weight')+'</div>';
-                else body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(59,130,246,0.1);border-radius:8px;font-size:0.75rem;color:#3b82f6">↑ '+(isTR3?(tgt-wt2).toFixed(1)+' kg hedef kilonun altında':(tgt-wt2).toFixed(1)+' kg below target weight')+'</div>';
+                var wt2=numVal(m,'Weight'),tgt=numVal(m,'Target Weight');
+                var wCtrl=numVal(m,'Weight Control'),bfCtrl=numVal(m,'BFM Control'),mCtrl=numVal(m,'FFM Control');
+                body  = '🎯 <strong>Current:</strong> '+wt2.toFixed(1)+' kg → <strong>Target:</strong> '+tgt.toFixed(1)+' kg<br><br>';
+                body += 'Weight Δ: <strong style="color:'+(wCtrl>=0?'#10b981':'#ef4444')+'">'+(wCtrl>=0?'+':'')+wCtrl.toFixed(1)+' kg</strong><br>';
+                body += 'Fat Δ: <strong style="color:#3b82f6">'+(bfCtrl>=0?'+':'')+bfCtrl.toFixed(1)+' kg</strong><br>';
+                body += 'Muscle Δ: <strong style="color:#10b981">'+(mCtrl>=0?'+':'')+mCtrl.toFixed(1)+' kg</strong>';
+                if (Math.abs(wt2-tgt)<1) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Very close to target weight!</div>';
+                else if (wt2>tgt) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+(wt2-tgt).toFixed(1)+' kg above target weight</div>';
+                else body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(59,130,246,0.1);border-radius:8px;font-size:0.75rem;color:#3b82f6">↑ '+(tgt-wt2).toFixed(1)+' kg below target weight</div>';
             }
             else if (title === 'Body Balance Evaluation') {
-                body = '⚖️ Vücut simetri değerlendirmesi:<br><br>';
-                body += 'Üst: <strong>'+( m['Body Balance Evaluation Upper']||'–')+'</strong><br>';
-                body += 'Alt: <strong>'+( m['Body Balance Evaluation Lower']||'–')+'</strong>';
+                body  = '⚖️ Body symmetry evaluation:<br><br>';
+                body += 'Upper: <strong>'+(m['Body Balance Evaluation Upper']||'–')+'</strong><br>';
+                body += 'Lower: <strong>'+(m['Body Balance Evaluation Lower']||'–')+'</strong>';
             }
             else if (title === 'Segmental Lean Analysis') {
-                var ra=numVal(m,'FFM of Right Arm'), raP=numVal(m,'FFM% of Right Arm');
-                var la=numVal(m,'FFM of Left Arm'),  laP=numVal(m,'FFM% of Left Arm');
-                var tr=numVal(m,'FFM of Trunk'),     trP=numVal(m,'FFM% of Trunk');
-                var rl=numVal(m,'FFM of Right Leg'), rlP=numVal(m,'FFM% of Right Leg');
-                var ll=numVal(m,'FFM of Left Leg'),  llP=numVal(m,'FFM% of Left Leg');
+                var ra=numVal(m,'FFM of Right Arm'),raP=numVal(m,'FFM% of Right Arm');
+                var la=numVal(m,'FFM of Left Arm'),laP=numVal(m,'FFM% of Left Arm');
+                var tr=numVal(m,'FFM of Trunk'),trP=numVal(m,'FFM% of Trunk');
+                var rl=numVal(m,'FFM of Right Leg'),rlP=numVal(m,'FFM% of Right Leg');
+                var ll=numVal(m,'FFM of Left Leg'),llP=numVal(m,'FFM% of Left Leg');
                 function pStr(p){return '<span style="color:'+(p>=100?'#10b981':p>=80?'#f59e0b':'#ef4444')+'">'+p.toFixed(1)+'%</span>';}
-                body = '🦾 Her segment için yağsız kütle (100% = ideal):<br><br>';
-                body += 'Sağ Kol: '+ra.toFixed(2)+' kg — '+pStr(raP)+'<br>';
-                body += 'Sol Kol: '+la.toFixed(2)+' kg — '+pStr(laP)+'<br>';
-                body += 'Gövde: '+tr.toFixed(2)+' kg — '+pStr(trP)+'<br>';
-                body += 'Sağ Bacak: '+rl.toFixed(2)+' kg — '+pStr(rlP)+'<br>';
-                body += 'Sol Bacak: '+ll.toFixed(2)+' kg — '+pStr(llP);
+                body  = '🦾 Lean mass per segment (100% = ideal):<br><br>';
+                body += 'Right Arm: '+ra.toFixed(2)+' kg — '+pStr(raP)+'<br>';
+                body += 'Left Arm: '+la.toFixed(2)+' kg — '+pStr(laP)+'<br>';
+                body += 'Trunk: '+tr.toFixed(2)+' kg — '+pStr(trP)+'<br>';
+                body += 'Right Leg: '+rl.toFixed(2)+' kg — '+pStr(rlP)+'<br>';
+                body += 'Left Leg: '+ll.toFixed(2)+' kg — '+pStr(llP);
             }
             else if (title === 'Segmental Fat Analysis') {
-                var raF=numVal(m,'BFM of Right Arm'), raFP=numVal(m,'BFM% of Right Arm');
-                var laF=numVal(m,'BFM of Left Arm'),  laFP=numVal(m,'BFM% of Left Arm');
-                var trF=numVal(m,'BFM of Trunk'),     trFP=numVal(m,'BFM% of Trunk');
-                var rlF=numVal(m,'BFM of Right Leg'), rlFP=numVal(m,'BFM% of Right Leg');
-                var llF=numVal(m,'BFM of Left Leg'),  llFP=numVal(m,'BFM% of Left Leg');
-                body = '🫀 Bölgesel yağ dağılımı:<br><br>';
-                body += 'Sağ Kol: '+raF.toFixed(2)+' kg ('+raFP.toFixed(1)+'%)<br>';
-                body += 'Sol Kol: '+laF.toFixed(2)+' kg ('+laFP.toFixed(1)+'%)<br>';
-                body += 'Gövde: '+trF.toFixed(2)+' kg <span style="color:'+(trFP>100?'#ef4444':'#10b981')+'">('+trFP.toFixed(1)+'%)</span><br>';
-                body += 'Sağ Bacak: '+rlF.toFixed(2)+' kg ('+rlFP.toFixed(1)+'%)<br>';
-                body += 'Sol Bacak: '+llF.toFixed(2)+' kg ('+llFP.toFixed(1)+'%)';
-                if (trFP > 100) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Gövde yağı idealin üzerinde</div>';
+                var raF=numVal(m,'BFM of Right Arm'),raFP=numVal(m,'BFM% of Right Arm');
+                var laF=numVal(m,'BFM of Left Arm'),laFP=numVal(m,'BFM% of Left Arm');
+                var trF=numVal(m,'BFM of Trunk'),trFP=numVal(m,'BFM% of Trunk');
+                var rlF=numVal(m,'BFM of Right Leg'),rlFP=numVal(m,'BFM% of Right Leg');
+                var llF=numVal(m,'BFM of Left Leg'),llFP=numVal(m,'BFM% of Left Leg');
+                body  = '🫀 Fat per segment:<br><br>';
+                body += 'Right Arm: '+raF.toFixed(2)+' kg ('+raFP.toFixed(1)+'%)<br>';
+                body += 'Left Arm: '+laF.toFixed(2)+' kg ('+laFP.toFixed(1)+'%)<br>';
+                body += 'Trunk: '+trF.toFixed(2)+' kg <span style="color:'+(trFP>100?'#ef4444':'#10b981')+'">('+trFP.toFixed(1)+'%)</span><br>';
+                body += 'Right Leg: '+rlF.toFixed(2)+' kg ('+rlFP.toFixed(1)+'%)<br>';
+                body += 'Left Leg: '+llF.toFixed(2)+' kg ('+llFP.toFixed(1)+'%)';
+                if (trFP>100) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Trunk fat is above ideal</div>';
             }
             else if (title === 'ECW Ratio Analysis') {
                 var ecw=numVal(m,'ECW/TBW');
-                body = '💦 <strong>ECW/TBW: '+ecw.toFixed(3)+'</strong><br><br>Normal: 0.360–0.390';
-                body += interpret(ecw,0.360,0.390,
-                    'Intracellular fluid is low','Risk of edema or inflammation — consult a doctor','Fluid balance is normal',
-                    'Hücre içi sıvı düşük','Ödem veya inflamasyon riski — doktora danışın','Sıvı dengesi normal');
+                body  = '💦 <strong>ECW/TBW: '+ecw.toFixed(3)+'</strong><br><br>Normal: 0.360–0.390';
+                body += interpret(ecw,0.360,0.390,'Intracellular fluid is low','Risk of edema or inflammation — consult a doctor','Fluid balance is normal');
             }
             else if (title === 'Research Parameters') {
-                var bmr=numVal(m,'BMR (Basal Metabolic Rate)'), bmrL=numVal(m,'Lower Limit (BMR Normal Range)'), bmrH=numVal(m,'Upper Limit (BMR Normal Range)');
-                var whr=numVal(m,'WHR (Waist-Hip Ratio)'), whrL=numVal(m,'Lower Limit (WHR Normal Range)'), whrH=numVal(m,'Upper Limit (WHR Normal Range)');
-                body = '🔬 Araştırma parametreleri:<br><br>';
-                body += '🔥 <strong>BMH:</strong> '+bmr+' kcal'+statusIcon(bmr,bmrL,bmrH)+'<br>';
-                body += '📐 <strong>Bel/Kalça:</strong> '+whr.toFixed(2)+statusIcon(whr,whrL,whrH)+'<br>';
-                body += '🧬 <strong>Hücre Kütlesi:</strong> '+numVal(m,'BCM (Body Cell Mass)').toFixed(1)+' kg<br>';
+                var bmr=numVal(m,'BMR (Basal Metabolic Rate)'),bmrL=numVal(m,'Lower Limit (BMR Normal Range)'),bmrH=numVal(m,'Upper Limit (BMR Normal Range)');
+                var whr=numVal(m,'WHR (Waist-Hip Ratio)'),whrL=numVal(m,'Lower Limit (WHR Normal Range)'),whrH=numVal(m,'Upper Limit (WHR Normal Range)');
+                body  = '🔬 Research parameters:<br><br>';
+                body += '🔥 <strong>BMR:</strong> '+bmr+' kcal'+statusIcon(bmr,bmrL,bmrH)+'<br>';
+                body += '📐 <strong>WHR:</strong> '+whr.toFixed(2)+statusIcon(whr,whrL,whrH)+'<br>';
+                body += '🧬 <strong>Body Cell Mass:</strong> '+numVal(m,'BCM (Body Cell Mass)').toFixed(1)+' kg<br>';
                 body += '📏 <strong>SMI:</strong> '+numVal(m,'SMI (Skeletal Muscle Index)').toFixed(1)+' kg/m²<br>';
-                body += '🍽️ <strong>Önerilen Kalori:</strong> '+numVal(m,'Recommended Calorie Intake')+' kcal';
+                body += '🍽️ <strong>Rec. Calories:</strong> '+numVal(m,'Recommended Calorie Intake')+' kcal';
             }
             else if (title === 'Whole Body Phase Angle') {
-                var pa = numVal(m,'50kHz-Whole Body Phase Angle');
-                // Fallback: farklı alan adı dene
-                if (!pa) pa = numVal(m,'Whole Body Phase Angle');
-                var isTR2 = currentLang==='tr';
-                body = '⚡ <strong>'+(isTR2?'Faz Açısı':'Phase Angle')+': '+pa.toFixed(1)+'°</strong><br><br>';
-                body += (isTR2?'Erkekler normal':'Men normal')+': 5.0–7.5°<br>';
-                body += (isTR2?'Kadınlar normal':'Women normal')+': 4.5–6.5°';
-                body += interpret(pa,5.0,7.5,
-                    'Weak cell health — improve nutrition and hydration','Excellent cell health!','Cell health is good',
-                    'Hücre sağlığı zayıf — beslenme ve hidrasyon iyileştirilmeli','Mükemmel hücre sağlığı!','Hücre sağlığı iyi');
+                var pa=numVal(m,'50kHz-Whole Body Phase Angle');
+                if (!pa) pa=numVal(m,'Whole Body Phase Angle');
+                body  = '⚡ <strong>Phase Angle: '+pa.toFixed(1)+'°</strong><br><br>';
+                body += 'Men normal: 5.0–7.5°<br>Women normal: 4.5–6.5°';
+                body += interpret(pa,5.0,7.5,'Weak cell health — improve nutrition and hydration','Excellent cell health!','Cell health is good');
             }
             else if (title === 'Body Composition History') {
-                body = '📈 Last measurements:<br><br>';
+                body  = '📈 Latest measurement:<br><br>';
                 body += '⚖️ <strong>Weight:</strong> '+numVal(m,'Weight').toFixed(1)+' kg<br>';
                 body += '💪 <strong>Muscle:</strong> '+numVal(m,'SMM (Skeletal Muscle Mass)').toFixed(1)+' kg<br>';
                 body += '🫀 <strong>Body Fat:</strong> '+numVal(m,'PBF (Percent Body Fat)').toFixed(1)+'%';
             }
             else if (title === 'Impedance') {
-                body = '📡 Biyoelektrik empedans değerleri:<br><br>';
-                body += '1kHz: SA '+m['1kHz-RA Impedance']||'–'+' | SA '+m['1kHz-LA Impedance']||'–'+'<br>';
-                body += '50kHz: SA '+m['50kHz-RA Impedance']||'–'+' | SA '+m['50kHz-LA Impedance']||'–';
+                body  = '📡 Bioelectrical impedance (Ω):<br><br>';
+                body += '1kHz RA: '+(m['1kHz-RA Impedance']||'–')+' | LA: '+(m['1kHz-LA Impedance']||'–')+'<br>';
+                body += '50kHz RA: '+(m['50kHz-RA Impedance']||'–')+' | LA: '+(m['50kHz-LA Impedance']||'–');
             }
 
-            if (body) {
-                z.dataset.body = body;
-                z.dataset.hint = body;
-            }
+            if (body) { z.dataset.body = body; z.dataset.hint = body; }
         });
     }
 
-    async function resultsGetirSilent() {
-        await loadAllMeasurements();
-        updateAnnotationsFromCSV(currentIndex);
-    }
 
-    var activeAnnZone = null;
     function showAnnPreview(e, el) {
         // CSV yüklendiyse güncel veriyi göster
         if (allMeasurements && allMeasurements.length > 0) updateAnnotationsFromCSV(currentIndex);
