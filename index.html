@@ -488,6 +488,7 @@
                 </div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
             </div>
+            <div id="analysis-status" style="display:none;align-items:center;gap:8px;padding:6px 12px;background:var(--surface2);border-radius:8px;margin:0 1rem 0.5rem;border:1px solid var(--border)"></div>
             <div class="share-box">
                 <div class="share-title"><i class="fas fa-paper-plane"></i> <span data-i18n="send_title">Send Report to Client</span></div>
                 <div class="email-row">
@@ -981,7 +982,11 @@
     function loadFeatured(index){
         currentIndex=index; showState('loading');
         var img=document.getElementById('featured-img');
-        img.onload=function(){showState('image');}; img.onerror=function(){showState('error');};
+        img.onload=function(){
+            showState('image');
+            analyzeInBodyImage(img);
+        };
+        img.onerror=function(){showState('error');};
         img.src='https://drive.google.com/thumbnail?id='+imageLinks[index]+'&sz=w1200&_='+Date.now();
         document.querySelectorAll('.thumb').forEach(function(el,i){el.classList.toggle('active',i===index);});
         if(index===0&&imageLinks[0]){
@@ -1360,6 +1365,200 @@
         var popup = document.getElementById('ann-popup');
         if (popup && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
     });
+
+    /* ── CLAUDE VISION ANALİZ ── */
+    const CLAUDE_API_KEY = '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';
+    var lastAnalyzedSrc = '';
+
+    async function analyzeInBodyImage(imgEl) {
+        if (!imgEl || !imgEl.src || imgEl.src === lastAnalyzedSrc) return;
+        lastAnalyzedSrc = imgEl.src;
+
+        // Analiz göstergesi
+        showAnalysisStatus('analyzing');
+
+        try {
+            // Resmi canvas ile base64'e çevir
+            var canvas = document.createElement('canvas');
+            canvas.width  = imgEl.naturalWidth  || imgEl.width;
+            canvas.height = imgEl.naturalHeight || imgEl.height;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(imgEl, 0, 0);
+            var base64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+
+            var prompt = `This is an InBody body composition analysis report. 
+Extract ALL values and return ONLY a valid JSON object with this exact structure:
+{
+  "patientInfo": {"id":"","name":"","height":"","age":"","gender":"","testDate":""},
+  "inbodyScore": {"score":"","maxScore":"100","interpretation":""},
+  "bodyComposition": {"totalBodyWater":{"value":"","range":""},"protein":{"value":"","range":""},"minerals":{"value":"","range":""},"bodyFatMass":{"value":"","range":""},"weight":{"value":"","range":""}},
+  "muscleFat": {"weight":"","smm":"","bodyFatMass":""},
+  "obesity": {"bmi":"","bmiRange":"","pbf":"","pbfRange":""},
+  "visceralFat": {"vfa":"","status":""},
+  "weightControl": {"targetWeight":"","weightControl":"","fatControl":"","muscleControl":""},
+  "bodyBalance": {"upper":"","lower":"","upperLower":""},
+  "segmentalLean": {"rightArm":{"kg":"","pct":""},"leftArm":{"kg":"","pct":""},"trunk":{"kg":"","pct":""},"rightLeg":{"kg":"","pct":""},"leftLeg":{"kg":"","pct":""}},
+  "segmentalFat": {"rightArm":{"kg":"","pct":""},"leftArm":{"kg":"","pct":""},"trunk":{"kg":"","pct":""},"rightLeg":{"kg":"","pct":""},"leftLeg":{"kg":"","pct":""}},
+  "ecwRatio": {"value":"","range":""},
+  "researchParams": {"icw":"","ecw":"","bmr":"","whr":"","bcm":"","smi":"","recommendedCalories":""},
+  "phaseAngle": {"value":""},
+  "compositionHistory": {"dates":[],"weight":[],"smm":[],"pbf":[]}
+}
+Return ONLY the JSON, no explanation.`;
+
+            var response = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': CLAUDE_API_KEY,
+                    'anthropic-version': '2023-06-01',
+                    'anthropic-dangerous-direct-browser-access': 'true'
+                },
+                body: JSON.stringify({
+                    model: 'claude-opus-4-5',
+                    max_tokens: 2000,
+                    messages: [{
+                        role: 'user',
+                        content: [
+                            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: base64 } },
+                            { type: 'text', text: prompt }
+                        ]
+                    }]
+                })
+            });
+
+            var data = await response.json();
+            var text = data.content[0].text.trim();
+            // JSON temizle
+            text = text.replace(/```json|```/g, '').trim();
+            var parsed = JSON.parse(text);
+            updateAnnotations(parsed);
+            showAnalysisStatus('done');
+        } catch(e) {
+            console.error('Analysis error:', e);
+            showAnalysisStatus('error');
+        }
+    }
+
+    function showAnalysisStatus(state) {
+        var el = document.getElementById('analysis-status');
+        if (!el) return;
+        if (state === 'analyzing') {
+            el.style.display = 'flex';
+            el.innerHTML = '<i class="fas fa-brain" style="color:#3b82f6;animation:spin 1s linear infinite"></i><span style="font-size:0.72rem;color:var(--muted)">Analyzing with AI...</span>';
+        } else if (state === 'done') {
+            el.innerHTML = '<i class="fas fa-check-circle" style="color:#10b981"></i><span style="font-size:0.72rem;color:#10b981">AI analysis complete</span>';
+            setTimeout(function(){ el.style.display='none'; }, 3000);
+        } else {
+            el.style.display = 'none';
+        }
+    }
+
+    function getStatus(value, range) {
+        // value ve range'den durum çıkar
+        if (!range) return '';
+        var parts = range.replace('~','–').split('–');
+        if (parts.length < 2) return '';
+        var val = parseFloat(value);
+        var min = parseFloat(parts[0]);
+        var max = parseFloat(parts[1]);
+        if (isNaN(val)||isNaN(min)||isNaN(max)) return '';
+        if (val < min) return '⚠️ below normal';
+        if (val > max) return '⚠️ above normal';
+        return '✅';
+    }
+
+    function updateAnnotations(d) {
+        if (!d) return;
+        var zones = document.querySelectorAll('.ann-zone');
+        zones.forEach(function(z) {
+            var title = z.dataset.title;
+            var body = '';
+
+            if (title === 'Patient Info' && d.patientInfo) {
+                var p = d.patientInfo;
+                body = '🪪 <strong>ID:</strong> ' + (p.id||'–') + ' (' + (p.name||'–') + ')<br>📏 <strong>Height:</strong> ' + (p.height||'–') + '<br>🎂 <strong>Age:</strong> ' + (p.age||'–') + '<br>⚧ <strong>Gender:</strong> ' + (p.gender||'–') + '<br>📅 <strong>Test Date:</strong> ' + (p.testDate||'–');
+            }
+            else if (title === 'InBody Score' && d.inbodyScore) {
+                var s = d.inbodyScore;
+                var sc = parseInt(s.score||0);
+                var color = sc >= 80 ? '#10b981' : sc >= 70 ? '#eab308' : '#ef4444';
+                body = '📊 <strong style="color:' + color + ';font-size:1.1rem">' + s.score + '/100</strong><br><br>' + (s.interpretation||'') + '<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70';
+            }
+            else if (title === 'Body Composition Analysis' && d.bodyComposition) {
+                var b = d.bodyComposition;
+                body = '💧 <strong>Total Body Water:</strong> ' + b.totalBodyWater.value + ' L (' + b.totalBodyWater.range + ') ' + getStatus(b.totalBodyWater.value, b.totalBodyWater.range) +
+                       '<br>🧬 <strong>Protein:</strong> ' + b.protein.value + ' kg (' + b.protein.range + ') ' + getStatus(b.protein.value, b.protein.range) +
+                       '<br>🦴 <strong>Minerals:</strong> ' + b.minerals.value + ' kg (' + b.minerals.range + ') ' + getStatus(b.minerals.value, b.minerals.range) +
+                       '<br>🫀 <strong>Body Fat Mass:</strong> ' + b.bodyFatMass.value + ' kg (' + b.bodyFatMass.range + ') ' + getStatus(b.bodyFatMass.value, b.bodyFatMass.range) +
+                       '<br>⚖️ <strong>Weight:</strong> ' + b.weight.value + ' kg (' + b.weight.range + ') ' + getStatus(b.weight.value, b.weight.range);
+            }
+            else if (title === 'Muscle-Fat Analysis' && d.muscleFat) {
+                var m = d.muscleFat;
+                body = '⚖️ <strong>Weight:</strong> ' + m.weight + ' kg<br>💪 <strong>SMM:</strong> ' + m.smm + ' kg<br>🫀 <strong>Body Fat Mass:</strong> ' + m.bodyFatMass + ' kg';
+            }
+            else if (title === 'Obesity Analysis' && d.obesity) {
+                var o = d.obesity;
+                body = '📏 <strong>BMI:</strong> ' + o.bmi + ' kg/m² (' + o.bmiRange + ') ' + getStatus(o.bmi, o.bmiRange) + '<br>📉 <strong>PBF:</strong> ' + o.pbf + '% (' + o.pbfRange + ') ' + getStatus(o.pbf, o.pbfRange) + '<br><br>Men normal PBF: 10–20% | Women: 18–28%';
+            }
+            else if (title === 'Visceral Fat Area' && d.visceralFat) {
+                var v = d.visceralFat;
+                var vStatus = parseFloat(v.vfa) < 100 ? '✅ Excellent!' : parseFloat(v.vfa) < 150 ? '⚠️ Caution' : '🚨 High Risk';
+                body = '🫃 <strong>VFA: ' + v.vfa + ' cm²</strong><br><br>✅ Normal: under 100 cm²<br>⚠️ Caution: 100–150 cm²<br>🚨 High Risk: over 150 cm²<br><br>' + vStatus;
+            }
+            else if (title === 'Weight Control' && d.weightControl) {
+                var w = d.weightControl;
+                body = '🎯 <strong>Target Weight: ' + w.targetWeight + ' kg</strong><br><br>Weight Control: <strong>' + w.weightControl + ' kg</strong><br>Fat Control: ' + w.fatControl + ' kg<br>Muscle Control: ' + w.muscleControl + ' kg';
+            }
+            else if (title === 'Body Balance Evaluation' && d.bodyBalance) {
+                var bb = d.bodyBalance;
+                body = '⚖️ Upper Body: <strong>' + bb.upper + '</strong><br>Lower Body: <strong>' + bb.lower + '</strong><br>Upper-Lower: <strong>' + bb.upperLower + '</strong>';
+            }
+            else if (title === 'Segmental Lean Analysis' && d.segmentalLean) {
+                var sl = d.segmentalLean;
+                function pctColor(p) { var n=parseFloat(p); return n>=100?'#10b981':n>=80?'#eab308':'#ef4444'; }
+                body = '🦾 Lean mass per segment:<br><br>' +
+                    'Right Arm: ' + sl.rightArm.kg + ' kg — <strong style="color:' + pctColor(sl.rightArm.pct) + '">' + sl.rightArm.pct + '%</strong><br>' +
+                    'Left Arm: ' + sl.leftArm.kg + ' kg — <strong style="color:' + pctColor(sl.leftArm.pct) + '">' + sl.leftArm.pct + '%</strong><br>' +
+                    'Trunk: ' + sl.trunk.kg + ' kg — <strong style="color:' + pctColor(sl.trunk.pct) + '">' + sl.trunk.pct + '%</strong><br>' +
+                    'Right Leg: ' + sl.rightLeg.kg + ' kg — <strong style="color:' + pctColor(sl.rightLeg.pct) + '">' + sl.rightLeg.pct + '%</strong><br>' +
+                    'Left Leg: ' + sl.leftLeg.kg + ' kg — <strong style="color:' + pctColor(sl.leftLeg.pct) + '">' + sl.leftLeg.pct + '%</strong>';
+            }
+            else if (title === 'Segmental Fat Analysis' && d.segmentalFat) {
+                var sf = d.segmentalFat;
+                body = '🫀 Fat per segment:<br><br>' +
+                    'Right Arm: ' + sf.rightArm.kg + ' kg (' + sf.rightArm.pct + '%)<br>' +
+                    'Left Arm: ' + sf.leftArm.kg + ' kg (' + sf.leftArm.pct + '%)<br>' +
+                    'Trunk: ' + sf.trunk.kg + ' kg (<strong style="color:' + (parseFloat(sf.trunk.pct)>100?'#ef4444':'#10b981') + '">' + sf.trunk.pct + '%</strong>)<br>' +
+                    'Right Leg: ' + sf.rightLeg.kg + ' kg (' + sf.rightLeg.pct + '%)<br>' +
+                    'Left Leg: ' + sf.leftLeg.kg + ' kg (' + sf.leftLeg.pct + '%)';
+            }
+            else if (title === 'ECW Ratio Analysis' && d.ecwRatio) {
+                var e = d.ecwRatio;
+                body = '💦 <strong>ECW Ratio: ' + e.value + '</strong><br><br>Normal: 0.360–0.390 ' + getStatus(e.value, '0.360–0.390') + '<br><br>High values (>0.400) may suggest inflammation or overtraining.';
+            }
+            else if (title === 'Research Parameters' && d.researchParams) {
+                var r = d.researchParams;
+                body = '🔬 Advanced metrics:<br><br>💧 ICW: ' + r.icw + ' L<br>💧 ECW: ' + r.ecw + ' L<br>🔥 BMR: <strong>' + r.bmr + ' kcal</strong><br>📐 WHR: ' + r.whr + '<br>🧬 BCM: ' + r.bcm + ' kg<br>📏 SMI: ' + r.smi + ' kg/m²<br>🍽️ Rec. Calories: ' + r.recommendedCalories + ' kcal';
+            }
+            else if (title === 'Whole Body Phase Angle' && d.phaseAngle) {
+                var pa = d.phaseAngle;
+                body = '⚡ <strong>Phase Angle: ' + pa.value + '°</strong><br><br>✅ Men normal: 5.0–7.5°<br>✅ Women normal: 4.5–6.5°<br><br>Higher = healthier, more hydrated cells.';
+            }
+            else if (title === 'Body Composition History' && d.compositionHistory) {
+                var h = d.compositionHistory;
+                var lastW = h.weight && h.weight.length ? h.weight[h.weight.length-1] : '–';
+                var lastS = h.smm && h.smm.length ? h.smm[h.smm.length-1] : '–';
+                var lastP = h.pbf && h.pbf.length ? h.pbf[h.pbf.length-1] : '–';
+                body = '📈 Trend:<br><br>⚖️ Weight: ' + (h.weight||[]).join('→') + ' kg<br>💪 SMM: ' + (h.smm||[]).join('→') + ' kg<br>🫀 PBF: ' + (h.pbf||[]).join('→') + '%';
+            }
+
+            if (body) {
+                z.dataset.body = body;
+                z.dataset.hint = body;
+            }
+        });
+    }
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
@@ -1383,4 +1582,4 @@
     <div class="ann-popup-body" id="ann-popup-body"></div>
 </div>
 </body>
-</html>  
+</html>
