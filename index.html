@@ -1377,18 +1377,19 @@
         showAnalysisStatus('analyzing');
 
         try {
-            var directUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
-            // Birden fazla proxy dene
+            // Thumbnail URL - daha küçük, proxy'den geçmesi daha kolay
+            var thumbUrl = 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w800';
             var proxies = [
-                'https://api.allorigins.win/raw?url=' + encodeURIComponent(directUrl),
-                'https://corsproxy.io/?' + encodeURIComponent(directUrl),
-                'https://proxy.cors.sh/' + directUrl,
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent(thumbUrl),
+                'https://corsproxy.io/?' + encodeURIComponent(thumbUrl),
+                'https://images.weserv.nl/?url=' + encodeURIComponent(thumbUrl),
+                'https://wsrv.nl/?url=' + encodeURIComponent(thumbUrl),
             ];
             var fetchRes = null;
             for (var pi = 0; pi < proxies.length; pi++) {
                 try {
-                    var r = await fetch(proxies[pi], { signal: AbortSignal.timeout(8000) });
-                    if (r.ok) { fetchRes = r; break; }
+                    var r = await fetch(proxies[pi], { signal: AbortSignal.timeout(10000) });
+                    if (r.ok) { fetchRes = r; console.log('Proxy ' + pi + ' OK'); break; }
                 } catch(pe) { console.warn('Proxy ' + pi + ' failed:', pe.message); }
             }
             if (!fetchRes) throw new Error('All proxies failed');
