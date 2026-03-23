@@ -1379,13 +1379,15 @@
         showAnalysisStatus('analyzing');
 
         try {
-            // Resmi fetch ile base64'e çevir (CORS bypass)
+            // Drive thumbnail URL'ini direkt fetch et
             var imageUrl = imgEl.src;
-            var fetchRes = await fetch(imageUrl);
+            var fetchRes = await fetch(imageUrl, { mode: 'cors' });
+            if (!fetchRes.ok) throw new Error('Image fetch failed: ' + fetchRes.status);
             var blob = await fetchRes.blob();
-            var base64 = await new Promise(function(resolve) {
+            var base64 = await new Promise(function(resolve, reject) {
                 var reader = new FileReader();
                 reader.onload = function() { resolve(reader.result.split(',')[1]); };
+                reader.onerror = reject;
                 reader.readAsDataURL(blob);
             });
 
@@ -1562,6 +1564,8 @@ Return ONLY the JSON, no explanation.`;
             }
         });
     }
+    function loadNoteForCurrent() { /* notes not implemented */ }
+
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
