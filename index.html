@@ -982,7 +982,6 @@
     function loadFeatured(index){
         currentIndex=index; showState('loading');
         var img=document.getElementById('featured-img');
-        img.crossOrigin = 'anonymous';
         img.onload=function(){
             showState('image');
             analyzeInBodyImage(img);
@@ -1379,11 +1378,14 @@
         showAnalysisStatus('analyzing');
 
         try {
-            // CORS proxy üzerinden resmi al
-            var imageUrl = imgEl.src.split('&_=')[0]; // cache buster kaldır
-            var proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(imageUrl);
+            // File ID'yi src'den çıkar, corsproxy üzerinden al
+            var srcMatch = imgEl.src.match(/id=([^&]+)/);
+            if (!srcMatch) throw new Error('No file ID');
+            var fileId = srcMatch[1];
+            var directUrl = 'https://drive.google.com/uc?export=download&id=' + fileId;
+            var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(directUrl);
             var fetchRes = await fetch(proxyUrl);
-            if (!fetchRes.ok) throw new Error('Proxy fetch failed: ' + fetchRes.status);
+            if (!fetchRes.ok) throw new Error('Fetch failed: ' + fetchRes.status);
             var blob = await fetchRes.blob();
             var base64 = await new Promise(function(resolve, reject) {
                 var reader = new FileReader();
