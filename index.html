@@ -84,7 +84,7 @@
 
         /* CAROUSEL */
         .carousel-wrap { width: 100%; }
-        .carousel { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; padding-bottom: 4px; }
+        .carousel { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--surface2) transparent; }
         .carousel::-webkit-scrollbar { height: 4px; }
         .carousel::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
         .thumb { flex-shrink: 0; width: 150px; scroll-snap-align: start; border-radius: 12px; overflow: hidden; border: 2px solid transparent; cursor: pointer; transition: 0.2s; background: var(--surface); box-shadow: var(--card-shadow); position: relative; }
@@ -236,98 +236,6 @@
         .modal-error { font-size: 0.78rem; color: #f87171; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; text-align: center; display: none; }
         .modal-success { font-size: 0.78rem; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; text-align: center; display: none; }
 
-
-        /* ── ÖLÇÜM NOTU ── */
-        .featured-note-bar { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--surface2); border-top:1px solid var(--border); }
-        .featured-note-input { flex:1; background:transparent; border:none; outline:none; color:var(--text); font-size:0.82rem; font-family:'Inter',sans-serif; }
-        .featured-note-input::placeholder { color:var(--muted); }
-        .featured-note-save { background:#3b82f6; color:white; border:none; padding:5px 14px; border-radius:8px; font-size:0.75rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; white-space:nowrap; }
-        .featured-note-save:hover { background:#2563eb; }
-        .thumb-note-dot { position:absolute; top:4px; right:4px; width:8px; height:8px; background:#3b82f6; border-radius:50%; border:1px solid var(--surface); }
-        .note-tooltip { position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#e2e8f0; font-size:0.72rem; padding:6px 10px; border-radius:8px; white-space:nowrap; max-width:200px; white-space:normal; text-align:center; pointer-events:none; opacity:0; transition:opacity 0.15s; z-index:10; margin-bottom:6px; }
-        .thumb:hover .note-tooltip { opacity:1; }
-        /* ── ANNOTATION ZONES ── */
-        .annotation-layer { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
-        .ann-zone { position: absolute; pointer-events: all; cursor: pointer; border-radius: 6px; transition: background 0.15s; }
-        .ann-zone:hover { background: rgba(59,130,246,0.1); outline: 1px solid rgba(59,130,246,0.3); }
-        .ann-zone.active { background: rgba(59,130,246,0.15); outline: 2px solid rgba(59,130,246,0.6); }
-
-        /* Hover mini preview */
-        .ann-preview { position: fixed; z-index: 9998; background: rgba(10,15,30,0.95); border: 1px solid rgba(59,130,246,0.35); border-radius: 12px; padding: 12px 16px; max-width: 240px; pointer-events: none; display: none; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .ann-preview-title { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; color: #3b82f6; text-transform: uppercase; margin-bottom:8px; }
-        .ann-preview-hint { font-size: 0.75rem; color: #e2e8f0; line-height:1.5; }
-
-        /* Popup */
-        #ann-popup { position: fixed; z-index: 9999; background: rgba(10,15,30,0.97); border: 1px solid rgba(59,130,246,0.5); border-radius: 14px; padding: 14px 18px; width: 260px; display: none; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); animation: annFadeIn 0.15s ease; }
-        @keyframes annFadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-        .ann-popup-title { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; color: #3b82f6; margin-bottom: 10px; text-transform: uppercase; }
-        .ann-popup-body { font-size: 0.82rem; color: #e2e8f0; line-height: 1.6; }
-        .ann-popup-body strong { color: #93c5fd; }
-        .ann-popup-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; line-height: 1; }
-        /* ── RESULTS ── */
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Syne:wght@700;800&display=swap');
-        #page-results { font-family: 'DM Sans', sans-serif; background: var(--bg); }
-        #results-content { gap: 0; padding: 0; }
-
-        /* Hero */
-        .res-hero { padding: 2.5rem 2.5rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
-        .res-hero-name { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.03em; }
-        .res-hero-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-        .res-hero-meta span { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
-        .res-score-wrap { display: flex; flex-direction: column; align-items: flex-end; }
-        .res-score-num { font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
-        .res-score-sub { font-size: 0.65rem; color: var(--muted); text-align: right; margin-top: 2px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .res-score-badge { font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-top: 6px; display: inline-block; }
-
-        /* Tabs */
-        .res-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); padding: 0 2rem; gap: 0; overflow-x: auto; }
-        .res-tab { padding: 0.875rem 1.25rem; font-size: 0.78rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: 0.15s; white-space: nowrap; }
-        .res-tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
-        .res-tab-panel { display: none; padding: 2rem 2.5rem; }
-        .res-tab-panel.active { display: block; }
-
-        /* Bars */
-        .res-bar-group { margin-bottom: 1.5rem; }
-        .res-bar-row { display: grid; grid-template-columns: 160px 1fr 80px; align-items: center; gap: 16px; margin-bottom: 10px; }
-        .res-bar-name { font-size: 0.78rem; font-weight: 500; color: var(--text); }
-        .res-bar-track { height: 6px; background: var(--surface2); border-radius: 3px; position: relative; }
-        .res-bar-normal { position: absolute; height: 100%; background: rgba(59,130,246,0.12); border-radius: 3px; }
-        .res-bar-fill { position: absolute; height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
-        .res-bar-val { font-size: 0.75rem; color: var(--muted); text-align: right; font-weight: 600; }
-        .res-bar-range { font-size: 0.65rem; color: var(--muted); opacity: 0.6; grid-column: 2/3; margin-top: -6px; }
-
-        /* Stat cards */
-        .res-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-        .res-stat { background: var(--surface); padding: 1.25rem; position: relative; cursor: default; transition: background 0.15s; }
-        .res-stat:hover { background: var(--surface2); }
-        .res-stat-val { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
-        .res-stat-unit { font-size: 0.65rem; color: var(--muted); font-weight: 500; }
-        .res-stat-name { font-size: 0.68rem; color: var(--muted); margin-top: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
-        .res-stat-tag { position: absolute; top: 10px; right: 10px; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
-        .tag-ok   { background: rgba(16,185,129,0.12); color: #10b981; }
-        .tag-low  { background: rgba(234,179,8,0.12);  color: #eab308; }
-        .tag-high { background: rgba(239,68,68,0.12);  color: #ef4444; }
-
-        /* Segments */
-        .res-segments { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-        .res-seg { background: var(--surface); padding: 1.25rem 1rem; text-align: center; }
-        .res-seg-name { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
-        .res-seg-kg { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); }
-        .res-seg-unit { font-size: 0.6rem; color: var(--muted); }
-        .res-seg-pct { font-size: 0.78rem; font-weight: 700; margin-top: 4px; }
-        .res-seg-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 8px; overflow: hidden; }
-        .res-seg-bar-fill { height: 100%; border-radius: 2px; }
-
-        /* Weight control */
-        .res-wc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-        .res-wc-cell { background: var(--surface); padding: 1.25rem 1.5rem; }
-        .res-wc-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; }
-        .res-wc-val { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; }
-
-        /* Section header */
-        .res-sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.25rem; }
-        .res-sec-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
-        .res-sec-line { flex: 1; height: 1px; background: var(--border); }
         @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
@@ -356,7 +264,6 @@
             <button class="login-btn" onclick="loginCheck()" data-i18n="login_btn">Sign In</button>
             <div class="login-forgot" onclick="showReset()" data-i18n="forgot_pw">Forgot Password</div>
             <div class="kvkk-note" data-i18n="kvkk">🛡️ This panel is protected under KVKK/GDPR.</div>
-            <div style="text-align:center;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05)"><button onclick="showApplyForm()" style="background:none;border:none;color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-map-marker-alt"></i> Apply to Become a Center</button></div>
         </div>
         <div class="login-box" id="login-box-reset" style="display:none">
             <div class="login-logo"><span class="login-wordmark">InBody</span></div>
@@ -410,12 +317,6 @@
             <button class="btn-secondary" onclick="closeSettings()" data-i18n="cancel">Cancel</button>
             <button class="btn-primary" onclick="saveSettings()" data-i18n="save">Save</button>
         </div>
-        <div class="modal-divider">Claude API Key</div>
-        <div class="modal-field">
-            <input type="password" id="claude-key-input" placeholder="sk-ant-api03-..." style="font-size:0.72rem">
-            <button class="btn-primary" onclick="saveApiKey()" style="margin-top:8px;width:100%">Save API Key</button>
-        </div>
-        </div>
     </div>
 </div>
 
@@ -445,12 +346,6 @@
     <div class="tab" id="tab-files" onclick="switchTab('files')">
         <i class="fas fa-folder-open"></i> <span data-i18n="tab_files">Files</span>
     </div>
-    <div class="tab" id="tab-centers" onclick="switchTab('centers')">
-        <i class="fas fa-map-marker-alt"></i> <span>Centers</span>
-    </div>
-    <div class="tab" id="tab-results" onclick="switchTab('results')">
-        <i class="fas fa-chart-bar"></i> <span>Results</span>
-    </div>
 </div>
 
 <!-- PAGE: INBODY -->
@@ -464,104 +359,8 @@
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
-
-                <div class="annotation-layer" id="annotation-layer">
-
-                    <div class="ann-zone" style="top:2%;left:0;width:53%;height:7%"
-                        data-title="Patient Info"
-                        data-body="🪪 <strong>ID:</strong> arda_can_iren (Arda Can İren)<br>📏 <strong>Height:</strong> 189 cm<br>🎂 <strong>Age:</strong> 25<br>⚧ <strong>Gender:</strong> Male<br>📅 <strong>Test Date:</strong> 19.03.2026 08:34"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Patient Info',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:9%;left:0;width:53%;height:19%"
-                        data-title="Body Composition Analysis"
-                        data-body="💧 <strong>Total Body Water:</strong> 44.1 L (44.2–54.0) ⚠️ slightly low<br>🧬 <strong>Protein:</strong> 12.0 kg (11.9–14.5) ✅<br>🦴 <strong>Minerals:</strong> 4.13 kg (4.09–4.99) ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg (9.4–18.9) ✅<br>⚖️ <strong>Weight:</strong> 71.4 kg ✅"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Composition Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:28%;left:0;width:53%;height:11%"
-                        data-title="Muscle-Fat Analysis"
-                        data-body="⚖️ <strong>Weight:</strong> 71.4 kg<br>💪 <strong>SMM:</strong> 34.2 kg ✅<br>🫀 <strong>Body Fat Mass:</strong> 11.2 kg ✅<br><br>Ideal: muscle bar longer than fat bar. Yours is excellent!"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Muscle-Fat Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:39%;left:0;width:53%;height:9%"
-                        data-title="Obesity Analysis"
-                        data-body="📏 <strong>BMI:</strong> 20.0 kg/m² — Normal (18.5–22.9) ✅<br>📉 <strong>PBF:</strong> 15.7% — Excellent ✅<br><br>Men normal PBF: 10–20% | Women: 18–28%"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Obesity Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:48%;left:0;width:53%;height:21%"
-                        data-title="Segmental Lean Analysis"
-                        data-body="🦾 Lean mass per segment (100% = ideal):<br><br>Right Arm: 3.13 kg — 92.1%<br>Left Arm: 3.24 kg — 95.5%<br>Trunk: 26.2 kg — 96.7%<br>Right Leg: 11.73 kg — <strong style='color:#10b981'>113.7%</strong> 💪<br>Left Leg: 10.81 kg — <strong style='color:#10b981'>114.5%</strong> 💪"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Segmental Lean Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:69%;left:0;width:53%;height:7%"
-                        data-title="ECW Ratio Analysis"
-                        data-body="💦 <strong>ECW Ratio: 0.370</strong><br><br>Normal: 0.360–0.390 ✅<br><br>High values (>0.400) may suggest inflammation or overtraining."
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'ECW Ratio Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:76%;left:0;width:53%;height:19%"
-                        data-title="Body Composition History"
-                        data-body="📈 Last 8 measurements:<br><br>⚖️ Weight: 70.7→71.3→71.2→71.3→71.2→70.6→71.0→<strong>71.4</strong> kg<br>💪 SMM: 34.7→34.5→34.4→34.5→34.4→34.0→34.6→<strong>34.2</strong> kg<br>🫀 PBF: 13.8→15.0→14.9→14.8→14.9→15.0→14.4→<strong>15.7%</strong>"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Composition History',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:2%;right:0;width:47%;height:16%"
-                        data-title="InBody Score"
-                        data-body="📊 <strong>Score: 73/100</strong><br><br>Overall body composition score.<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70<br><br>⚡ A muscular person may score over 100."
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'InBody Score',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:18%;right:0;width:47%;height:16%"
-                        data-title="Visceral Fat Area"
-                        data-body="🫃 <strong>VFA: 41.8 cm²</strong><br><br>✅ Normal: under 100 cm²<br>⚠️ Caution: 100–150 cm²<br>🚨 High Risk: over 150 cm²<br><br>Your score is excellent!"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Visceral Fat Area',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:34%;right:0;width:47%;height:9%"
-                        data-title="Weight Control"
-                        data-body="🎯 <strong>Target Weight: 78.6 kg</strong><br><br>Weight Control: <strong>+7.2 kg</strong><br>Fat Control: +0.6 kg<br>Muscle Control: +6.6 kg<br><br>Focus on muscle gain rather than fat."
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Weight Control',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:43%;right:0;width:47%;height:8%"
-                        data-title="Body Balance Evaluation"
-                        data-body="⚖️ Upper Body: <strong>Balanced</strong> ✅<br>Lower Body: <strong>Balanced</strong> ✅<br>Upper-Lower: <strong>Slightly Unbalanced</strong> ⚠️<br><br>Balanced segments reduce injury risk."
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Body Balance Evaluation',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:51%;right:0;width:47%;height:11%"
-                        data-title="Segmental Fat Analysis"
-                        data-body="🫀 Fat per segment:<br><br>Right Arm: 0.6 kg (77.8%)<br>Left Arm: 0.5 kg (73.7%)<br>Trunk: 5.3 kg (<strong style='color:#ef4444'>107.5%</strong>) ⚠️<br>Right Leg: 1.9 kg (93.0%)<br>Left Leg: 1.9 kg (93.8%)"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Segmental Fat Analysis',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:62%;right:0;width:47%;height:13%"
-                        data-title="Research Parameters"
-                        data-body="🔬 Advanced metrics:<br><br>💧 ICW: 27.8 L (27.4–33.4) ✅<br>💧 ECW: 16.3 L (16.8–20.6) ⚠️<br>🔥 BMR: <strong>1670 kcal</strong><br>📐 WHR: 0.84 ✅<br>🧬 BCM: 39.8 kg<br>📏 SMI: 7.8 kg/m²"
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Research Parameters',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:75%;right:0;width:47%;height:7%"
-                        data-title="Whole Body Phase Angle"
-                        data-body="⚡ <strong>Phase Angle: 6.0°</strong><br><br>✅ Men normal: 5.0–7.5°<br>✅ Women normal: 4.5–6.5°<br><br>Higher = healthier, more hydrated cells."
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Whole Body Phase Angle',this.dataset.body)"></div>
-
-                    <div class="ann-zone" style="top:82%;right:0;width:47%;height:14%"
-                        data-title="Impedance"
-                        data-body="📡 Bioelectrical impedance values (Ω) across frequencies:<br><br>1 kHz: RA 418.7 | LA 395.9 | TR 36.3<br>5 kHz: RA 408.0 | LA 386.3 | TR 34.9<br>50 kHz: RA 356.2 | LA 339.9 | TR 29.7<br><br>Lower impedance at higher frequencies = better cellular hydration."
-                        onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)"
-                        onclick="showAnnPopup(event,'Impedance',this.dataset.body)"></div>
-
-                </div>
-                </div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
             </div>
-            <div id="analysis-status" style="display:none;align-items:center;gap:8px;padding:6px 12px;background:var(--surface2);border-radius:8px;margin:0 1rem 0.5rem;border:1px solid var(--border)"></div>
             <div class="share-box">
                 <div class="share-title"><i class="fas fa-paper-plane"></i> <span data-i18n="send_title">Send Report to Client</span></div>
                 <div class="email-row">
@@ -604,62 +403,6 @@
     </div>
 </div>
 
-<!-- PAGE: CENTERS -->
-<div class="page" id="page-centers">
-    <div id="centers-public" style="flex:1;display:flex;flex-direction:column">
-        <div style="background:linear-gradient(135deg,#0a0f1e,#1a1040);padding:2.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--border)">
-            <div>
-                <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.2em;color:#3b82f6;margin-bottom:0.5rem">AUTHORIZED CENTERS</div>
-                <div style="font-size:1.8rem;font-weight:800;color:#f1f5f9;margin-bottom:0.4rem">InBody Test Centers</div>
-                <div style="font-size:0.88rem;color:rgba(241,245,249,0.55)">Find your nearest authorized InBody measurement center</div>
-            </div>
-            <button onclick="showApplicationsPanel()" style="background:#1e3a5f;color:white;border:none;padding:12px 24px;border-radius:12px;font-size:0.875rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap"><i class="fas fa-clipboard-list" style="margin-right:8px"></i>View Applications</button>
-        </div>
-        <div style="padding:1.5rem 2rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
-            <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;flex:1;max-width:380px">
-                <i class="fas fa-search" style="color:var(--muted)"></i>
-                <input type="text" id="center-search" placeholder="Search by city or name..." oninput="filterCenters()" style="background:transparent;border:none;outline:none;color:var(--text);font-size:0.875rem;font-family:Inter,sans-serif;width:100%">
-            </div>
-            <div id="centers-count" style="font-size:0.78rem;color:var(--muted)"></div>
-        </div>
-        <div id="centers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:0 2rem 2rem"></div>
-        <div id="centers-empty" style="display:none;text-align:center;padding:4rem 2rem;color:var(--muted)">
-            <i class="fas fa-map-marker-alt" style="font-size:3rem;opacity:0.3;display:block;margin-bottom:1rem"></i>
-            <p>No approved centers yet.</p>
-        </div>
-    </div>
-
-    <div id="applications-panel" style="display:none;flex:1;flex-direction:column;padding:1.5rem 2rem;gap:1rem;max-width:900px;margin:0 auto;width:100%">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-            <div style="display:flex;align-items:center;gap:12px">
-                <button onclick="showPublicCenters()" style="display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:10px;font-size:0.8rem;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-arrow-left"></i> Back</button>
-                <div style="font-size:1rem;font-weight:700;color:var(--text)"><i class="fas fa-clipboard-list"></i> Applications</div>
-            </div>
-            <button onclick="basviruGetir()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:10px;cursor:pointer"><i class="fas fa-sync-alt"></i></button>
-        </div>
-        <div style="display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content">
-            <div id="apptab-pending"  onclick="filterApps('pending')"  style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text)">Pending</div>
-            <div id="apptab-approved" onclick="filterApps('approved')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">Approved</div>
-            <div id="apptab-rejected" onclick="filterApps('rejected')" style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">Rejected</div>
-            <div id="apptab-all"      onclick="filterApps('all')"      style="padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--muted)">All</div>
-        </div>
-        <div id="app-list" style="display:flex;flex-direction:column;gap:10px"></div>
-    </div>
-</div>
-
-<!-- PAGE: RESULTS -->
-<div class="page" id="page-results">
-    <div id="results-loading" style="display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:1rem;color:var(--muted)">
-        <div class="spinner"></div>
-        <div style="font-size:0.85rem">Loading results...</div>
-    </div>
-    <div id="results-content" style="display:none;flex:1;flex-direction:column;overflow-y:auto;padding:2rem;gap:2rem;max-width:1000px;margin:0 auto;width:100%"></div>
-    <div id="results-empty" style="display:none;flex:1;align-items:center;justify-content:center;flex-direction:column;gap:1rem;color:var(--muted)">
-        <i class="fas fa-file-csv" style="font-size:3rem;opacity:0.3"></i>
-        <p>No CSV data found. Upload a CSV file to the Drive folder.</p>
-    </div>
-</div>
-
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
     <span class="lb-close" onclick="closeLightbox()">✕</span>
@@ -687,180 +430,6 @@
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-    /* CENTERS */
-    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json&gid=538154086';
-    var allApplications = [];
-    var currentAppFilter = 'pending';
-    var approvedCenters = [];
-
-    function showApplyForm() {
-        var ov = document.getElementById('apply-overlay');
-        if (ov) { ov.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-    }
-    function hideApplyForm() {
-        var ov = document.getElementById('apply-overlay');
-        if (ov) { ov.style.display = 'none'; document.body.style.overflow = ''; }
-    }
-    function showPublicCenters() {
-        document.getElementById('applications-panel').style.display = 'none';
-        document.getElementById('centers-public').style.display = 'flex';
-    }
-    function showApplicationsPanel() {
-        document.getElementById('centers-public').style.display = 'none';
-        document.getElementById('applications-panel').style.display = 'flex';
-        basviruGetir();
-    }
-    function filterCenters() { renderCenters(); }
-    function filterApps(f) {
-        currentAppFilter = f;
-        ['pending','approved','rejected','all'].forEach(function(x) {
-            var el = document.getElementById('apptab-' + x);
-            if (!el) return;
-            if (x === f) { el.style.background = 'var(--surface)'; el.style.color = 'var(--text)'; }
-            else { el.style.background = 'transparent'; el.style.color = 'var(--muted)'; }
-        });
-        renderApplications();
-    }
-    function addAdminCenterBtn() {
-        if (document.getElementById('admin-center-btn')) return;
-        var btn = document.createElement('button');
-        btn.id = 'admin-center-btn';
-        btn.className = 'btn-icon';
-        btn.title = 'Applications';
-        btn.innerHTML = '<i class="fas fa-clipboard-list" style="font-size:0.85rem;color:var(--muted)"></i>';
-        btn.onclick = function() { switchTab('centers'); setTimeout(showApplicationsPanel, 100); };
-        var th = document.getElementById('theme-btn');
-        if (th) th.parentNode.insertBefore(btn, th);
-    }
-    async function merkezleriGetir() {
-        try {
-            var res = await fetch(FORM_JSON_URL + '&_=' + Date.now());
-            var raw = await res.text();
-            var json = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1));
-            allApplications = [];
-            if (!json.table || !json.table.rows) { renderCenters(); return; }
-            json.table.rows.forEach(function(row, idx) {
-                if (!row.c || !row.c[0] || !row.c[0].v) return;
-                var date  = row.c[0] ? row.c[0].v : '';
-                var name  = row.c[1] ? row.c[1].v : '';
-                var email = row.c[2] ? row.c[2].v : '';
-                // Stabil key: tarih + email kombinasyonu
-                var key = 'app_' + (date + '_' + email).replace(/[^a-zA-Z0-9]/g, '_');
-                var st = localStorage.getItem(key + '_status') || 'pending';
-                var ml = localStorage.getItem(key + '_map') || '';
-                allApplications.push({
-                    idx: idx,
-                    key: key,
-                    date: date,
-                    name: name,
-                    email: email,
-                    phone: row.c[3] ? row.c[3].v : '',
-                    company: row.c[4] ? row.c[4].v : '',
-                    city: row.c[5] ? row.c[5].v : '',
-                    status: st,
-                    mapLink: ml
-                });
-            });
-            approvedCenters = allApplications.filter(function(a) { return a.status === 'approved'; });
-            renderCenters();
-        } catch(e) { console.error('Centers error:', e); }
-    }
-    function renderCenters() {
-        var grid = document.getElementById('centers-grid');
-        var empty = document.getElementById('centers-empty');
-        var countEl = document.getElementById('centers-count');
-        if (!grid) return;
-        var query = '';
-        var searchEl = document.getElementById('center-search');
-        if (searchEl) query = searchEl.value.toLowerCase();
-        var filtered = approvedCenters.filter(function(c) {
-            return !query || c.name.toLowerCase().indexOf(query) > -1 || c.city.toLowerCase().indexOf(query) > -1 || c.company.toLowerCase().indexOf(query) > -1;
-        });
-        if (countEl) countEl.textContent = filtered.length + (filtered.length !== 1 ? ' centers' : ' center');
-        grid.innerHTML = '';
-        if (filtered.length === 0) { if (empty) empty.style.display = 'block'; return; }
-        if (empty) empty.style.display = 'none';
-        filtered.forEach(function(c) {
-            var card = document.createElement('div');
-            card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.2s;cursor:default';
-            card.onmouseenter = function() { this.style.borderColor = '#3b82f6'; this.style.transform = 'translateY(-3px)'; };
-            card.onmouseleave = function() { this.style.borderColor = 'var(--border)'; this.style.transform = ''; };
-            var mapHtml = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--muted)">&#128205;</div>';
-            if (c.mapLink) {
-                mapHtml = '<iframe src="https://maps.google.com/maps?q=' + encodeURIComponent(c.city + ' ' + c.company) + '&output=embed&z=15" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;pointer-events:none"></iframe>';
-            }
-            var mapsBtn = '';
-            if (c.mapLink) {
-                mapsBtn = '<a href="' + c.mapLink + '" target="_blank" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Maps</button></a>';
-            }
-            card.innerHTML =
-                '<div style="height:160px;background:var(--surface2);overflow:hidden">' + mapHtml + '</div>' +
-                '<div style="padding:1.25rem">' +
-                    '<div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:3px">' + c.name + '</div>' +
-                    '<div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:10px">' + c.company + '</div>' +
-                    '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">' + c.city + '</div>' +
-                    '<div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">' + c.phone + '</div>' +
-                    '<div style="font-size:0.78rem;color:var(--muted)">' + c.email + '</div>' +
-                '</div>' +
-                '<div style="display:flex;gap:8px;padding:1rem 1.25rem;border-top:1px solid var(--border);background:var(--surface2)">' +
-                    mapsBtn +
-                    '<a href="mailto:' + c.email + '" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(16,185,129,0.1);color:#10b981;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Contact</button></a>' +
-                '</div>';
-            grid.appendChild(card);
-        });
-    }
-    async function basviruGetir() { await merkezleriGetir(); renderApplications(); }
-    function renderApplications() {
-        var list = document.getElementById('app-list');
-        if (!list) return;
-        list.innerHTML = '';
-        var filtered = allApplications.filter(function(a) {
-            return currentAppFilter === 'all' || a.status === currentAppFilter;
-        });
-        if (filtered.length === 0) {
-            list.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)">No applications found.</div>';
-            return;
-        }
-        filtered.forEach(function(a) {
-            var sc = a.status === 'approved' ? '#10b981' : (a.status === 'rejected' ? '#ef4444' : '#eab308');
-            var sb = a.status === 'approved' ? 'rgba(16,185,129,0.15)' : (a.status === 'rejected' ? 'rgba(239,68,68,0.15)' : 'rgba(234,179,8,0.15)');
-            var card = document.createElement('div');
-            card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:1rem';
-            var mapInputHtml = '';
-            if (a.status === 'pending') {
-                mapInputHtml = '<div style="margin-top:8px"><input id="mapinput_' + a.idx + '" type="text" value="' + (a.mapLink || '') + '" placeholder="Google Maps link (optional)" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:7px 10px;color:var(--input-color);font-size:0.78rem;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"></div>';
-            }
-            var adminBtnsHtml = '';
-            if (a.status === 'pending') {
-                adminBtnsHtml =
-                    '<button onclick="setAppStatus(' + a.idx + ', \'approved\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(16,185,129,0.1);color:#10b981">Approve</button>' +
-                    '<button onclick="setAppStatus(' + a.idx + ', \'rejected\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(239,68,68,0.1);color:#ef4444">Reject</button>';
-            }
-            card.innerHTML =
-                '<div style="flex:1">' +
-                    '<div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:3px">' + a.name + '</div>' +
-                    '<div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:8px">' + a.company + '</div>' +
-                    '<div style="font-size:0.75rem;color:var(--muted)">' + a.city + ' | ' + a.phone + ' | ' + a.email + '</div>' +
-                    mapInputHtml +
-                    '<div style="font-size:0.68rem;color:var(--muted);margin-top:6px">' + a.date + '</div>' +
-                '</div>' +
-                '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end">' +
-                    '<span style="padding:4px 10px;border-radius:20px;font-size:0.68rem;font-weight:700;text-transform:uppercase;background:' + sb + ';color:' + sc + '">' + a.status + '</span>' +
-                    adminBtnsHtml +
-                '</div>';
-            list.appendChild(card);
-        });
-    }
-    function setAppStatus(idx, status) {
-        var app = allApplications.find(function(a){ return a.idx === idx; });
-        if (!app) return;
-        var mi = document.getElementById('mapinput_' + idx);
-        var ml = mi ? mi.value.trim() : '';
-        localStorage.setItem(app.key + '_status', status);
-        if (ml) localStorage.setItem(app.key + '_map', ml);
-        basviruGetir();
-    }
-
     const INBODY_SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
     const FILES_SHEET_ID  = '1tZasqIMvD0sZw14qCnm8A22T4jIwGXvc3c1rqIZSOfo';
     const INBODY_JSON = 'https://docs.google.com/spreadsheets/d/' + INBODY_SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Sheet1';
@@ -942,8 +511,6 @@
         document.getElementById('page-'+tab).classList.add('active');
         if (tab==='files' && allFiles.length===0) dosyalariGetir();
         if (tab==='files' && allFiles.length>0) showFolderGrid();
-        if (tab==='centers') merkezleriGetir();
-        if (tab==='results') resultsGetir();
     }
 
     /* ── LOGIN ── */
@@ -966,7 +533,6 @@
             sessionStorage.setItem('inbody_auth','1');
             document.getElementById('login-overlay').style.display='none';
             veriGetir();
-            setTimeout(addAdminCenterBtn, 500);
         } else {
             err.textContent=t('login_error'); err.style.display='block';
             ['login-user','login-pass'].forEach(function(id){
@@ -998,11 +564,6 @@
 
     /* ── AYARLAR ── */
     function openSettings() {
-        var ck = document.getElementById('claude-key-input');
-        if (ck) {
-            var stored = localStorage.getItem('claude_api_key') || '';
-            ck.placeholder = stored ? '••••••••' + stored.slice(-4) : 'sk-ant-api03-...';
-        }
         ['new-username','current-pass','new-pass','new-pass2'].forEach(function(id){document.getElementById(id).value='';});
         document.getElementById('settings-error').style.display='none';
         document.getElementById('settings-success').style.display='none';
@@ -1010,10 +571,6 @@
     }
     function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
     function saveSettings() {
-        var ck = document.getElementById('claude-key-input');
-        if (ck && ck.value.trim()) {
-            localStorage.setItem('claude_api_key', ck.value.trim());
-        }
         var nu=document.getElementById('new-username').value.trim();
         var cp=document.getElementById('current-pass').value.trim();
         var np=document.getElementById('new-pass').value.trim();
@@ -1065,7 +622,7 @@
             });
             if(ids.length===0)throw new Error('No links');
             imageLinks=ids; imageDates=dates; currentIndex=0;
-            loadFeatured(0); buildCarousel(); loadNoteForCurrent();
+            loadFeatured(0); buildCarousel();
             document.getElementById('update-time').textContent=new Date().toLocaleTimeString(currentLang==='tr'?'tr-TR':'en-GB',{hour:'2-digit',minute:'2-digit'});
         } catch(e){console.error(e);showState('error');}
         finally{btn.classList.remove('spinning');btn.disabled=false;}
@@ -1078,12 +635,7 @@
     function loadFeatured(index){
         currentIndex=index; showState('loading');
         var img=document.getElementById('featured-img');
-        img.onload=function(){
-            showState('image');
-            // Analizi 1 sn sonra tetikle - görüntü tam yüklensin
-            setTimeout(function(){ analyzeWithFileId(imageLinks[index]); }, 1000);
-        };
-        img.onerror=function(){showState('error');};
+        img.onload=function(){showState('image');}; img.onerror=function(){showState('error');};
         img.src='https://drive.google.com/thumbnail?id='+imageLinks[index]+'&sz=w1200&_='+Date.now();
         document.querySelectorAll('.thumb').forEach(function(el,i){el.classList.toggle('active',i===index);});
         if(index===0&&imageLinks[0]){
@@ -1412,501 +964,8 @@
         document.body.style.overflow='';
     }
 
-    var activeAnnZone = null;
-    function showAnnPreview(e, el) {
-        var box = document.getElementById('ann-preview-box');
-        document.getElementById('ann-preview-title').textContent = el.dataset.title || '';
-        document.getElementById('ann-preview-hint').innerHTML = el.dataset.body || el.dataset.hint || '';
-        box.style.display = 'block';
-        moveAnnPreview(e);
-    }
-    function hideAnnPreview() {
-        document.getElementById('ann-preview-box').style.display = 'none';
-    }
-    function moveAnnPreview(e) {
-        var box = document.getElementById('ann-preview-box');
-        var x = e.clientX + 14, y = e.clientY - 60;
-        if (x + 210 > window.innerWidth) x = e.clientX - 215;
-        if (y < 8) y = e.clientY + 14;
-        box.style.left = x + 'px';
-        box.style.top  = y + 'px';
-    }
-    function showAnnPopup(e, title, body) {
-        e.stopPropagation();
-        // active zone
-        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
-        e.currentTarget.classList.add('active');
-        activeAnnZone = e.currentTarget;
-        // popup içerik
-        document.getElementById('ann-popup-title').textContent = title;
-        document.getElementById('ann-popup-body').innerHTML = body;
-        var popup = document.getElementById('ann-popup');
-        popup.style.display = 'block';
-        hideAnnPreview();
-        // konumlandır - tıklanan zone'un üstünde
-        var rect = e.currentTarget.getBoundingClientRect();
-        var pw = 250, ph = popup.offsetHeight || 120;
-        var left = rect.left + (rect.width / 2) - (pw / 2);
-        var top  = rect.top - ph - 10;
-        if (left < 8) left = 8;
-        if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
-        if (top < 8) top = rect.bottom + 10;
-        popup.style.left = left + 'px';
-        popup.style.top  = top  + 'px';
-    }
-    function closeAnnPopup() {
-        document.getElementById('ann-popup').style.display = 'none';
-        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
-    }
-    document.addEventListener('click', function(e) {
-        var popup = document.getElementById('ann-popup');
-        if (popup && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
-    });
-
-    /* ── CLAUDE VISION ANALİZ ── */
-    const CLAUDE_API_KEY = localStorage.getItem('claude_api_key') || '';
-    var lastAnalyzedSrc = '';
-
-    async function analyzeWithFileId(fileId) {
-        if (!fileId || fileId === lastAnalyzedSrc) return;
-        lastAnalyzedSrc = fileId;
-        showAnalysisStatus('analyzing');
-
-        try {
-            // Resmi doğrudan URL olarak Anthropic'e gönder (URL source)
-            var thumbUrl = 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w1200';
-
-            var prompt = `This is an InBody body composition analysis report. 
-Extract ALL values and return ONLY a valid JSON object with this exact structure:
-{
-  "patientInfo": {"id":"","name":"","height":"","age":"","gender":"","testDate":""},
-  "inbodyScore": {"score":"","maxScore":"100","interpretation":""},
-  "bodyComposition": {"totalBodyWater":{"value":"","range":""},"protein":{"value":"","range":""},"minerals":{"value":"","range":""},"bodyFatMass":{"value":"","range":""},"weight":{"value":"","range":""}},
-  "muscleFat": {"weight":"","smm":"","bodyFatMass":""},
-  "obesity": {"bmi":"","bmiRange":"","pbf":"","pbfRange":""},
-  "visceralFat": {"vfa":"","status":""},
-  "weightControl": {"targetWeight":"","weightControl":"","fatControl":"","muscleControl":""},
-  "bodyBalance": {"upper":"","lower":"","upperLower":""},
-  "segmentalLean": {"rightArm":{"kg":"","pct":""},"leftArm":{"kg":"","pct":""},"trunk":{"kg":"","pct":""},"rightLeg":{"kg":"","pct":""},"leftLeg":{"kg":"","pct":""}},
-  "segmentalFat": {"rightArm":{"kg":"","pct":""},"leftArm":{"kg":"","pct":""},"trunk":{"kg":"","pct":""},"rightLeg":{"kg":"","pct":""},"leftLeg":{"kg":"","pct":""}},
-  "ecwRatio": {"value":"","range":""},
-  "researchParams": {"icw":"","ecw":"","bmr":"","whr":"","bcm":"","smi":"","recommendedCalories":""},
-  "phaseAngle": {"value":""},
-  "compositionHistory": {"dates":[],"weight":[],"smm":[],"pbf":[]}
-}
-Return ONLY the JSON, no explanation.`;
-
-            var apiKey = localStorage.getItem('claude_api_key') || '';
-            console.log('API Key length:', apiKey.length, apiKey ? 'OK' : 'EMPTY');
-            if (!apiKey) { showAnalysisStatus('error'); return; }
-            var response = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': apiKey,
-                    'anthropic-version': '2023-06-01',
-                    'anthropic-dangerous-direct-browser-access': 'true'
-                },
-                body: JSON.stringify({
-                    model: 'claude-sonnet-4-5',
-                    max_tokens: 2000,
-                    messages: [{
-                        role: 'user',
-                        content: [
-                            { type: 'image', source: { type: 'url', url: thumbUrl } },
-                            { type: 'text', text: prompt }
-                        ]
-                    }]
-                })
-            });
-
-            var respText = await response.text();
-            console.log('API raw response:', respText.slice(0, 500));
-            var data = JSON.parse(respText);
-            if (!data.content || !data.content[0]) throw new Error('API error: ' + JSON.stringify(data));
-            var text = data.content[0].text.trim();
-            // JSON temizle
-            text = text.replace(/```json|```/g, '').trim();
-            var parsed = JSON.parse(text);
-            updateAnnotations(parsed);
-            showAnalysisStatus('done');
-        } catch(e) {
-            console.error('Analysis error:', e);
-            showAnalysisStatus('error');
-        }
-    }
-
-    function showAnalysisStatus(state) {
-        var el = document.getElementById('analysis-status');
-        if (!el) return;
-        if (state === 'analyzing') {
-            el.style.display = 'flex';
-            el.innerHTML = '<i class="fas fa-brain" style="color:#3b82f6;animation:spin 1s linear infinite"></i><span style="font-size:0.72rem;color:var(--muted)">Analyzing with AI...</span>';
-        } else if (state === 'done') {
-            el.innerHTML = '<i class="fas fa-check-circle" style="color:#10b981"></i><span style="font-size:0.72rem;color:#10b981">AI analysis complete</span>';
-            setTimeout(function(){ el.style.display='none'; }, 3000);
-        } else {
-            el.style.display = 'none';
-        }
-    }
-
-    function getStatus(value, range) {
-        // value ve range'den durum çıkar
-        if (!range) return '';
-        var parts = range.replace('~','–').split('–');
-        if (parts.length < 2) return '';
-        var val = parseFloat(value);
-        var min = parseFloat(parts[0]);
-        var max = parseFloat(parts[1]);
-        if (isNaN(val)||isNaN(min)||isNaN(max)) return '';
-        if (val < min) return '⚠️ below normal';
-        if (val > max) return '⚠️ above normal';
-        return '✅';
-    }
-
-    function updateAnnotations(d) {
-        if (!d) return;
-        var zones = document.querySelectorAll('.ann-zone');
-        zones.forEach(function(z) {
-            var title = z.dataset.title;
-            var body = '';
-
-            if (title === 'Patient Info' && d.patientInfo) {
-                var p = d.patientInfo;
-                body = '🪪 <strong>ID:</strong> ' + (p.id||'–') + ' (' + (p.name||'–') + ')<br>📏 <strong>Height:</strong> ' + (p.height||'–') + '<br>🎂 <strong>Age:</strong> ' + (p.age||'–') + '<br>⚧ <strong>Gender:</strong> ' + (p.gender||'–') + '<br>📅 <strong>Test Date:</strong> ' + (p.testDate||'–');
-            }
-            else if (title === 'InBody Score' && d.inbodyScore) {
-                var s = d.inbodyScore;
-                var sc = parseInt(s.score||0);
-                var color = sc >= 80 ? '#10b981' : sc >= 70 ? '#eab308' : '#ef4444';
-                body = '📊 <strong style="color:' + color + ';font-size:1.1rem">' + s.score + '/100</strong><br><br>' + (s.interpretation||'') + '<br><br>👨 <strong>Men:</strong> Should be over 80<br>👩 <strong>Women:</strong> Should be over 70';
-            }
-            else if (title === 'Body Composition Analysis' && d.bodyComposition) {
-                var b = d.bodyComposition;
-                body = '💧 <strong>Total Body Water:</strong> ' + b.totalBodyWater.value + ' L (' + b.totalBodyWater.range + ') ' + getStatus(b.totalBodyWater.value, b.totalBodyWater.range) +
-                       '<br>🧬 <strong>Protein:</strong> ' + b.protein.value + ' kg (' + b.protein.range + ') ' + getStatus(b.protein.value, b.protein.range) +
-                       '<br>🦴 <strong>Minerals:</strong> ' + b.minerals.value + ' kg (' + b.minerals.range + ') ' + getStatus(b.minerals.value, b.minerals.range) +
-                       '<br>🫀 <strong>Body Fat Mass:</strong> ' + b.bodyFatMass.value + ' kg (' + b.bodyFatMass.range + ') ' + getStatus(b.bodyFatMass.value, b.bodyFatMass.range) +
-                       '<br>⚖️ <strong>Weight:</strong> ' + b.weight.value + ' kg (' + b.weight.range + ') ' + getStatus(b.weight.value, b.weight.range);
-            }
-            else if (title === 'Muscle-Fat Analysis' && d.muscleFat) {
-                var m = d.muscleFat;
-                body = '⚖️ <strong>Weight:</strong> ' + m.weight + ' kg<br>💪 <strong>SMM:</strong> ' + m.smm + ' kg<br>🫀 <strong>Body Fat Mass:</strong> ' + m.bodyFatMass + ' kg';
-            }
-            else if (title === 'Obesity Analysis' && d.obesity) {
-                var o = d.obesity;
-                body = '📏 <strong>BMI:</strong> ' + o.bmi + ' kg/m² (' + o.bmiRange + ') ' + getStatus(o.bmi, o.bmiRange) + '<br>📉 <strong>PBF:</strong> ' + o.pbf + '% (' + o.pbfRange + ') ' + getStatus(o.pbf, o.pbfRange) + '<br><br>Men normal PBF: 10–20% | Women: 18–28%';
-            }
-            else if (title === 'Visceral Fat Area' && d.visceralFat) {
-                var v = d.visceralFat;
-                var vStatus = parseFloat(v.vfa) < 100 ? '✅ Excellent!' : parseFloat(v.vfa) < 150 ? '⚠️ Caution' : '🚨 High Risk';
-                body = '🫃 <strong>VFA: ' + v.vfa + ' cm²</strong><br><br>✅ Normal: under 100 cm²<br>⚠️ Caution: 100–150 cm²<br>🚨 High Risk: over 150 cm²<br><br>' + vStatus;
-            }
-            else if (title === 'Weight Control' && d.weightControl) {
-                var w = d.weightControl;
-                body = '🎯 <strong>Target Weight: ' + w.targetWeight + ' kg</strong><br><br>Weight Control: <strong>' + w.weightControl + ' kg</strong><br>Fat Control: ' + w.fatControl + ' kg<br>Muscle Control: ' + w.muscleControl + ' kg';
-            }
-            else if (title === 'Body Balance Evaluation' && d.bodyBalance) {
-                var bb = d.bodyBalance;
-                body = '⚖️ Upper Body: <strong>' + bb.upper + '</strong><br>Lower Body: <strong>' + bb.lower + '</strong><br>Upper-Lower: <strong>' + bb.upperLower + '</strong>';
-            }
-            else if (title === 'Segmental Lean Analysis' && d.segmentalLean) {
-                var sl = d.segmentalLean;
-                function pctColor(p) { var n=parseFloat(p); return n>=100?'#10b981':n>=80?'#eab308':'#ef4444'; }
-                body = '🦾 Lean mass per segment:<br><br>' +
-                    'Right Arm: ' + sl.rightArm.kg + ' kg — <strong style="color:' + pctColor(sl.rightArm.pct) + '">' + sl.rightArm.pct + '%</strong><br>' +
-                    'Left Arm: ' + sl.leftArm.kg + ' kg — <strong style="color:' + pctColor(sl.leftArm.pct) + '">' + sl.leftArm.pct + '%</strong><br>' +
-                    'Trunk: ' + sl.trunk.kg + ' kg — <strong style="color:' + pctColor(sl.trunk.pct) + '">' + sl.trunk.pct + '%</strong><br>' +
-                    'Right Leg: ' + sl.rightLeg.kg + ' kg — <strong style="color:' + pctColor(sl.rightLeg.pct) + '">' + sl.rightLeg.pct + '%</strong><br>' +
-                    'Left Leg: ' + sl.leftLeg.kg + ' kg — <strong style="color:' + pctColor(sl.leftLeg.pct) + '">' + sl.leftLeg.pct + '%</strong>';
-            }
-            else if (title === 'Segmental Fat Analysis' && d.segmentalFat) {
-                var sf = d.segmentalFat;
-                body = '🫀 Fat per segment:<br><br>' +
-                    'Right Arm: ' + sf.rightArm.kg + ' kg (' + sf.rightArm.pct + '%)<br>' +
-                    'Left Arm: ' + sf.leftArm.kg + ' kg (' + sf.leftArm.pct + '%)<br>' +
-                    'Trunk: ' + sf.trunk.kg + ' kg (<strong style="color:' + (parseFloat(sf.trunk.pct)>100?'#ef4444':'#10b981') + '">' + sf.trunk.pct + '%</strong>)<br>' +
-                    'Right Leg: ' + sf.rightLeg.kg + ' kg (' + sf.rightLeg.pct + '%)<br>' +
-                    'Left Leg: ' + sf.leftLeg.kg + ' kg (' + sf.leftLeg.pct + '%)';
-            }
-            else if (title === 'ECW Ratio Analysis' && d.ecwRatio) {
-                var e = d.ecwRatio;
-                body = '💦 <strong>ECW Ratio: ' + e.value + '</strong><br><br>Normal: 0.360–0.390 ' + getStatus(e.value, '0.360–0.390') + '<br><br>High values (>0.400) may suggest inflammation or overtraining.';
-            }
-            else if (title === 'Research Parameters' && d.researchParams) {
-                var r = d.researchParams;
-                body = '🔬 Advanced metrics:<br><br>💧 ICW: ' + r.icw + ' L<br>💧 ECW: ' + r.ecw + ' L<br>🔥 BMR: <strong>' + r.bmr + ' kcal</strong><br>📐 WHR: ' + r.whr + '<br>🧬 BCM: ' + r.bcm + ' kg<br>📏 SMI: ' + r.smi + ' kg/m²<br>🍽️ Rec. Calories: ' + r.recommendedCalories + ' kcal';
-            }
-            else if (title === 'Whole Body Phase Angle' && d.phaseAngle) {
-                var pa = d.phaseAngle;
-                body = '⚡ <strong>Phase Angle: ' + pa.value + '°</strong><br><br>✅ Men normal: 5.0–7.5°<br>✅ Women normal: 4.5–6.5°<br><br>Higher = healthier, more hydrated cells.';
-            }
-            else if (title === 'Body Composition History' && d.compositionHistory) {
-                var h = d.compositionHistory;
-                var lastW = h.weight && h.weight.length ? h.weight[h.weight.length-1] : '–';
-                var lastS = h.smm && h.smm.length ? h.smm[h.smm.length-1] : '–';
-                var lastP = h.pbf && h.pbf.length ? h.pbf[h.pbf.length-1] : '–';
-                body = '📈 Trend:<br><br>⚖️ Weight: ' + (h.weight||[]).join('→') + ' kg<br>💪 SMM: ' + (h.smm||[]).join('→') + ' kg<br>🫀 PBF: ' + (h.pbf||[]).join('→') + '%';
-            }
-
-            if (body) {
-                z.dataset.body = body;
-                z.dataset.hint = body;
-            }
-        });
-    }
-    function loadNoteForCurrent() { /* notes not implemented */ }
-
-    function saveApiKey() {
-        var ck = document.getElementById('claude-key-input');
-        if (ck && ck.value.trim().startsWith('sk-ant')) {
-            localStorage.setItem('claude_api_key', ck.value.trim());
-            ck.value = '';
-            ck.placeholder = 'Saved! ✓';
-            setTimeout(function(){ ck.placeholder = 'sk-ant-api03-...'; }, 2000);
-        }
-    }
     // Init
     applyLang();
-    if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn, 300);
-
-    /* ── RESULTS ── */
-    var RESULT_JSON_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/gviz/tq?tqx=out:json';
-    var resultData = {};
-
-    async function resultsGetir() {
-        document.getElementById('results-loading').style.display = 'flex';
-        document.getElementById('results-content').style.display = 'none';
-        document.getElementById('results-empty').style.display = 'none';
-        try {
-            var res = await fetch(RESULT_JSON_URL + '&_=' + Date.now());
-            var raw = await res.text();
-            var json = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}') + 1));
-            resultData = {};
-            if (!json.table || !json.table.rows || json.table.rows.length === 0) {
-                document.getElementById('results-loading').style.display = 'none';
-                document.getElementById('results-empty').style.display = 'flex';
-                return;
-            }
-            json.table.rows.forEach(function(row) {
-                if (!row.c || !row.c[0] || !row.c[0].v) return;
-                var key = row.c[0].v.toString().trim();
-                var val = row.c[1] ? (row.c[1].v || '').toString().trim() : '';
-                resultData[key] = val;
-            });
-            renderResults();
-        } catch(e) {
-            console.error('Results error:', e);
-            document.getElementById('results-loading').style.display = 'none';
-            document.getElementById('results-empty').style.display = 'flex';
-        }
-    }
-
-    function rv(key) { return parseFloat((resultData[key] || '0').replace(',','.')) || 0; }
-    function rs(key) { return (resultData[key] || '-'); }
-    function getStatus(val, low, high) {
-        if (!low && !high) return '';
-        if (val < low) return 'status-low';
-        if (val > high) return 'status-high';
-        return 'status-ok';
-    }
-    function getStatusLabel(val, low, high) {
-        if (!low && !high) return '';
-        if (val < low) return '↓ Below range';
-        if (val > high) return '↑ Above range';
-        return '✓ Normal';
-    }
-    function scoreColor(s) { return s >= 80 ? '#10b981' : s >= 70 ? '#f59e0b' : '#ef4444'; }
-    function pctColor(p) { return p >= 100 ? '#10b981' : p >= 80 ? '#f59e0b' : '#ef4444'; }
-
-    function rBar(name, val, low, high, unit) {
-        var maxVal = high * 1.4;
-        var fillPct = Math.min((val / maxVal) * 100, 100);
-        var normStart = (low / maxVal) * 100;
-        var normW = ((high - low) / maxVal) * 100;
-        var st = getStatus(val, low, high);
-        var color = st === 'status-ok' ? '#10b981' : st === 'status-low' ? '#f59e0b' : '#ef4444';
-        var label = getStatusLabel(val, low, high);
-        return '<div class="r-bar-row">' +
-            '<div class="r-bar-name">' + name + '</div>' +
-            '<div class="r-bar-track">' +
-                '<div class="r-bar-normal" style="left:' + normStart.toFixed(1) + '%;width:' + normW.toFixed(1) + '%"></div>' +
-                '<div class="r-bar-fill" style="width:' + fillPct.toFixed(1) + '%;background:' + color + '"></div>' +
-            '</div>' +
-            '<div class="r-bar-right">' +
-                '<div class="r-bar-val">' + val.toFixed(1) + ' <span style="font-size:0.65rem;color:var(--muted);font-weight:400">' + (unit||'') + '</span></div>' +
-                (label ? '<div class="r-bar-status" style="color:' + color + '">' + label + '</div>' : '') +
-            '</div>' +
-        '</div>';
-    }
-
-    function rMetric(label, val, unit, low, high, tip) {
-        var st = (low || high) ? getStatus(val, low, high) : '';
-        var sl = (low || high) ? getStatusLabel(val, low, high) : '';
-        var dispVal = typeof val === 'number' ? (val % 1 === 0 ? val : val.toFixed(1)) : val;
-        return '<div class="r-metric">' +
-            (st ? '<div class="r-metric-badge ' + st + '">' + sl + '</div>' : '') +
-            '<div class="r-metric-val">' + dispVal + '<span class="r-metric-unit">' + (unit||'') + '</span></div>' +
-            '<div class="r-metric-label">' + label + '</div>' +
-            (tip ? '<div class="r-metric-tooltip">' + tip + '</div>' : '') +
-        '</div>';
-    }
-
-    function renderResults() {
-        document.getElementById('results-loading').style.display = 'none';
-
-        var score   = rv('InBody Score');
-        var weight  = rv('Weight');
-        var wLow    = rv('Lower Limit (Weight Normal Range)');
-        var wHigh   = rv('Upper Limit (Weight Normal Range)');
-        var tbw     = rv('TBW (Total Body Water)');
-        var tbwL    = rv('Lower Limit (TBW Normal Range)');
-        var tbwH    = rv('Upper Limit (TBW Normal Range)');
-        var protein = rv('Protein');
-        var proL    = rv('Lower Limit (Protein Normal Range)');
-        var proH    = rv('Upper Limit (Protein Normal Range)');
-        var minerals= rv('Minerals');
-        var minL    = rv('Lower Limit (Minerals Normal Range)');
-        var minH    = rv('Upper Limit (Minerals Normal Range)');
-        var bfm     = rv('BFM (Body Fat Mass)');
-        var bfmL    = rv('Lower Limit (BFM Normal Range)');
-        var bfmH    = rv('Upper Limit (BFM Normal Range)');
-        var smm     = rv('SMM (Skeletal Muscle Mass)');
-        var smmL    = rv('Lower Limit (SMM Normal Range)');
-        var smmH    = rv('Upper Limit (SMM Normal Range)');
-        var ffm     = rv('FFM (Fat Free Mass)');
-        var ffmL    = rv('Lower Limit (FFM Normal Range)');
-        var ffmH    = rv('Upper Limit (FFM Normal Range)');
-        var bmi     = rv('BMI (Body Mass Index)');
-        var bmiL    = rv('Lower Limit (BMI Normal Range)');
-        var bmiH    = rv('Upper Limit (BMI Normal Range)');
-        var pbf     = rv('PBF (Percent Body Fat)');
-        var pbfL    = rv('Lower Limit (PBF Normal Range)');
-        var pbfH    = rv('Upper Limit (PBF Normal Range)');
-        var bmr     = rv('BMR (Basal Metabolic Rate)');
-        var bmrL    = rv('Lower Limit (BMR Normal Range)');
-        var bmrH    = rv('Upper Limit (BMR Normal Range)');
-        var vfa     = rv('VFA (Visceral Fat Area)');
-        var ecwR    = rv('ECW/TBW');
-        var whr     = rv('WHR (Waist-Hip Ratio)');
-        var whrL    = rv('Lower Limit (WHR Normal Range)');
-        var whrH    = rv('Upper Limit (WHR Normal Range)');
-        var targetW = rv('Target Weight');
-        var wCtrl   = rv('Weight Control');
-        var bfmCtrl = rv('BFM Control');
-        var ffmCtrl = rv('FFM Control');
-        var recCal  = rv('Recommended Calorie Intake');
-        var bcm     = rv('BCM (Body Cell Mass)');
-        var smi     = rv('SMI (Skeletal Muscle Index)');
-        var name    = rs('Name') !== '-' ? rs('Name') : 'ID: ' + rs('ID');
-        var testDate= rs('Test Date / Time');
-        var gender  = rs('Gender');
-        var age     = rs('Age');
-        var height  = rs('Height');
-
-        // Segmental
-        var raKg = rv('FFM of Right Arm'), raPct = rv('FFM% of Right Arm');
-        var laKg = rv('FFM of Left Arm'),  laPct = rv('FFM% of Left Arm');
-        var trKg = rv('FFM of Trunk'),     trPct = rv('FFM% of Trunk');
-        var rlKg = rv('FFM of Right Leg'), rlPct = rv('FFM% of Right Leg');
-        var llKg = rv('FFM of Left Leg'),  llPct = rv('FFM% of Left Leg');
-
-        var sc = scoreColor(score);
-        var circumference = 2 * Math.PI * 44;
-        var dash = (score / 100) * circumference;
-
-        var html = '';
-
-        // ── HERO ──
-        html += '<div class="r-hero">';
-        html += '<div>';
-        html += '<div style="font-size:0.6rem;font-weight:700;letter-spacing:0.18em;color:#3b82f6;text-transform:uppercase;margin-bottom:8px">InBody Analysis Report</div>';
-        html += '<div class="r-hero-name">' + name + '</div>';
-        html += '<div class="r-hero-meta">';
-        html += '<span class="r-hero-meta-item">📅 ' + testDate + '</span>';
-        html += '<span class="r-hero-meta-item">📏 ' + height + ' cm</span>';
-        html += '<span class="r-hero-meta-item">🎂 ' + age + ' yrs</span>';
-        html += '<span class="r-hero-meta-item">⚧ ' + gender + '</span>';
-        html += '</div></div>';
-        // Score ring
-        html += '<div style="text-align:center">';
-        html += '<div class="r-score-ring">';
-        html += '<svg width="110" height="110" viewBox="0 0 110 110">';
-        html += '<circle cx="55" cy="55" r="44" fill="none" stroke="var(--surface2)" stroke-width="8"/>';
-        html += '<circle cx="55" cy="55" r="44" fill="none" stroke="' + sc + '" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + dash.toFixed(1) + ' ' + circumference.toFixed(1) + '"/>';
-        html += '</svg>';
-        html += '<div class="r-score-center"><div class="r-score-num" style="color:' + sc + '">' + score + '</div><div class="r-score-sub">/ 100</div></div>';
-        html += '</div>';
-        html += '<div style="font-size:0.7rem;font-weight:600;color:' + sc + ';margin-top:6px">' + (score>=80?'Excellent':score>=70?'Good':'Needs Work') + '</div>';
-        html += '</div></div>';
-
-        // ── BODY COMPOSITION ──
-        html += '<div class="r-section"><div class="r-section-head">';
-        html += '<div class="r-section-title">Body Composition</div><div class="r-section-divider"></div></div>';
-        html += '<div class="r-section-body">';
-        html += rBar('Total Body Water', tbw, tbwL, tbwH, 'L');
-        html += rBar('Protein', protein, proL, proH, 'kg');
-        html += rBar('Minerals', minerals, minL, minH, 'kg');
-        html += rBar('Body Fat Mass', bfm, bfmL, bfmH, 'kg');
-        html += rBar('Weight', weight, wLow, wHigh, 'kg');
-        html += '</div></div>';
-
-        // ── METRICS ──
-        html += '<div class="r-section"><div class="r-section-head">';
-        html += '<div class="r-section-title">Key Metrics</div><div class="r-section-divider"></div></div>';
-        html += '<div class="r-section-body"><div class="r-metrics">';
-        html += rMetric('BMI', bmi, 'kg/m²', bmiL, bmiH, 'Normal range: ' + bmiL + '–' + bmiH + ' kg/m²<br>Body Mass Index measures weight relative to height.');
-        html += rMetric('Body Fat %', pbf, '%', pbfL, pbfH, 'Normal range: ' + pbfL + '–' + pbfH + '%<br>Percentage of total body weight that is fat.');
-        html += rMetric('Muscle Mass', smm, 'kg', smmL, smmH, 'Normal range: ' + smmL + '–' + smmH + ' kg<br>Skeletal muscle mass driving your metabolism.');
-        html += rMetric('Visceral Fat', vfa, 'cm²', 0, 100, 'Normal: under 100 cm²<br>Fat surrounding internal organs — key metabolic risk indicator.');
-        html += rMetric('BMR', bmr, 'kcal', bmrL, bmrH, 'Normal range: ' + bmrL + '–' + bmrH + ' kcal<br>Calories burned at complete rest.');
-        html += rMetric('WHR', whr, '', whrL, whrH, 'Normal range: ' + whrL + '–' + whrH + '<br>Waist-to-hip ratio, indicator of abdominal fat distribution.');
-        html += rMetric('ECW/TBW', ecwR, '', 0.36, 0.39, 'Normal range: 0.36–0.39<br>Fluid balance ratio. High values may indicate inflammation.');
-        html += rMetric('Fat Free Mass', ffm, 'kg', ffmL, ffmH, 'Normal range: ' + ffmL + '–' + ffmH + ' kg<br>Everything except fat: muscle, bone, water, organs.');
-        html += '</div></div></div>';
-
-        // ── WEIGHT CONTROL ──
-        html += '<div class="r-section"><div class="r-section-head">';
-        html += '<div class="r-section-title">Weight Control</div><div class="r-section-divider"></div></div>';
-        html += '<div class="r-section-body"><div class="r-wctrl">';
-        html += '<div>';
-        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Current Weight</div><div class="r-wctrl-val">' + weight.toFixed(1) + ' kg</div></div>';
-        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Target Weight</div><div class="r-wctrl-val" style="color:#3b82f6">' + targetW.toFixed(1) + ' kg</div></div>';
-        html += '</div><div>';
-        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Weight to Change</div><div class="r-wctrl-val" style="color:' + (wCtrl>=0?'#10b981':'#ef4444') + '">' + (wCtrl>=0?'+':'') + wCtrl.toFixed(1) + ' kg</div></div>';
-        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Fat to Lose</div><div class="r-wctrl-val" style="color:#f59e0b">' + (bfmCtrl>=0?'+':'') + bfmCtrl.toFixed(1) + ' kg</div></div>';
-        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Muscle to Gain</div><div class="r-wctrl-val" style="color:#10b981">' + (ffmCtrl>=0?'+':'') + ffmCtrl.toFixed(1) + ' kg</div></div>';
-        html += '</div></div></div></div>';
-
-        // ── SEGMENTAL ──
-        html += '<div class="r-section"><div class="r-section-head">';
-        html += '<div class="r-section-title">Segmental Lean Analysis</div><div class="r-section-divider"></div></div>';
-        html += '<div class="r-section-body"><div class="r-segments">';
-        [[' Right Arm', raKg, raPct],[' Left Arm', laKg, laPct],['Trunk', trKg, trPct],['Right Leg', rlKg, rlPct],['Left Leg', llKg, llPct]].forEach(function(seg) {
-            var c = pctColor(seg[2]);
-            var barW = Math.min(seg[2], 130) / 130 * 100;
-            html += '<div class="r-seg">';
-            html += '<div class="r-seg-name">' + seg[0] + '</div>';
-            html += '<div class="r-seg-val">' + seg[1].toFixed(2) + '<span style="font-size:0.6rem;color:var(--muted);font-weight:400"> kg</span></div>';
-            html += '<div class="r-seg-pct" style="color:' + c + '">' + seg[2].toFixed(1) + '%</div>';
-            html += '<div class="r-seg-bar" style="background:var(--surface2)"><div style="height:100%;width:' + barW.toFixed(1) + '%;background:' + c + ';border-radius:2px"></div></div>';
-            html += '</div>';
-        });
-        html += '</div></div></div>';
-
-        // ── NUTRITION ──
-        html += '<div class="r-section"><div class="r-section-head">';
-        html += '<div class="r-section-title">Nutrition & Metabolism</div><div class="r-section-divider"></div></div>';
-        html += '<div class="r-section-body"><div class="r-metrics">';
-        html += rMetric('BMR', bmr, 'kcal', bmrL, bmrH, 'Basal Metabolic Rate — calories at rest.');
-        html += rMetric('Rec. Calories', recCal, 'kcal', 0, 0, 'Recommended daily calorie intake based on your body composition.');
-        html += rMetric('Body Cell Mass', bcm, 'kg', 0, 0, 'Active metabolic tissue in the body.');
-        html += rMetric('Muscle Index', smi, 'kg/m²', 0, 0, 'Skeletal Muscle Mass Index relative to height.');
-        html += '</div></div></div>';
-
-        var el = document.getElementById('results-content');
-        el.innerHTML = html;
-        el.style.display = 'flex';
-        el.style.flexDirection = 'column';
-        el.style.padding = '0';
-    }
+</script>
+</body>
+</html>
