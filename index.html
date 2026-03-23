@@ -402,7 +402,7 @@
         <i class="fas fa-map-marker-alt"></i> <span>Centers</span>
     </div>
     <div class="tab" id="tab-results" onclick="switchTab('results')">
-        <i class="fas fa-chart-bar"></i> <span data-i18n="tab_results">Results</span>
+        <i class="fas fa-chart-bar"></i> <span>Results</span>
     </div>
 </div>
 
@@ -1374,8 +1374,11 @@
 
     async function loadAllMeasurements() {
         try {
+            console.log('Fetching CSV from:', RESULT_CSV_URL);
             var res = await fetch(RESULT_CSV_URL + '&_=' + Date.now());
+            console.log('CSV response status:', res.status, res.ok);
             var raw = await res.text();
+            console.log('CSV raw length:', raw.length, 'first 100:', raw.slice(0,100));
             var lines = raw.split('\n').filter(function(l){ return l.trim(); });
             if (lines.length < 2) return;
             var headers = parseCSVLine(lines[0]);
