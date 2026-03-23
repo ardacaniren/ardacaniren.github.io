@@ -982,6 +982,7 @@
     function loadFeatured(index){
         currentIndex=index; showState('loading');
         var img=document.getElementById('featured-img');
+        img.crossOrigin = 'anonymous';
         img.onload=function(){
             showState('image');
             analyzeInBodyImage(img);
@@ -1367,7 +1368,7 @@
     });
 
     /* ── CLAUDE VISION ANALİZ ── */
-    const CLAUDE_API_KEY = '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';
+    const CLAUDE_API_KEY = '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';
     var lastAnalyzedSrc = '';
 
     async function analyzeInBodyImage(imgEl) {
@@ -1378,13 +1379,15 @@
         showAnalysisStatus('analyzing');
 
         try {
-            // Resmi canvas ile base64'e çevir
-            var canvas = document.createElement('canvas');
-            canvas.width  = imgEl.naturalWidth  || imgEl.width;
-            canvas.height = imgEl.naturalHeight || imgEl.height;
-            var ctx = canvas.getContext('2d');
-            ctx.drawImage(imgEl, 0, 0);
-            var base64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+            // Resmi fetch ile base64'e çevir (CORS bypass)
+            var imageUrl = imgEl.src;
+            var fetchRes = await fetch(imageUrl);
+            var blob = await fetchRes.blob();
+            var base64 = await new Promise(function(resolve) {
+                var reader = new FileReader();
+                reader.onload = function() { resolve(reader.result.split(',')[1]); };
+                reader.readAsDataURL(blob);
+            });
 
             var prompt = `This is an InBody body composition analysis report. 
 Extract ALL values and return ONLY a valid JSON object with this exact structure:
