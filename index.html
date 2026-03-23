@@ -1415,11 +1415,14 @@ Extract ALL values and return ONLY a valid JSON object with this exact structure
 }
 Return ONLY the JSON, no explanation.`;
 
+            var apiKey = localStorage.getItem('claude_api_key') || '';
+            console.log('API Key length:', apiKey.length, apiKey ? 'OK' : 'EMPTY');
+            if (!apiKey) { showAnalysisStatus('error'); return; }
             var response = await fetch('https://api.anthropic.com/v1/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-api-key': CLAUDE_API_KEY,
+                    'x-api-key': apiKey,
                     'anthropic-version': '2023-06-01',
                     'anthropic-dangerous-direct-browser-access': 'true'
                 },
