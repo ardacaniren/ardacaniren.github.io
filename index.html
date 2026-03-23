@@ -265,36 +265,69 @@
         .ann-popup-body strong { color: #93c5fd; }
         .ann-popup-close { position: absolute; top: 8px; right: 10px; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; line-height: 1; }
         /* ── RESULTS ── */
-        .result-section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-        .result-section-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-        .result-section-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-        .result-section-title { font-size: 1rem; font-weight: 700; color: var(--text); }
-        .result-section-body { padding: 1.5rem; }
-        .result-score-big { font-size: 4rem; font-weight: 900; line-height: 1; }
-        .result-score-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
-        .result-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-        .result-bar-label { font-size: 0.78rem; color: var(--text); font-weight: 600; width: 130px; flex-shrink: 0; }
-        .result-bar-wrap { flex: 1; height: 8px; background: var(--surface2); border-radius: 4px; position: relative; overflow: visible; }
-        .result-bar-fill { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
-        .result-bar-val { font-size: 0.75rem; color: var(--muted); width: 60px; text-align: right; flex-shrink: 0; }
-        .result-stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .result-stat-card { background: var(--surface2); border-radius: 14px; padding: 1rem; }
-        .result-stat-val { font-size: 1.4rem; font-weight: 800; color: var(--text); }
-        .result-stat-unit { font-size: 0.7rem; color: var(--muted); }
-        .result-stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
-        .result-stat-status { font-size: 0.65rem; font-weight: 700; margin-top: 4px; padding: 2px 8px; border-radius: 20px; display: inline-block; }
-        .status-ok { background: rgba(16,185,129,0.15); color: #10b981; }
-        .status-low { background: rgba(234,179,8,0.15); color: #eab308; }
-        .status-high { background: rgba(239,68,68,0.15); color: #ef4444; }
-        .result-segment-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-        .result-segment-card { background: var(--surface2); border-radius: 12px; padding: 0.875rem; text-align: center; }
-        .result-segment-name { font-size: 0.65rem; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
-        .result-segment-val { font-size: 1rem; font-weight: 800; color: var(--text); }
-        .result-segment-pct { font-size: 0.72rem; font-weight: 700; margin-top: 3px; }
-        .result-info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
-        .result-info-row:last-child { border-bottom: none; }
-        .result-info-key { font-size: 0.8rem; color: var(--muted); }
-        .result-info-val { font-size: 0.8rem; font-weight: 700; color: var(--text); }
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Syne:wght@700;800&display=swap');
+        #page-results { font-family: 'DM Sans', sans-serif; background: var(--bg); }
+        #results-content { gap: 0; padding: 0; }
+
+        /* Hero */
+        .res-hero { padding: 2.5rem 2.5rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+        .res-hero-name { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.03em; }
+        .res-hero-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .res-hero-meta span { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+        .res-score-wrap { display: flex; flex-direction: column; align-items: flex-end; }
+        .res-score-num { font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+        .res-score-sub { font-size: 0.65rem; color: var(--muted); text-align: right; margin-top: 2px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .res-score-badge { font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-top: 6px; display: inline-block; }
+
+        /* Tabs */
+        .res-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); padding: 0 2rem; gap: 0; overflow-x: auto; }
+        .res-tab { padding: 0.875rem 1.25rem; font-size: 0.78rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: 0.15s; white-space: nowrap; }
+        .res-tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+        .res-tab-panel { display: none; padding: 2rem 2.5rem; }
+        .res-tab-panel.active { display: block; }
+
+        /* Bars */
+        .res-bar-group { margin-bottom: 1.5rem; }
+        .res-bar-row { display: grid; grid-template-columns: 160px 1fr 80px; align-items: center; gap: 16px; margin-bottom: 10px; }
+        .res-bar-name { font-size: 0.78rem; font-weight: 500; color: var(--text); }
+        .res-bar-track { height: 6px; background: var(--surface2); border-radius: 3px; position: relative; }
+        .res-bar-normal { position: absolute; height: 100%; background: rgba(59,130,246,0.12); border-radius: 3px; }
+        .res-bar-fill { position: absolute; height: 100%; border-radius: 3px; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
+        .res-bar-val { font-size: 0.75rem; color: var(--muted); text-align: right; font-weight: 600; }
+        .res-bar-range { font-size: 0.65rem; color: var(--muted); opacity: 0.6; grid-column: 2/3; margin-top: -6px; }
+
+        /* Stat cards */
+        .res-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+        .res-stat { background: var(--surface); padding: 1.25rem; position: relative; cursor: default; transition: background 0.15s; }
+        .res-stat:hover { background: var(--surface2); }
+        .res-stat-val { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
+        .res-stat-unit { font-size: 0.65rem; color: var(--muted); font-weight: 500; }
+        .res-stat-name { font-size: 0.68rem; color: var(--muted); margin-top: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+        .res-stat-tag { position: absolute; top: 10px; right: 10px; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+        .tag-ok   { background: rgba(16,185,129,0.12); color: #10b981; }
+        .tag-low  { background: rgba(234,179,8,0.12);  color: #eab308; }
+        .tag-high { background: rgba(239,68,68,0.12);  color: #ef4444; }
+
+        /* Segments */
+        .res-segments { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+        .res-seg { background: var(--surface); padding: 1.25rem 1rem; text-align: center; }
+        .res-seg-name { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
+        .res-seg-kg { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); }
+        .res-seg-unit { font-size: 0.6rem; color: var(--muted); }
+        .res-seg-pct { font-size: 0.78rem; font-weight: 700; margin-top: 4px; }
+        .res-seg-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+        .res-seg-bar-fill { height: 100%; border-radius: 2px; }
+
+        /* Weight control */
+        .res-wc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+        .res-wc-cell { background: var(--surface); padding: 1.25rem 1.5rem; }
+        .res-wc-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; }
+        .res-wc-val { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; }
+
+        /* Section header */
+        .res-sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.25rem; }
+        .res-sec-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+        .res-sec-line { flex: 1; height: 1px; background: var(--border); }
         @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
@@ -1672,201 +1705,208 @@ Return ONLY the JSON, no explanation.`;
     function rv(key) { return parseFloat((resultData[key] || '0').replace(',','.')) || 0; }
     function rs(key) { return (resultData[key] || '-'); }
     function getStatus(val, low, high) {
+        if (!low && !high) return '';
         if (val < low) return 'status-low';
         if (val > high) return 'status-high';
         return 'status-ok';
     }
     function getStatusLabel(val, low, high) {
-        if (val < low) return '↓ Below';
-        if (val > high) return '↑ Above';
+        if (!low && !high) return '';
+        if (val < low) return '↓ Below range';
+        if (val > high) return '↑ Above range';
         return '✓ Normal';
     }
-    function scoreColor(s) {
-        if (s >= 80) return '#10b981';
-        if (s >= 70) return '#eab308';
-        return '#ef4444';
-    }
-    function pctColor(p) {
-        if (p >= 100) return '#10b981';
-        if (p >= 80) return '#eab308';
-        return '#ef4444';
-    }
-    function renderBar(label, val, low, high, unit) {
-        var pct = Math.min((val / (high * 1.3)) * 100, 100);
-        var normalStart = (low / (high * 1.3)) * 100;
-        var normalWidth = ((high - low) / (high * 1.3)) * 100;
+    function scoreColor(s) { return s >= 80 ? '#10b981' : s >= 70 ? '#f59e0b' : '#ef4444'; }
+    function pctColor(p) { return p >= 100 ? '#10b981' : p >= 80 ? '#f59e0b' : '#ef4444'; }
+
+    function rBar(name, val, low, high, unit) {
+        var maxVal = high * 1.4;
+        var fillPct = Math.min((val / maxVal) * 100, 100);
+        var normStart = (low / maxVal) * 100;
+        var normW = ((high - low) / maxVal) * 100;
         var st = getStatus(val, low, high);
-        var color = st === 'status-ok' ? '#10b981' : st === 'status-low' ? '#eab308' : '#ef4444';
-        return '<div class="result-bar-row">' +
-            '<div class="result-bar-label">' + label + '</div>' +
-            '<div class="result-bar-wrap">' +
-                '<div style="position:absolute;left:' + normalStart + '%;width:' + normalWidth + '%;height:100%;background:rgba(16,185,129,0.15);border-radius:4px"></div>' +
-                '<div class="result-bar-fill" style="width:' + pct + '%;background:' + color + '"></div>' +
+        var color = st === 'status-ok' ? '#10b981' : st === 'status-low' ? '#f59e0b' : '#ef4444';
+        var label = getStatusLabel(val, low, high);
+        return '<div class="r-bar-row">' +
+            '<div class="r-bar-name">' + name + '</div>' +
+            '<div class="r-bar-track">' +
+                '<div class="r-bar-normal" style="left:' + normStart.toFixed(1) + '%;width:' + normW.toFixed(1) + '%"></div>' +
+                '<div class="r-bar-fill" style="width:' + fillPct.toFixed(1) + '%;background:' + color + '"></div>' +
             '</div>' +
-            '<div class="result-bar-val">' + val.toFixed(1) + ' ' + (unit||'') + '</div>' +
+            '<div class="r-bar-right">' +
+                '<div class="r-bar-val">' + val.toFixed(1) + ' <span style="font-size:0.65rem;color:var(--muted);font-weight:400">' + (unit||'') + '</span></div>' +
+                (label ? '<div class="r-bar-status" style="color:' + color + '">' + label + '</div>' : '') +
+            '</div>' +
         '</div>';
     }
-    function renderStatCard(label, val, unit, low, high) {
-        var st = low !== undefined ? getStatus(val, low, high) : '';
-        var sl = low !== undefined ? getStatusLabel(val, low, high) : '';
-        return '<div class="result-stat-card">' +
-            '<div class="result-stat-val">' + (typeof val === 'number' ? val.toFixed(1) : val) + '<span class="result-stat-unit"> ' + (unit||'') + '</span></div>' +
-            '<div class="result-stat-label">' + label + '</div>' +
-            (st ? '<div class="result-stat-status ' + st + '">' + sl + '</div>' : '') +
-        '</div>';
-    }
-    function renderSegCard(name, kg, pct) {
-        var color = pctColor(pct);
-        return '<div class="result-segment-card">' +
-            '<div class="result-segment-name">' + name + '</div>' +
-            '<div class="result-segment-val">' + kg.toFixed(2) + ' kg</div>' +
-            '<div class="result-segment-pct" style="color:' + color + '">' + pct.toFixed(1) + '%</div>' +
+
+    function rMetric(label, val, unit, low, high, tip) {
+        var st = (low || high) ? getStatus(val, low, high) : '';
+        var sl = (low || high) ? getStatusLabel(val, low, high) : '';
+        var dispVal = typeof val === 'number' ? (val % 1 === 0 ? val : val.toFixed(1)) : val;
+        return '<div class="r-metric">' +
+            (st ? '<div class="r-metric-badge ' + st + '">' + sl + '</div>' : '') +
+            '<div class="r-metric-val">' + dispVal + '<span class="r-metric-unit">' + (unit||'') + '</span></div>' +
+            '<div class="r-metric-label">' + label + '</div>' +
+            (tip ? '<div class="r-metric-tooltip">' + tip + '</div>' : '') +
         '</div>';
     }
 
     function renderResults() {
         document.getElementById('results-loading').style.display = 'none';
+
         var score   = rv('InBody Score');
         var weight  = rv('Weight');
         var wLow    = rv('Lower Limit (Weight Normal Range)');
         var wHigh   = rv('Upper Limit (Weight Normal Range)');
         var tbw     = rv('TBW (Total Body Water)');
+        var tbwL    = rv('Lower Limit (TBW Normal Range)');
+        var tbwH    = rv('Upper Limit (TBW Normal Range)');
         var protein = rv('Protein');
+        var proL    = rv('Lower Limit (Protein Normal Range)');
+        var proH    = rv('Upper Limit (Protein Normal Range)');
         var minerals= rv('Minerals');
+        var minL    = rv('Lower Limit (Minerals Normal Range)');
+        var minH    = rv('Upper Limit (Minerals Normal Range)');
         var bfm     = rv('BFM (Body Fat Mass)');
-        var ffm     = rv('FFM (Fat Free Mass)');
+        var bfmL    = rv('Lower Limit (BFM Normal Range)');
+        var bfmH    = rv('Upper Limit (BFM Normal Range)');
         var smm     = rv('SMM (Skeletal Muscle Mass)');
+        var smmL    = rv('Lower Limit (SMM Normal Range)');
+        var smmH    = rv('Upper Limit (SMM Normal Range)');
+        var ffm     = rv('FFM (Fat Free Mass)');
+        var ffmL    = rv('Lower Limit (FFM Normal Range)');
+        var ffmH    = rv('Upper Limit (FFM Normal Range)');
         var bmi     = rv('BMI (Body Mass Index)');
+        var bmiL    = rv('Lower Limit (BMI Normal Range)');
+        var bmiH    = rv('Upper Limit (BMI Normal Range)');
         var pbf     = rv('PBF (Percent Body Fat)');
+        var pbfL    = rv('Lower Limit (PBF Normal Range)');
+        var pbfH    = rv('Upper Limit (PBF Normal Range)');
         var bmr     = rv('BMR (Basal Metabolic Rate)');
+        var bmrL    = rv('Lower Limit (BMR Normal Range)');
+        var bmrH    = rv('Upper Limit (BMR Normal Range)');
         var vfa     = rv('VFA (Visceral Fat Area)');
-        var ecwRatio= rv('ECW/TBW');
+        var ecwR    = rv('ECW/TBW');
         var whr     = rv('WHR (Waist-Hip Ratio)');
+        var whrL    = rv('Lower Limit (WHR Normal Range)');
+        var whrH    = rv('Upper Limit (WHR Normal Range)');
         var targetW = rv('Target Weight');
         var wCtrl   = rv('Weight Control');
         var bfmCtrl = rv('BFM Control');
         var ffmCtrl = rv('FFM Control');
+        var recCal  = rv('Recommended Calorie Intake');
+        var bcm     = rv('BCM (Body Cell Mass)');
+        var smi     = rv('SMI (Skeletal Muscle Index)');
         var name    = rs('Name') !== '-' ? rs('Name') : 'ID: ' + rs('ID');
         var testDate= rs('Test Date / Time');
         var gender  = rs('Gender');
         var age     = rs('Age');
         var height  = rs('Height');
 
-        // Segmental lean
+        // Segmental
         var raKg = rv('FFM of Right Arm'), raPct = rv('FFM% of Right Arm');
         var laKg = rv('FFM of Left Arm'),  laPct = rv('FFM% of Left Arm');
         var trKg = rv('FFM of Trunk'),     trPct = rv('FFM% of Trunk');
         var rlKg = rv('FFM of Right Leg'), rlPct = rv('FFM% of Right Leg');
         var llKg = rv('FFM of Left Leg'),  llPct = rv('FFM% of Left Leg');
 
+        var sc = scoreColor(score);
+        var circumference = 2 * Math.PI * 44;
+        var dash = (score / 100) * circumference;
+
         var html = '';
 
-        // ── HEADER ──
-        html += '<div class="result-section">';
-        html += '<div style="background:linear-gradient(135deg,#0a0f1e,#1a1040);padding:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">';
-        html += '<div><div style="font-size:0.65rem;font-weight:800;letter-spacing:0.2em;color:#3b82f6;margin-bottom:6px">BODY COMPOSITION ANALYSIS</div>';
-        html += '<div style="font-size:1.6rem;font-weight:800;color:#f1f5f9">' + name + '</div>';
-        html += '<div style="display:flex;gap:1.5rem;margin-top:8px;flex-wrap:wrap">';
-        html += '<span style="font-size:0.78rem;color:rgba(241,245,249,0.6)">📅 ' + testDate + '</span>';
-        html += '<span style="font-size:0.78rem;color:rgba(241,245,249,0.6)">📏 ' + height + ' cm</span>';
-        html += '<span style="font-size:0.78rem;color:rgba(241,245,249,0.6)">🎂 ' + age + ' yrs</span>';
-        html += '<span style="font-size:0.78rem;color:rgba(241,245,249,0.6)">⚧ ' + gender + '</span></div></div>';
-        // Score
-        var sc = scoreColor(score);
+        // ── HERO ──
+        html += '<div class="r-hero">';
+        html += '<div>';
+        html += '<div style="font-size:0.6rem;font-weight:700;letter-spacing:0.18em;color:#3b82f6;text-transform:uppercase;margin-bottom:8px">InBody Analysis Report</div>';
+        html += '<div class="r-hero-name">' + name + '</div>';
+        html += '<div class="r-hero-meta">';
+        html += '<span class="r-hero-meta-item">📅 ' + testDate + '</span>';
+        html += '<span class="r-hero-meta-item">📏 ' + height + ' cm</span>';
+        html += '<span class="r-hero-meta-item">🎂 ' + age + ' yrs</span>';
+        html += '<span class="r-hero-meta-item">⚧ ' + gender + '</span>';
+        html += '</div></div>';
+        // Score ring
         html += '<div style="text-align:center">';
-        html += '<div class="result-score-big" style="color:' + sc + '">' + score + '</div>';
-        html += '<div style="font-size:0.65rem;color:rgba(241,245,249,0.5);margin-top:2px">InBody Score / 100</div>';
-        html += '<div style="font-size:0.7rem;margin-top:6px;color:' + sc + ';font-weight:700">' + (score>=80?'✓ Excellent':score>=70?'▲ Good':'↓ Needs Improvement') + '</div>';
-        html += '</div></div></div>';
-
-        // ── BODY COMPOSITION ──
-        html += '<div class="result-section"><div class="result-section-header">';
-        html += '<div class="result-section-icon" style="background:rgba(59,130,246,0.15)">💧</div>';
-        html += '<div class="result-section-title">Body Composition</div></div>';
-        html += '<div class="result-section-body">';
-        html += renderBar('Total Body Water', tbw, rv('Lower Limit (TBW Normal Range)'), rv('Upper Limit (TBW Normal Range)'), 'L');
-        html += renderBar('Protein', protein, rv('Lower Limit (Protein Normal Range)'), rv('Upper Limit (Protein Normal Range)'), 'kg');
-        html += renderBar('Minerals', minerals, rv('Lower Limit (Minerals Normal Range)'), rv('Upper Limit (Minerals Normal Range)'), 'kg');
-        html += renderBar('Body Fat Mass', bfm, rv('Lower Limit (BFM Normal Range)'), rv('Upper Limit (BFM Normal Range)'), 'kg');
-        html += renderBar('Weight', weight, wLow, wHigh, 'kg');
+        html += '<div class="r-score-ring">';
+        html += '<svg width="110" height="110" viewBox="0 0 110 110">';
+        html += '<circle cx="55" cy="55" r="44" fill="none" stroke="var(--surface2)" stroke-width="8"/>';
+        html += '<circle cx="55" cy="55" r="44" fill="none" stroke="' + sc + '" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + dash.toFixed(1) + ' ' + circumference.toFixed(1) + '"/>';
+        html += '</svg>';
+        html += '<div class="r-score-center"><div class="r-score-num" style="color:' + sc + '">' + score + '</div><div class="r-score-sub">/ 100</div></div>';
+        html += '</div>';
+        html += '<div style="font-size:0.7rem;font-weight:600;color:' + sc + ';margin-top:6px">' + (score>=80?'Excellent':score>=70?'Good':'Needs Work') + '</div>';
         html += '</div></div>';
 
-        // ── KEY STATS ──
-        html += '<div class="result-section"><div class="result-section-header">';
-        html += '<div class="result-section-icon" style="background:rgba(16,185,129,0.15)">📊</div>';
-        html += '<div class="result-section-title">Key Metrics</div></div>';
-        html += '<div class="result-section-body"><div class="result-stat-grid">';
-        html += renderStatCard('BMI', bmi, 'kg/m²', rv('Lower Limit (BMI Normal Range)'), rv('Upper Limit (BMI Normal Range)'));
-        html += renderStatCard('Body Fat %', pbf, '%', rv('Lower Limit (PBF Normal Range)'), rv('Upper Limit (PBF Normal Range)'));
-        html += renderStatCard('Muscle Mass', smm, 'kg', rv('Lower Limit (SMM Normal Range)'), rv('Upper Limit (SMM Normal Range)'));
-        html += renderStatCard('Visceral Fat', vfa, 'cm²');
-        html += renderStatCard('BMR', bmr, 'kcal');
-        html += renderStatCard('WHR', whr, '', rv('Lower Limit (WHR Normal Range)'), rv('Upper Limit (WHR Normal Range)'));
-        html += renderStatCard('ECW/TBW', ecwRatio, '', 0.36, 0.39);
-        html += renderStatCard('Fat Free Mass', ffm, 'kg', rv('Lower Limit (FFM Normal Range)'), rv('Upper Limit (FFM Normal Range)'));
+        // ── BODY COMPOSITION ──
+        html += '<div class="r-section"><div class="r-section-head">';
+        html += '<div class="r-section-title">Body Composition</div><div class="r-section-divider"></div></div>';
+        html += '<div class="r-section-body">';
+        html += rBar('Total Body Water', tbw, tbwL, tbwH, 'L');
+        html += rBar('Protein', protein, proL, proH, 'kg');
+        html += rBar('Minerals', minerals, minL, minH, 'kg');
+        html += rBar('Body Fat Mass', bfm, bfmL, bfmH, 'kg');
+        html += rBar('Weight', weight, wLow, wHigh, 'kg');
+        html += '</div></div>';
+
+        // ── METRICS ──
+        html += '<div class="r-section"><div class="r-section-head">';
+        html += '<div class="r-section-title">Key Metrics</div><div class="r-section-divider"></div></div>';
+        html += '<div class="r-section-body"><div class="r-metrics">';
+        html += rMetric('BMI', bmi, 'kg/m²', bmiL, bmiH, 'Normal range: ' + bmiL + '–' + bmiH + ' kg/m²<br>Body Mass Index measures weight relative to height.');
+        html += rMetric('Body Fat %', pbf, '%', pbfL, pbfH, 'Normal range: ' + pbfL + '–' + pbfH + '%<br>Percentage of total body weight that is fat.');
+        html += rMetric('Muscle Mass', smm, 'kg', smmL, smmH, 'Normal range: ' + smmL + '–' + smmH + ' kg<br>Skeletal muscle mass driving your metabolism.');
+        html += rMetric('Visceral Fat', vfa, 'cm²', 0, 100, 'Normal: under 100 cm²<br>Fat surrounding internal organs — key metabolic risk indicator.');
+        html += rMetric('BMR', bmr, 'kcal', bmrL, bmrH, 'Normal range: ' + bmrL + '–' + bmrH + ' kcal<br>Calories burned at complete rest.');
+        html += rMetric('WHR', whr, '', whrL, whrH, 'Normal range: ' + whrL + '–' + whrH + '<br>Waist-to-hip ratio, indicator of abdominal fat distribution.');
+        html += rMetric('ECW/TBW', ecwR, '', 0.36, 0.39, 'Normal range: 0.36–0.39<br>Fluid balance ratio. High values may indicate inflammation.');
+        html += rMetric('Fat Free Mass', ffm, 'kg', ffmL, ffmH, 'Normal range: ' + ffmL + '–' + ffmH + ' kg<br>Everything except fat: muscle, bone, water, organs.');
         html += '</div></div></div>';
 
         // ── WEIGHT CONTROL ──
-        html += '<div class="result-section"><div class="result-section-header">';
-        html += '<div class="result-section-icon" style="background:rgba(234,179,8,0.15)">🎯</div>';
-        html += '<div class="result-section-title">Weight Control</div></div>';
-        html += '<div class="result-section-body"><div class="result-info-row">';
-        html += '<div class="result-info-key">Current Weight</div><div class="result-info-val">' + weight.toFixed(1) + ' kg</div></div>';
-        html += '<div class="result-info-row"><div class="result-info-key">Target Weight</div><div class="result-info-val">' + targetW.toFixed(1) + ' kg</div></div>';
-        html += '<div class="result-info-row"><div class="result-info-key">Weight Control</div>';
-        html += '<div class="result-info-val" style="color:' + (wCtrl>=0?'#10b981':'#ef4444') + '">' + (wCtrl>=0?'+':'') + wCtrl.toFixed(1) + ' kg</div></div>';
-        html += '<div class="result-info-row"><div class="result-info-key">Fat Control</div>';
-        html += '<div class="result-info-val" style="color:#3b82f6">' + (bfmCtrl>=0?'+':'') + bfmCtrl.toFixed(1) + ' kg</div></div>';
-        html += '<div class="result-info-row"><div class="result-info-key">Muscle Control</div>';
-        html += '<div class="result-info-val" style="color:#10b981">' + (ffmCtrl>=0?'+':'') + ffmCtrl.toFixed(1) + ' kg</div></div>';
-        html += '</div></div>';
+        html += '<div class="r-section"><div class="r-section-head">';
+        html += '<div class="r-section-title">Weight Control</div><div class="r-section-divider"></div></div>';
+        html += '<div class="r-section-body"><div class="r-wctrl">';
+        html += '<div>';
+        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Current Weight</div><div class="r-wctrl-val">' + weight.toFixed(1) + ' kg</div></div>';
+        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Target Weight</div><div class="r-wctrl-val" style="color:#3b82f6">' + targetW.toFixed(1) + ' kg</div></div>';
+        html += '</div><div>';
+        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Weight to Change</div><div class="r-wctrl-val" style="color:' + (wCtrl>=0?'#10b981':'#ef4444') + '">' + (wCtrl>=0?'+':'') + wCtrl.toFixed(1) + ' kg</div></div>';
+        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Fat to Lose</div><div class="r-wctrl-val" style="color:#f59e0b">' + (bfmCtrl>=0?'+':'') + bfmCtrl.toFixed(1) + ' kg</div></div>';
+        html += '<div class="r-wctrl-item"><div class="r-wctrl-key">Muscle to Gain</div><div class="r-wctrl-val" style="color:#10b981">' + (ffmCtrl>=0?'+':'') + ffmCtrl.toFixed(1) + ' kg</div></div>';
+        html += '</div></div></div></div>';
 
-        // ── SEGMENTAL LEAN ──
-        html += '<div class="result-section"><div class="result-section-header">';
-        html += '<div class="result-section-icon" style="background:rgba(139,92,246,0.15)">🦾</div>';
-        html += '<div class="result-section-title">Segmental Lean Analysis</div></div>';
-        html += '<div class="result-section-body"><div class="result-segment-grid">';
-        html += renderSegCard('Right Arm', raKg, raPct);
-        html += renderSegCard('Left Arm', laKg, laPct);
-        html += renderSegCard('Trunk', trKg, trPct);
-        html += renderSegCard('Right Leg', rlKg, rlPct);
-        html += renderSegCard('Left Leg', llKg, llPct);
+        // ── SEGMENTAL ──
+        html += '<div class="r-section"><div class="r-section-head">';
+        html += '<div class="r-section-title">Segmental Lean Analysis</div><div class="r-section-divider"></div></div>';
+        html += '<div class="r-section-body"><div class="r-segments">';
+        [[' Right Arm', raKg, raPct],[' Left Arm', laKg, laPct],['Trunk', trKg, trPct],['Right Leg', rlKg, rlPct],['Left Leg', llKg, llPct]].forEach(function(seg) {
+            var c = pctColor(seg[2]);
+            var barW = Math.min(seg[2], 130) / 130 * 100;
+            html += '<div class="r-seg">';
+            html += '<div class="r-seg-name">' + seg[0] + '</div>';
+            html += '<div class="r-seg-val">' + seg[1].toFixed(2) + '<span style="font-size:0.6rem;color:var(--muted);font-weight:400"> kg</span></div>';
+            html += '<div class="r-seg-pct" style="color:' + c + '">' + seg[2].toFixed(1) + '%</div>';
+            html += '<div class="r-seg-bar" style="background:var(--surface2)"><div style="height:100%;width:' + barW.toFixed(1) + '%;background:' + c + ';border-radius:2px"></div></div>';
+            html += '</div>';
+        });
         html += '</div></div></div>';
 
-        // ── RECOMMENDED CALORIES ──
-        var recCal = rv('Recommended Calorie Intake');
-        html += '<div class="result-section"><div class="result-section-header">';
-        html += '<div class="result-section-icon" style="background:rgba(239,68,68,0.15)">🍽️</div>';
-        html += '<div class="result-section-title">Nutrition & Metabolism</div></div>';
-        html += '<div class="result-section-body"><div class="result-stat-grid">';
-        html += renderStatCard('BMR', bmr, 'kcal');
-        html += renderStatCard('Rec. Calories', recCal, 'kcal');
-        html += renderStatCard('BCM', rv('BCM (Body Cell Mass)'), 'kg');
-        html += renderStatCard('SMI', rv('SMI (Skeletal Muscle Index)'), 'kg/m²');
+        // ── NUTRITION ──
+        html += '<div class="r-section"><div class="r-section-head">';
+        html += '<div class="r-section-title">Nutrition & Metabolism</div><div class="r-section-divider"></div></div>';
+        html += '<div class="r-section-body"><div class="r-metrics">';
+        html += rMetric('BMR', bmr, 'kcal', bmrL, bmrH, 'Basal Metabolic Rate — calories at rest.');
+        html += rMetric('Rec. Calories', recCal, 'kcal', 0, 0, 'Recommended daily calorie intake based on your body composition.');
+        html += rMetric('Body Cell Mass', bcm, 'kg', 0, 0, 'Active metabolic tissue in the body.');
+        html += rMetric('Muscle Index', smi, 'kg/m²', 0, 0, 'Skeletal Muscle Mass Index relative to height.');
         html += '</div></div></div>';
 
         var el = document.getElementById('results-content');
         el.innerHTML = html;
         el.style.display = 'flex';
+        el.style.flexDirection = 'column';
+        el.style.padding = '0';
     }
-
-</script>
-
-<div id="apply-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
-    <div style="background:var(--surface);border-radius:20px;width:100%;max-width:640px;height:85vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0">
-            <div style="font-size:1rem;font-weight:700;color:var(--text)">Center Registration Request</div>
-            <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1">&#x2715;</button>
-        </div>
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
-    </div>
-</div>
-
-<div id="ann-preview-box" class="ann-preview"><div class="ann-preview-title" id="ann-preview-title"></div><div class="ann-preview-hint" id="ann-preview-hint"></div></div>
-<div id="ann-popup">
-    <button class="ann-popup-close" onclick="closeAnnPopup()">✕</button>
-    <div class="ann-popup-title" id="ann-popup-title"></div>
-    <div class="ann-popup-body" id="ann-popup-body"></div>
-</div>
-</body>
-</html>
