@@ -1194,7 +1194,7 @@
                 body += '🧬 <strong>Protein:</strong> '+pro.toFixed(1)+' kg ('+proL+'–'+proH+')'+statusIcon(pro,proL,proH)+'<br>';
                 body += '🦴 <strong>Mineral:</strong> '+min.toFixed(1)+' kg ('+minL+'–'+minH+')'+statusIcon(min,minL,minH)+'<br>';
                 body += '🫀 <strong>Yağ Kütlesi:</strong> '+bfm.toFixed(1)+' kg ('+bfmL+'–'+bfmH+')'+statusIcon(bfm,bfmL,bfmH)+'<br>';
-                body += '⚖️ <strong>Kilo:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH);
+                body += '⚖️ <strong>Weight:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH);
             }
             else if (title === 'Muscle-Fat Analysis') {
                 var smm=numVal(m,'SMM (Skeletal Muscle Mass)'), smmL=numVal(m,'Lower Limit (SMM Normal Range)'), smmH=numVal(m,'Upper Limit (SMM Normal Range)');
@@ -1298,10 +1298,10 @@
                     'Hücre sağlığı zayıf — beslenme ve hidrasyon iyileştirilmeli','Mükemmel hücre sağlığı!','Hücre sağlığı iyi');
             }
             else if (title === 'Body Composition History') {
-                body = '📈 Son ölçümler:<br><br>';
-                body += '⚖️ <strong>Kilo:</strong> '+numVal(m,'Weight').toFixed(1)+' kg<br>';
-                body += '💪 <strong>Kas:</strong> '+numVal(m,'SMM (Skeletal Muscle Mass)').toFixed(1)+' kg<br>';
-                body += '🫀 <strong>Yağ:</strong> '+numVal(m,'PBF (Percent Body Fat)').toFixed(1)+'%';
+                body = '📈 Last measurements:<br><br>';
+                body += '⚖️ <strong>Weight:</strong> '+numVal(m,'Weight').toFixed(1)+' kg<br>';
+                body += '💪 <strong>Muscle:</strong> '+numVal(m,'SMM (Skeletal Muscle Mass)').toFixed(1)+' kg<br>';
+                body += '🫀 <strong>Body Fat:</strong> '+numVal(m,'PBF (Percent Body Fat)').toFixed(1)+'%';
             }
             else if (title === 'Impedance') {
                 body = '📡 Biyoelektrik empedans değerleri:<br><br>';
