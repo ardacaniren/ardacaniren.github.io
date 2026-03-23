@@ -1196,15 +1196,22 @@
             var json=JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
             allMeasurements=[];
             if(!json.table||!json.table.rows||json.table.rows.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
-            // Satır 1: başlıklar, satır 2+: veriler
-            var headers=json.table.cols.map(function(c){return c.label||'';});
+            // Satır 1: başlıklar (cols'dan al), satır 2+: veriler
+            var headers = json.table.cols.map(function(c){ return (c.label||'').trim(); });
+            // Eğer cols boşsa ilk row'dan al
+            if (!headers[0] && json.table.rows.length > 0) {
+                headers = (json.table.rows[0].c||[]).map(function(c){ return c&&c.v ? c.v.toString().trim() : ''; });
+                json.table.rows = json.table.rows.slice(1);
+            }
             json.table.rows.forEach(function(row){
                 if(!row.c) return;
                 var obj={};
                 row.c.forEach(function(cell,i){
-                    obj[headers[i]]=(cell&&cell.v!=null)?cell.v.toString().trim():'';
+                    if(headers[i]) obj[headers[i]]=(cell&&cell.v!=null)?cell.v.toString().replace(',','.').trim():'';
                 });
-                if(obj['Test Date / Time']) allMeasurements.push(obj);
+                // Test Date / Time veya N sütununda tarih var
+                var hasDate = obj['Test Date / Time'] || Object.values(obj).some(function(v){ return /^2026/.test(v); });
+                if(hasDate) allMeasurements.push(obj);
             });
             if(allMeasurements.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
             currentMeasIdx=0;
