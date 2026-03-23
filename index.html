@@ -1424,7 +1424,7 @@ Return ONLY the JSON, no explanation.`;
                     'anthropic-dangerous-direct-browser-access': 'true'
                 },
                 body: JSON.stringify({
-                    model: 'claude-opus-4-5',
+                    model: 'claude-sonnet-4-5',
                     max_tokens: 2000,
                     messages: [{
                         role: 'user',
@@ -1436,8 +1436,9 @@ Return ONLY the JSON, no explanation.`;
                 })
             });
 
-            var data = await response.json();
-            console.log('API response:', JSON.stringify(data).slice(0, 300));
+            var respText = await response.text();
+            console.log('API raw response:', respText.slice(0, 500));
+            var data = JSON.parse(respText);
             if (!data.content || !data.content[0]) throw new Error('API error: ' + JSON.stringify(data));
             var text = data.content[0].text.trim();
             // JSON temizle
