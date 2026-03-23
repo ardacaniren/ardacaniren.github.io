@@ -282,6 +282,11 @@
         .res-wc-cell{background:var(--surface);padding:1.25rem 1.5rem}
         .res-wc-label{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px}
         .res-wc-val{font-size:1.8rem;font-weight:800;letter-spacing:-0.03em}
+        /* ANNOTATION */
+        .annotation-layer { position:absolute;inset:0;z-index:15;pointer-events:none; }
+        .ann-zone { position:absolute;pointer-events:all;cursor:pointer;border-radius:4px;transition:background 0.15s; }
+        .ann-zone:hover { background:rgba(59,130,246,0.1);outline:1px solid rgba(59,130,246,0.3); }
+        .ann-zone.active { background:rgba(59,130,246,0.15);outline:2px solid rgba(59,130,246,0.6); }
         @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
@@ -412,6 +417,23 @@
                     <div class="loader-text" data-i18n="loading">LOADING...</div>
                 </div>
                 <img id="featured-img" src="" alt="InBody Report">
+                <div class="annotation-layer" id="annotation-layer">
+                    <div class="ann-zone" style="top:2%;left:0;width:52%;height:7%" data-title="Patient Info" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Patient Info',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:9%;left:0;width:52%;height:19%" data-title="Body Composition Analysis" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Body Composition Analysis',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:28%;left:0;width:52%;height:11%" data-title="Muscle-Fat Analysis" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Muscle-Fat Analysis',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:39%;left:0;width:52%;height:9%" data-title="Obesity Analysis" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Obesity Analysis',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:48%;left:0;width:52%;height:21%" data-title="Segmental Lean Analysis" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Segmental Lean Analysis',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:69%;left:0;width:52%;height:7%" data-title="ECW Ratio Analysis" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'ECW Ratio Analysis',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:76%;left:0;width:52%;height:18%" data-title="Body Composition History" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Body Composition History',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:2%;right:0;width:48%;height:16%" data-title="InBody Score" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'InBody Score',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:18%;right:0;width:48%;height:16%" data-title="Visceral Fat Area" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Visceral Fat Area',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:34%;right:0;width:48%;height:9%" data-title="Weight Control" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Weight Control',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:43%;right:0;width:48%;height:8%" data-title="Body Balance Evaluation" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Body Balance Evaluation',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:51%;right:0;width:48%;height:11%" data-title="Segmental Fat Analysis" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Segmental Fat Analysis',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:62%;right:0;width:48%;height:13%" data-title="Research Parameters" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Research Parameters',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:75%;right:0;width:48%;height:7%" data-title="Whole Body Phase Angle" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Whole Body Phase Angle',this.dataset.body)"></div>
+                    <div class="ann-zone" style="top:82%;right:0;width:48%;height:14%" data-title="Impedance" onmouseenter="showAnnPreview(event,this)" onmouseleave="hideAnnPreview()" onmousemove="moveAnnPreview(event)" onclick="showAnnPopup(event,'Impedance',this.dataset.body)"></div>
+                </div>
                 <div class="zoom-hint" id="zoom-hint" data-i18n="zoom_hint">🔍 Click to enlarge</div>
             </div>
             <div class="share-box">
@@ -1292,6 +1314,55 @@
         } catch(e) { console.error('Silent CSV load error:',e); }
     }
 
+    var activeAnnZone = null;
+    function showAnnPreview(e, el) {
+        // CSV yüklendiyse güncel veriyi göster
+        if (allMeasurements && allMeasurements.length > 0) updateAnnotationsFromCSV(currentIndex);
+        var box = document.getElementById('ann-preview-box');
+        document.getElementById('ann-preview-title').textContent = el.dataset.title || '';
+        document.getElementById('ann-preview-hint').innerHTML = el.dataset.body || el.dataset.title || '';
+        box.style.display = 'block';
+        moveAnnPreview(e);
+    }
+    function hideAnnPreview() {
+        document.getElementById('ann-preview-box').style.display = 'none';
+    }
+    function moveAnnPreview(e) {
+        var box = document.getElementById('ann-preview-box');
+        var x = e.clientX + 14, y = e.clientY - 80;
+        if (x + 270 > window.innerWidth) x = e.clientX - 275;
+        if (y < 8) y = e.clientY + 14;
+        box.style.left = x + 'px'; box.style.top = y + 'px';
+    }
+    function showAnnPopup(e, title, body) {
+        e.stopPropagation();
+        if (allMeasurements && allMeasurements.length > 0) updateAnnotationsFromCSV(currentIndex);
+        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
+        e.currentTarget.classList.add('active');
+        activeAnnZone = e.currentTarget;
+        var freshBody = e.currentTarget.dataset.body || body || '';
+        document.getElementById('ann-popup-title').textContent = title;
+        document.getElementById('ann-popup-body').innerHTML = freshBody;
+        var popup = document.getElementById('ann-popup');
+        popup.style.display = 'block';
+        hideAnnPreview();
+        var rect = e.currentTarget.getBoundingClientRect();
+        var pw = 270, ph = popup.offsetHeight || 150;
+        var left = rect.left + rect.width/2 - pw/2;
+        var top  = rect.top - ph - 10;
+        if (left < 8) left = 8;
+        if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+        if (top < 8) top = rect.bottom + 10;
+        popup.style.left = left + 'px'; popup.style.top = top + 'px';
+    }
+    function closeAnnPopup() {
+        document.getElementById('ann-popup').style.display = 'none';
+        document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
+    }
+    document.addEventListener('click', function(e) {
+        var popup = document.getElementById('ann-popup');
+        if (popup && popup.style.display !== 'none' && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
+    });
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn,300);
@@ -1561,6 +1632,15 @@
         </div>
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
     </div>
+</div>
+<div id="ann-preview-box" style="position:fixed;z-index:9998;background:rgba(10,15,30,0.95);border:1px solid rgba(59,130,246,0.35);border-radius:12px;padding:12px 16px;max-width:260px;pointer-events:none;display:none;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,0.4)">
+    <div id="ann-preview-title" style="font-size:0.65rem;font-weight:800;letter-spacing:0.1em;color:#3b82f6;text-transform:uppercase;margin-bottom:8px"></div>
+    <div id="ann-preview-hint" style="font-size:0.75rem;color:#e2e8f0;line-height:1.5"></div>
+</div>
+<div id="ann-popup" style="position:fixed;z-index:9999;background:rgba(10,15,30,0.97);border:1px solid rgba(59,130,246,0.5);border-radius:14px;padding:14px 18px;width:270px;display:none;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.5)">
+    <button onclick="closeAnnPopup()" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1">✕</button>
+    <div id="ann-popup-title" style="font-size:0.68rem;font-weight:800;letter-spacing:0.12em;color:#3b82f6;margin-bottom:10px;text-transform:uppercase"></div>
+    <div id="ann-popup-body" style="font-size:0.82rem;color:#e2e8f0;line-height:1.6"></div>
 </div>
 </body>
 </html>
