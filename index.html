@@ -1146,10 +1146,23 @@
     const DEFAULT_INBODY_PROMPT = `You are an expert health and body composition specialist. Analyze this InBody measurement report thoroughly and respond entirely in English.
 
 IMPORTANT — IMPEDANCE ERROR DETECTION (BWA models only):
-Before anything else, scan the Impedance section of the report. BWA-model InBody devices (BWA 2.0, BWA 570, BWA 770, BWA 970 or any model with "BWA" in the name) sometimes produce corrupted impedance readings that appear as strings of zeros (e.g. 00000000) or garbled characters (letters, symbols, nonsensical values) in the impedance table. If you detect such values in a BWA model report, start your response with a clearly visible warning box:
+This check applies ONLY to BWA-model InBody devices (any report showing "BWA" or "BWA2.0" in the header).
 
-⚠️ MEASUREMENT ERROR DETECTED
-Corrupted impedance values found in the BWA device reading. The segmental and body composition data derived from these measurements may be unreliable. Please repeat the measurement ensuring proper electrode contact and that the subject is not wearing metal accessories.
+Look at the small calibration code printed in the bottom-right corner of the impedance/resistance chart (the graph on the right side showing the V-shaped lines). This code appears in square brackets, for example: [000/000/000] or [LA2/000/000] or [RA4/000/000].
+
+- If the code is exactly [000/000/000] → the measurement is VALID. Do NOT show any error warning. Proceed with the full analysis.
+- If the code contains ANY letters or non-zero characters in any of the three segments (e.g. [LA2/000/000], [RA4/000/000], [LA1/RA2/000], etc.) → the measurement is FAULTY.
+
+If the measurement is FAULTY, start your response with this warning and then STOP — do not provide any analysis of the body composition values as they are unreliable:
+
+⚠️ FAULTY MEASUREMENT DETECTED
+The calibration code in the impedance chart reads [CODE] which indicates a measurement error on this BWA device. The body composition results (muscle mass, fat, segmental analysis, etc.) derived from this reading are unreliable and should NOT be used.
+
+Please repeat the measurement:
+• Ensure the subject's hands and feet are properly positioned on the electrodes
+• Remove all metal accessories (rings, watches, belts)
+• The subject should not have exercised in the last 2 hours
+• Ensure the subject is not wearing thick socks or gloves
 
 If the device is NOT a BWA model, skip this check entirely and do not mention it.
 
