@@ -26,6 +26,7 @@
 
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.3s, color 0.3s; }
 
+        /* HEADER */
         header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: var(--header-bg); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .logo { display: flex; align-items: center; gap: 12px; }
         .logo-wordmark { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; font-size: 1.4rem; color: #800020; letter-spacing: -0.02em; }
@@ -42,21 +43,25 @@
         .lang-opt.active { background: #3b82f6; color: white; }
         .lang-opt:not(.active):hover { color: var(--text); }
 
+        /* TABS */
         .tabs { display: flex; gap: 4px; padding: 0 2rem; background: var(--header-bg); border-bottom: 1px solid var(--border); }
         .tab { display: flex; align-items: center; gap: 7px; padding: 0.75rem 1.25rem; font-size: 0.82rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: 0.15s; margin-bottom: -1px; }
         .tab:hover { color: var(--text); }
         .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; }
         .tab i { font-size: 0.85rem; }
 
+        /* PAGES */
         .page { display: none; flex: 1; }
         .page.active { display: flex; flex-direction: column; }
 
+        /* MAIN — InBody */
         .inbody-main { flex: 1; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 2rem; max-width: 900px; margin: 0 auto; width: 100%; }
         .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #3b82f6; display: flex; align-items: center; gap: 8px; width: 100%; }
         .section-label::after { content:''; flex:1; height:1px; background: var(--border); }
         .section-label.muted { color: var(--muted); }
         .new-dot { width: 8px; height: 8px; border-radius: 50%; background: #800020; display: inline-block; flex-shrink: 0; animation: pulse-badge 1.5s ease infinite; }
 
+        /* FEATURED CARD */
         .featured-card { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--card-shadow); }
         .featured-img-wrap { position: relative; display: flex; align-items: center; justify-content: center; cursor: zoom-in; background: var(--bg); padding: 1.5rem; min-height: 300px; }
         #featured-img { width: 100%; height: auto; display: none; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
@@ -77,6 +82,7 @@
         .btn-refresh.spinning i { animation: spin 0.7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* CAROUSEL */
         .carousel-wrap { width: 100%; }
         .carousel { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--surface2) transparent; }
         .carousel::-webkit-scrollbar { height: 4px; }
@@ -92,10 +98,12 @@
         .new-badge { position: absolute; top: 6px; left: 6px; background: #800020; color: white; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; padding: 3px 7px; border-radius: 6px; text-transform: uppercase; z-index: 2; animation: pulse-badge 2s ease infinite; }
         @keyframes pulse-badge { 0%,100%{box-shadow:0 2px 8px rgba(128,0,32,0.5)} 50%{box-shadow:0 2px 16px rgba(128,0,32,0.9)} }
 
+        /* LOADER */
         .loader-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
         .spinner { width: 42px; height: 42px; border: 3px solid var(--border); border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.7s linear infinite; }
         .loader-text { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; font-weight: 500; }
 
+        /* ── FILES PAGE ── */
         .files-main { flex: 1; padding: 2rem; max-width: 960px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 1.5rem; }
         .files-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
         .files-search { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px 14px; flex: 1; max-width: 340px; }
@@ -106,11 +114,13 @@
         .view-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: 0.15s; }
         .view-btn.active, .view-btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
 
+        /* Folder filter */
         .folder-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
         .folder-pill { padding: 5px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; transition: 0.15s; }
         .folder-pill.active { background: #3b82f6; color: white; border-color: #3b82f6; }
         .folder-pill:hover:not(.active) { color: var(--text); }
 
+        /* File grid */
         .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
         .files-list-view { display: flex; flex-direction: column; gap: 6px; }
 
@@ -129,6 +139,7 @@
         .file-btn-dl { background: rgba(16,185,129,0.12); color: #10b981; }
         .file-btn-dl:hover { background: #10b981; color: white; }
 
+        /* List view */
         .file-row { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; transition: 0.15s; }
         .file-row:hover { border-color: #3b82f6; }
         .file-row-icon { font-size: 1.4rem; flex-shrink: 0; width: 32px; text-align: center; }
@@ -139,6 +150,7 @@
         .file-row-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: 0.15s; }
         .file-row-btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
 
+        /* FOLDER VIEW */
         .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
         .folder-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: 0.2s; text-align: center; min-height: 207px; }
         .folder-card:hover { border-color: #3b82f6; transform: translateY(-3px); box-shadow: var(--card-shadow); }
@@ -154,6 +166,7 @@
         .files-empty i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
         .files-empty p { font-size: 0.9rem; }
 
+        /* LIGHTBOX */
         .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; cursor: zoom-out; }
         .lightbox.open { display: flex; }
         .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; border-radius: 8px; transition: transform 0.2s; }
@@ -164,6 +177,7 @@
         .zoom-btn:hover { background: rgba(255,255,255,0.2); }
         .zoom-level { font-size: 0.75rem; color: rgba(255,255,255,0.6); min-width: 44px; text-align: center; }
 
+        /* PDF viewer */
         .pdf-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; flex-direction: column; }
         .pdf-overlay.open { display: flex; }
         .pdf-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: #111827; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
@@ -176,6 +190,7 @@
         .pdf-btn-close:hover { background: rgba(255,255,255,0.15); color: white; }
         iframe#pdf-frame { flex: 1; border: none; }
 
+        /* LOGIN */
         .login-overlay { position: fixed; inset: 0; z-index: 9999; background: #0a0f1e; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
         .login-wrapper { width: 100%; max-width: 360px; }
         .login-box { background: #111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 2rem 1.75rem; width: 100%; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 20px 50px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06); }
@@ -203,6 +218,7 @@
         .login-lang-opt { font-size: 0.7rem; font-weight: 700; color: #334155; cursor: pointer; padding: 3px 8px; border-radius: 6px; border: 1px solid transparent; transition: 0.15s; font-family: 'Inter', sans-serif; background: transparent; }
         .login-lang-opt.active { color: #3b82f6; border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.08); }
 
+        /* AYARLAR */
         .modal-overlay { position: fixed; inset: 0; z-index: 9998; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex; }
         .modal-box { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 2rem; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 1.1rem; box-shadow: 0 25px 60px rgba(0,0,0,0.5); }
@@ -220,6 +236,7 @@
         .modal-error { font-size: 0.78rem; color: #f87171; background: rgba(128,0,32,0.15); border: 1px solid rgba(128,0,32,0.3); border-radius: 8px; padding: 8px; text-align: center; display: none; }
         .modal-success { font-size: 0.78rem; color: #10b981; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 8px; text-align: center; display: none; }
 
+        /* RESULTS */
         .res-hero{padding:2rem 2.5rem;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap}
         .res-hero-name{font-size:1.8rem;font-weight:800;color:var(--text);margin-bottom:6px;letter-spacing:-0.02em}
         .res-hero-meta{display:flex;gap:1.5rem;flex-wrap:wrap}
@@ -265,33 +282,23 @@
         .res-wc-cell{background:var(--surface);padding:1.25rem 1.5rem}
         .res-wc-label{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px}
         .res-wc-val{font-size:1.8rem;font-weight:800;letter-spacing:-0.03em}
-
+        /* ANNOTATION */
         .annotation-layer { position:absolute;inset:0;z-index:15;pointer-events:none; }
         .ann-zone { position:absolute;pointer-events:all;cursor:pointer;border-radius:4px;transition:background 0.15s; }
         .ann-zone:hover { background:rgba(59,130,246,0.1);outline:1px solid rgba(59,130,246,0.3); }
         .ann-zone.active { background:rgba(59,130,246,0.15);outline:2px solid rgba(59,130,246,0.6); }
-
-        /* ── AI TAB ── */
-        .ai-upload-area-inner:hover { border-color: #f97316 !important; background: rgba(249,115,22,0.03) !important; }
-        #ai-result-body h1,#ai-result-body h2,#ai-result-body h3 { color:#f97316;font-weight:700;margin:1rem 0 0.5rem; }
+        /* AI INLINE */
+        .ai-result-body h1,.ai-result-body h2,.ai-result-body h3 { color:#8b5cf6;font-weight:700;margin:1rem 0 0.5rem; }
+        .ai-result-body strong { color:var(--text); }
+        .ai-result-body ul,.ai-result-body ol { padding-left:1.5rem; }
+        .ai-result-body li { margin-bottom:0.4rem; }
+        /* AI TAB */
+        #ai-upload-area:hover { border-color: #8b5cf6; background: rgba(139,92,246,0.03); }
+        #ai-result-body h1,#ai-result-body h2,#ai-result-body h3 { color:#8b5cf6;font-weight:700;margin:1rem 0 0.5rem; }
         #ai-result-body strong { color:var(--text); }
         #ai-result-body ul,#ai-result-body ol { padding-left:1.5rem; }
         #ai-result-body li { margin-bottom:0.4rem; }
-
-        /* Groq model selector */
-        .groq-model-select { background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; padding: 9px 14px; color: var(--input-color); font-size: 0.82rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; cursor: pointer; width: 100%; }
-        .groq-model-select:focus { border-color: #f97316; }
-
-        /* Streaming text effect */
-        @keyframes cursor-blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        .streaming-cursor::after { content:'▋'; animation: cursor-blink 0.7s ease infinite; color: #f97316; }
-
-        @media (max-width: 600px) {
-            .inbody-main, .files-main { padding: 1rem; }
-            header { padding: 0.75rem 1rem; }
-            .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-            .res-segments { grid-template-columns: repeat(3,1fr); }
-        }
+        @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
 <body>
@@ -319,10 +326,7 @@
             <button class="login-btn" onclick="loginCheck()" data-i18n="login_btn">Sign In</button>
             <div class="login-forgot" onclick="showReset()" data-i18n="forgot_pw">Forgot Password</div>
             <div class="kvkk-note" data-i18n="kvkk">🛡️ This panel is protected under KVKK/GDPR.</div>
-            <div style="display:flex;justify-content:center;gap:1.25rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05);flex-wrap:wrap">
-                <button onclick="showApplyForm()" style="background:none;border:none;color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-map-marker-alt"></i> Apply to Become a Center</button>
-                <button onclick="showAiOverlay()" style="background:none;border:none;color:#f97316;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-bolt"></i> AI Analysis</button>
-            </div>
+            <div style="text-align:center;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05)"><button onclick="showApplyForm()" style="background:none;border:none;color:#3b82f6;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif"><i class="fas fa-map-marker-alt"></i> Apply to Become a Center</button></div>
         </div>
         <div class="login-box" id="login-box-reset" style="display:none">
             <div class="login-logo"><span class="login-wordmark">InBody</span></div>
@@ -348,7 +352,7 @@
     </div>
 </div>
 
-<!-- SETTINGS MODAL -->
+<!-- AYARLAR -->
 <div class="modal-overlay" id="settings-modal">
     <div class="modal-box">
         <div class="modal-title"><i class="fas fa-cog" style="color:#3b82f6"></i> <span data-i18n="settings">Settings</span></div>
@@ -394,6 +398,7 @@
         </div>
         <button class="btn-icon" id="theme-btn" onclick="toggleTheme()">🌙</button>
         <button class="btn-icon" onclick="openSettings()"><i class="fas fa-cog" style="font-size:0.85rem;color:var(--muted)"></i></button>
+        <button class="btn-icon" onclick="logout()" title="Sign Out" style="border-color:rgba(239,68,68,0.3)"><i class="fas fa-sign-out-alt" style="font-size:0.85rem;color:#ef4444"></i></button>
     </div>
 </header>
 
@@ -412,7 +417,7 @@
         <i class="fas fa-chart-bar"></i> <span>Results</span>
     </div>
     <div class="tab" id="tab-ai" onclick="switchTab('ai')">
-        <i class="fas fa-bolt"></i> <span>AI Analysis</span>
+        <i class="fas fa-brain"></i> <span>AI Analysis</span>
     </div>
 </div>
 
@@ -464,6 +469,28 @@
         </div>
         <div class="section-label muted" data-i18n="history">Past Analyses</div>
         <div class="carousel-wrap"><div class="carousel" id="carousel"></div></div>
+
+        <!-- AI YORUM KUTUSU -->
+        <div class="section-label" style="color:#8b5cf6">
+            <i class="fas fa-brain" style="margin-right:6px"></i>AI Analysis
+            <span style="font-size:0.65rem;font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:8px">Current report is analyzed automatically</span>
+        </div>
+        <div style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--card-shadow)">
+            <!-- Prompt input -->
+            <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-end">
+                <textarea id="inbody-ai-prompt" rows="2" placeholder="Ask anything about this report... (leave blank for full analysis)" style="flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;padding:10px 14px;color:var(--input-color);font-size:0.875rem;font-family:Inter,sans-serif;outline:none;resize:none;transition:border-color 0.15s" onfocus="this.style.borderColor='#8b5cf6'" onblur="this.style.borderColor='var(--input-border)'"></textarea>
+                <button onclick="analyzeCurrentReport()" id="inbody-ai-btn" style="background:#8b5cf6;color:white;border:none;padding:10px 20px;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:0.2s;height:42px">
+                    <i class="fas fa-brain"></i> Analyze
+                </button>
+            </div>
+            <!-- Status -->
+            <div id="inbody-ai-status" style="display:none;align-items:center;gap:10px;padding:1rem 1.5rem">
+                <div class="spinner" style="width:20px;height:20px;border-width:2px;flex-shrink:0"></div>
+                <div style="font-size:0.82rem;color:var(--muted)">Analyzing report with Gemini AI...</div>
+            </div>
+            <!-- Result -->
+            <div id="inbody-ai-result" style="display:none;padding:1.5rem;font-size:0.875rem;color:var(--text);line-height:1.8" class="ai-result-body"></div>
+        </div>
     </div>
 </div>
 
@@ -547,7 +574,54 @@
     </div>
 </div>
 
+<!-- PAGE: AI ANALYSIS -->
+<div class="page" id="page-ai">
+    <div style="flex:1;display:flex;flex-direction:column;max-width:900px;margin:0 auto;width:100%;padding:2rem;gap:1.5rem">
+        
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,#0a0f1e,#1a1040);border-radius:20px;padding:2rem;border:1px solid var(--border)">
+            <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.2em;color:#8b5cf6;margin-bottom:8px">POWERED BY GEMINI AI</div>
+            <div style="font-size:1.6rem;font-weight:800;color:#f1f5f9;margin-bottom:6px">AI Document Analysis</div>
+            <div style="font-size:0.85rem;color:rgba(241,245,249,0.55)">Upload any PDF or image — get instant AI-powered insights</div>
+        </div>
 
+        <!-- Upload area -->
+        <div id="ai-upload-area" style="border:2px dashed var(--border);border-radius:16px;padding:3rem;text-align:center;cursor:pointer;transition:0.2s;background:var(--surface)"
+             onclick="document.getElementById('ai-file-input').click()"
+             ondragover="event.preventDefault();this.style.borderColor='#8b5cf6'"
+             ondragleave="this.style.borderColor='var(--border)'"
+             ondrop="handleAiDrop(event)">
+            <input type="file" id="ai-file-input" accept=".pdf,image/*" style="display:none" onchange="handleAiFile(this.files[0])">
+            <div style="font-size:3rem;margin-bottom:1rem">📄</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px">Drop a file or click to upload</div>
+            <div style="font-size:0.78rem;color:var(--muted)">Supports PDF, JPG, PNG — max 10MB</div>
+        </div>
+
+        <!-- Status -->
+        <div id="ai-status" style="display:none;align-items:center;gap:10px;padding:1rem 1.5rem;background:var(--surface);border-radius:12px;border:1px solid var(--border)">
+            <div class="spinner" style="width:24px;height:24px;border-width:2px"></div>
+            <div id="ai-status-text" style="font-size:0.85rem;color:var(--muted)">Analyzing...</div>
+        </div>
+
+        <!-- Result -->
+        <div id="ai-result" style="display:none;background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden">
+            <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(139,92,246,0.15);display:flex;align-items:center;justify-content:center">🧠</div>
+                    <div>
+                        <div style="font-size:0.9rem;font-weight:700;color:var(--text)" id="ai-file-name">Analysis Result</div>
+                        <div style="font-size:0.68rem;color:var(--muted)">Gemini AI Analysis</div>
+                    </div>
+                </div>
+                <button onclick="resetAiTab()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.75rem;font-family:Inter,sans-serif">New Analysis</button>
+            </div>
+            <div id="ai-result-body" style="padding:1.5rem;font-size:0.875rem;color:var(--text);line-height:1.8;white-space:pre-wrap"></div>
+        </div>
+
+        <!-- Error -->
+        <div id="ai-error" style="display:none;padding:1rem 1.5rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;font-size:0.85rem;color:#ef4444"></div>
+    </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
@@ -575,9 +649,6 @@
 </div>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<!-- PDF.js for text extraction from PDFs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
 <script>
     const INBODY_SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
     const FILES_SHEET_ID  = '1tZasqIMvD0sZw14qCnm8A22T4jIwGXvc3c1rqIZSOfo';
@@ -585,18 +656,13 @@
     const FILES_JSON  = 'https://docs.google.com/spreadsheets/d/' + FILES_SHEET_ID  + '/gviz/tq?tqx=out:json&sheet=Sheet1';
     emailjs.init("Q3bN3o4fJ_93E57W7");
 
-    // PDF.js worker
-    if (typeof pdfjsLib !== 'undefined') {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    }
-
     function getUser() { return localStorage.getItem('ib_user') || 'admin'; }
     function getPass() { return localStorage.getItem('ib_pass') || '0000'; }
 
     let imageLinks = [], imageDates = [], currentIndex = 0, lbScale = 1;
     let allFiles = [], currentFolder = 'all', currentView = 'list';
 
-    /* ── LANGUAGE ── */
+    /* ── DİL ── */
     const STRINGS = {
         en: {
             login_title:'Administrator Login', login_sub:'Sign in to access the panel',
@@ -648,7 +714,7 @@
     }
     function setLang(l) { currentLang=l; localStorage.setItem('ib_lang',l); applyLang(); }
 
-    /* ── THEME ── */
+    /* ── TEMA ── */
     function applyTheme(th) {
         document.documentElement.setAttribute('data-theme', th);
         localStorage.setItem('ib_theme', th);
@@ -667,7 +733,7 @@
         if (tab==='files' && allFiles.length>0) showFolderGrid();
         if (tab==='centers') merkezleriGetir();
         if (tab==='results') resultsGetir();
-
+        if (tab==='ai') initAiTab();
     }
 
     /* ── LOGIN ── */
@@ -720,7 +786,7 @@
         setTimeout(showLogin,1500);
     }
 
-    /* ── SETTINGS ── */
+    /* ── AYARLAR ── */
     function openSettings() {
         ['new-username','current-pass','new-pass','new-pass2'].forEach(function(id){document.getElementById(id).value='';});
         document.getElementById('settings-error').style.display='none';
@@ -747,7 +813,7 @@
         else{err.textContent=t('err_nothing');err.style.display='block';}
     }
 
-    /* ── NOTIFICATION SOUND ── */
+    /* ── BİLDİRİM SESİ ── */
     function playNewMeasurementSound() {
         try {
             var ctx=new(window.AudioContext||window.webkitAudioContext)();
@@ -764,7 +830,7 @@
         } catch(e){}
     }
 
-    /* ── INBODY DATA ── */
+    /* ── INBODY VERİ ── */
     async function veriGetir() {
         var btn=document.getElementById('btn-refresh');
         btn.classList.add('spinning'); btn.disabled=true; showState('loading');
@@ -781,6 +847,7 @@
             if(ids.length===0)throw new Error('No links');
             imageLinks=ids; imageDates=dates; currentIndex=0;
             loadFeatured(0); buildCarousel();
+            // CSV verilerini arka planda yükle
             resultsGetirSilent();
             document.getElementById('update-time').textContent=new Date().toLocaleTimeString(currentLang==='tr'?'tr-TR':'en-GB',{hour:'2-digit',minute:'2-digit'});
         } catch(e){console.error(e);showState('error');}
@@ -853,7 +920,7 @@
         document.getElementById('zoom-level').textContent=Math.round(lbScale*100)+'%';
     }
 
-    /* ── EMAIL ── */
+    /* ── E-POSTA ── */
     async function epostaGonder(){
         var email=document.getElementById('target-email').value.trim();
         var btn=document.getElementById('send-btn');
@@ -892,6 +959,7 @@
             if(!json.table||!json.table.rows){renderFiles();return;}
             json.table.rows.forEach(function(row){
                 if(!row.c||!row.c[0]||!row.c[0].v)return;
+                // skip header row
                 if(row.c[0].v==='name')return;
                 allFiles.push({
                     name:      (row.c[0]&&row.c[0].v)?row.c[0].v:'',
@@ -905,27 +973,39 @@
             showFolderGrid();
         } catch(e){
             console.error(e);
-            container.innerHTML='<div class="files-empty"><i class="fas fa-exclamation-triangle"></i><p>Could not load files.</p></div>';
+            container.innerHTML='<div class="files-empty"><i class="fas fa-exclamation-triangle"></i><p>Could not load files. Make sure AppScript has run at least once.</p></div>';
         }
+    }
+
+    function buildFolderTabs(){
+        // Show folder grid view
+        showFolderGrid();
     }
 
     function showFolderGrid() {
         currentFolder = 'grid';
         var bc = document.getElementById('breadcrumb');
         bc.innerHTML = '<span class="breadcrumb-item active"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span>';
+
         var folders = [...new Set(allFiles.map(function(f){return f.folder;}))].sort();
         var container = document.getElementById('files-container');
         container.className = 'folder-grid';
         container.innerHTML = '';
+
         folders.forEach(function(folderName) {
             if (folderName === '/') return;
             var count = allFiles.filter(function(x){ return x.folder === folderName; }).length;
             var card = document.createElement('div');
             card.className = 'folder-card';
-            card.innerHTML = '<div class="folder-card-icon">📁</div><div class="folder-card-name">' + folderName + '</div><div class="folder-card-count">' + count + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
+            card.innerHTML =
+                '<div class="folder-card-icon">📁</div>' +
+                '<div class="folder-card-name">' + folderName + '</div>' +
+                '<div class="folder-card-count">' + count + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
             card.onclick = function(){ openFolder(folderName); };
             container.appendChild(card);
         });
+
+        // Kök klasördeki dosyaları direkt kart olarak göster
         var rootFiles = allFiles.filter(function(f){ return f.folder === '/'; });
         rootFiles.forEach(function(f) {
             var mi = getMimeIcon(f.mime);
@@ -935,20 +1015,39 @@
             if (isPdf) { var pm = f.viewLink.match(/\/d\/([^\/]+)\//); if (pm) thumbId = pm[1]; }
             else if (isImage) { var im = f.viewLink.match(/id=([^&]+)/); if (im) thumbId = im[1]; }
             var thumbSrc = thumbId ? 'https://drive.google.com/thumbnail?id=' + thumbId + '&sz=w400' : '';
+
             var card = document.createElement('div');
             card.className = 'file-card';
             if (thumbSrc) {
-                card.innerHTML = '<div class="file-preview" style="background:var(--surface)"><img src="' + thumbSrc + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display=\'none\'"><div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center"><i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div></div>';
+                card.innerHTML = '<div class="file-preview" style="background:var(--surface)">'
+                    + '<img src="' + thumbSrc + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" '
+                    + 'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+                    + '<div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center">'
+                    + '<i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div></div>';
             } else {
                 card.innerHTML = '<div class="file-preview"><i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div>';
             }
-            card.innerHTML += '<div class="file-info"><div class="file-name" title="' + f.name + '">' + f.name + '</div><div class="file-meta"><span>' + f.date + '</span></div></div><div class="file-actions"><button class="file-btn file-btn-view" onclick="openFile(event,\'' + f.viewLink + '\',\'' + f.name.replace(/'/g,"\'") + '\',\'' + f.mime + '\',\'' + f.dlLink + '\')"><i class="fas fa-eye"></i> ' + t('view') + '</button><a href="' + f.dlLink + '" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-btn file-btn-dl"><i class="fas fa-download"></i> ' + t('download') + '</button></a></div>';
+            card.innerHTML +=
+                '<div class="file-info">'
+                + '<div class="file-name" title="' + f.name + '">' + f.name + '</div>'
+                + '<div class="file-meta"><span>' + f.date + '</span></div>'
+                + '</div>'
+                + '<div class="file-actions">'
+                + '<button class="file-btn file-btn-view" onclick="openFile(event,\'' + f.viewLink + '\',\'' + f.name.replace(/'/g,"\'") + '\',\'' + f.mime + '\',\'' + f.dlLink + '\')"><i class="fas fa-eye"></i> ' + t('view') + '</button>'
+                + '<a href="' + f.dlLink + '" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-btn file-btn-dl"><i class="fas fa-download"></i> ' + t('download') + '</button></a>'
+                + '</div>';
             container.appendChild(card);
         });
+
+        // If only one folder or there are root files, also show root
+        var rootFiles = allFiles.filter(function(f){ return f.folder === '/'; });
         if (rootFiles.length > 0 && folders.indexOf('/') === -1) {
             var card = document.createElement('div');
             card.className = 'folder-card';
-            card.innerHTML = '<div class="folder-card-icon">📂</div><div class="folder-card-name">' + (currentLang === 'tr' ? 'Genel' : 'General') + '</div><div class="folder-card-count">' + rootFiles.length + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
+            card.innerHTML =
+                '<div class="folder-card-icon">📂</div>' +
+                '<div class="folder-card-name">' + (currentLang === 'tr' ? 'Genel' : 'General') + '</div>' +
+                '<div class="folder-card-count">' + rootFiles.length + ' ' + (currentLang === 'tr' ? 'dosya' : 'files') + '</div>';
             card.onclick = function(){ openFolder('/'); };
             container.appendChild(card);
         }
@@ -956,17 +1055,27 @@
 
     function openFolder(folderName) {
         currentFolder = folderName;
+        // Breadcrumb
         var bc = document.getElementById('breadcrumb');
-        bc.innerHTML = '<span class="breadcrumb-item" onclick="showFolderGrid()"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span><span class="breadcrumb-sep">›</span><span class="breadcrumb-item active">📁 ' + folderName + '</span>';
+        bc.innerHTML =
+            '<span class="breadcrumb-item" onclick="showFolderGrid()"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span>' +
+            '<span class="breadcrumb-sep">›</span>' +
+            '<span class="breadcrumb-item active">📁 ' + folderName + '</span>';
         renderFiles();
     }
-    function filterFiles(){ if (currentFolder === 'grid') { showFolderGrid(); return; } renderFiles(); }
+
+    function filterFiles(){
+        if (currentFolder === 'grid') { showFolderGrid(); return; }
+        renderFiles();
+    }
+
     function setView(v){
         currentView=v;
         document.getElementById('view-grid').classList.toggle('active',v==='grid');
         document.getElementById('view-list').classList.toggle('active',v==='list');
         renderFiles();
     }
+
     function renderFiles(){
         var query=document.getElementById('file-search')?document.getElementById('file-search').value.toLowerCase():'';
         var filtered=allFiles.filter(function(f){
@@ -974,36 +1083,87 @@
             var searchMatch=!query||f.name.toLowerCase().includes(query)||f.folder.toLowerCase().includes(query);
             return folderMatch&&searchMatch;
         });
+
         var container=document.getElementById('files-container');
-        if(filtered.length===0){container.innerHTML='<div class="files-empty"><i class="fas fa-folder-open"></i><p>'+t('files_empty')+'</p></div>';return;}
-        if(currentView==='grid'){container.className='files-grid';container.innerHTML='';filtered.forEach(function(f){container.appendChild(makeFileCard(f));});}
-        else{container.className='files-list-view';container.innerHTML='';filtered.forEach(function(f){container.appendChild(makeFileRow(f));});}
+        if(filtered.length===0){
+            container.innerHTML='<div class="files-empty"><i class="fas fa-folder-open"></i><p>'+t('files_empty')+'</p></div>';
+            return;
+        }
+
+        if(currentView==='grid'){
+            container.className='files-grid';
+            container.innerHTML='';
+            filtered.forEach(function(f){ container.appendChild(makeFileCard(f)); });
+        } else {
+            container.className='files-list-view';
+            container.innerHTML='';
+            filtered.forEach(function(f){ container.appendChild(makeFileRow(f)); });
+        }
     }
+
     function makeFileCard(f){
         var mi=getMimeIcon(f.mime);
-        var card=document.createElement('div'); card.className='file-card';
+        var card=document.createElement('div');
+        card.className='file-card';
+
         var preview='';
         var isImage = f.mime && f.mime.indexOf('image/') === 0;
         var isPdf   = f.mime === 'application/pdf';
         if (isImage || isPdf) {
             var thumbId = '';
-            if (isPdf) { var pm = f.viewLink.match(/\/d\/([^\/]+)\//); if (pm) thumbId = pm[1]; }
-            else { var im = f.viewLink.match(/id=([^&]+)/); if (im) thumbId = im[1]; }
+            if (isPdf) {
+                var pm = f.viewLink.match(/\/d\/([^\/]+)\//);
+                if (pm) thumbId = pm[1];
+            } else {
+                var im = f.viewLink.match(/id=([^&]+)/);
+                if (im) thumbId = im[1];
+            }
             var thumbSrc = thumbId ? 'https://drive.google.com/thumbnail?id=' + thumbId + '&sz=w400' : '';
             if (thumbSrc) {
-                preview = '<div class="file-preview" style="background:var(--surface)"><img src="' + thumbSrc + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentNode.style.background=\'var(--surface2)\';this.style.display=\'none\'"><div class="file-icon-fb" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center"><i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div></div>';
-            } else { preview = '<div class="file-preview"><i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div>'; }
-        } else { preview='<div class="file-preview"><i class="fas '+mi.icon+' file-icon" style="color:'+mi.color+'"></i></div>'; }
-        card.innerHTML=preview+'<div class="file-info"><div class="file-name" title="'+f.name+'">'+f.name+'</div><div class="file-meta"><span>'+f.folder+'</span><span>'+f.date+'</span></div></div><div class="file-actions"><button class="file-btn file-btn-view" onclick="openFile(event,\''+escQ(f.viewLink)+'\',\''+escQ(f.name)+'\',\''+escQ(f.mime)+'\',\''+escQ(f.dlLink)+'\')"><i class="fas fa-eye"></i> '+t('view')+'</button><a href="'+f.dlLink+'" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-btn file-btn-dl"><i class="fas fa-download"></i> '+t('download')+'</button></a></div>';
+                preview = '<div class="file-preview" style="background:var(--surface)">'
+                    + '<img src="' + thumbSrc + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" '
+                    + 'onerror="this.parentNode.style.background=\'var(--surface2)\';this.style.display=\'none\';this.parentNode.querySelector(\'.file-icon-fb\').style.display=\'flex\'">'
+                    + '<div class="file-icon-fb" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center">'
+                    + '<i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div>'
+                    + '</div>';
+            } else {
+                preview = '<div class="file-preview"><i class="fas ' + mi.icon + ' file-icon" style="color:' + mi.color + '"></i></div>';
+            }
+        } else {
+            preview='<div class="file-preview"><i class="fas '+mi.icon+' file-icon" style="color:'+mi.color+'"></i></div>';
+        }
+
+        card.innerHTML=preview+
+            '<div class="file-info">'+
+                '<div class="file-name" title="'+f.name+'">'+f.name+'</div>'+
+                '<div class="file-meta"><span>'+f.folder+'</span><span>'+f.date+'</span></div>'+
+            '</div>'+
+            '<div class="file-actions">'+
+                '<button class="file-btn file-btn-view" onclick="openFile(event,\''+escQ(f.viewLink)+'\',\''+escQ(f.name)+'\',\''+escQ(f.mime)+'\',\''+escQ(f.dlLink)+'\')"><i class="fas fa-eye"></i> '+t('view')+'</button>'+
+                '<a href="'+f.dlLink+'" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-btn file-btn-dl"><i class="fas fa-download"></i> '+t('download')+'</button></a>'+
+            '</div>';
         return card;
     }
+
     function makeFileRow(f){
         var mi=getMimeIcon(f.mime);
-        var row=document.createElement('div'); row.className='file-row';
-        row.innerHTML='<div class="file-row-icon"><i class="fas '+mi.icon+'" style="color:'+mi.color+'"></i></div><div class="file-row-info"><div class="file-row-name">'+f.name+'</div><div class="file-row-meta">'+f.folder+' · '+f.date+'</div></div><div class="file-row-actions"><button class="file-row-btn" title="'+t('view')+'" onclick="openFile(event,\''+escQ(f.viewLink)+'\',\''+escQ(f.name)+'\',\''+escQ(f.mime)+'\',\''+escQ(f.dlLink)+'\')"><i class="fas fa-eye"></i></button><a href="'+f.dlLink+'" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-row-btn" title="'+t('download')+'"><i class="fas fa-download"></i></button></a></div>';
+        var row=document.createElement('div');
+        row.className='file-row';
+        row.innerHTML=
+            '<div class="file-row-icon"><i class="fas '+mi.icon+'" style="color:'+mi.color+'"></i></div>'+
+            '<div class="file-row-info">'+
+                '<div class="file-row-name">'+f.name+'</div>'+
+                '<div class="file-row-meta">'+f.folder+' · '+f.date+'</div>'+
+            '</div>'+
+            '<div class="file-row-actions">'+
+                '<button class="file-row-btn" title="'+t('view')+'" onclick="openFile(event,\''+escQ(f.viewLink)+'\',\''+escQ(f.name)+'\',\''+escQ(f.mime)+'\',\''+escQ(f.dlLink)+'\')"><i class="fas fa-eye"></i></button>'+
+                '<a href="'+f.dlLink+'" target="_blank" style="text-decoration:none" onclick="event.stopPropagation()"><button class="file-row-btn" title="'+t('download')+'"><i class="fas fa-download"></i></button></a>'+
+            '</div>';
         return row;
     }
+
     function escQ(s){ return (s||'').replace(/'/g,"\\'"); }
+
     function openFile(e, viewLink, name, mime, dlLink){
         e.stopPropagation();
         if(mime&&mime.indexOf('image/')===0){
@@ -1019,75 +1179,224 @@
             document.getElementById('pdf-dl-btn').href=dlLink;
             document.getElementById('pdf-overlay').classList.add('open');
             document.body.style.overflow='hidden';
-        } else { window.open(viewLink,'_blank'); }
+        } else {
+            window.open(viewLink,'_blank');
+        }
     }
+
     function closePdf(){
         document.getElementById('pdf-overlay').classList.remove('open');
         document.getElementById('pdf-frame').src='';
         document.body.style.overflow='';
     }
 
-    /* ── ANNOTATION ── */
+    /* ── ANNOTATION DATA BINDING ── */
+
+    // imageDates: ["23.03.2026 10:31", "19.03.2026 08:34", ...]
+    // CSV testDate: "20260323103103" formatında
+
     function csvDateToDisplay(csvDate) {
+        // "20260323103103" → "23.03.2026 10:31"
         if (!csvDate || csvDate.length < 12) return '';
         var d = csvDate.replace(/\D/g,'');
         if (d.length < 12) return '';
         return d.slice(6,8)+'.'+d.slice(4,6)+'.'+d.slice(0,4)+' '+d.slice(8,10)+':'+d.slice(10,12);
     }
+
     function findMeasurementForImage(imageIndex) {
         if (!allMeasurements || allMeasurements.length === 0) return null;
         var imgDate = imageDates[imageIndex];
+        console.log('Finding for imgDate:', imgDate, 'index:', imageIndex);
         if (!imgDate) return allMeasurements[0];
-        var imgPrefix = imgDate.slice(0,13);
+
+        // imageDates format: "23.03.2026 10:31"
+        // CSV Test Date / Time format: "20260323103103"
+        var imgPrefix = imgDate.slice(0,13); // "23.03.2026 10"
+
         for (var i = 0; i < allMeasurements.length; i++) {
             var m = allMeasurements[i];
             var csvDate = (m['Test Date / Time'] || '').replace(/\D/g,'');
             var disp = csvDateToDisplay(csvDate);
-            if (disp.slice(0,13) === imgPrefix) return m;
+            console.log('CSV disp:', disp, 'prefix:', disp.slice(0,13));
+            if (disp.slice(0,13) === imgPrefix) {
+                console.log('MATCH found at index', i);
+                return m;
+            }
         }
+        console.log('No match, using first measurement');
         return allMeasurements[0];
     }
+
     function numVal(m, key) {
         var v = m[key];
         if (v === undefined || v === '' || v === '-') return 0;
         return parseFloat(v.replace(',','.'))||0;
     }
+
     function statusIcon(val, low, high) {
         if (!low && !high) return '';
-        if (val < low) return ' <span style="color:#f59e0b">↓ Low</span>';
-        if (val > high) return ' <span style="color:#ef4444">↑ High</span>';
-        return ' <span style="color:#10b981">✓ Normal</span>';
+        var isTR = currentLang === 'tr';
+        if (val < low) return ' <span style="color:#f59e0b">↓ '+('Low')+'</span>';
+        if (val > high) return ' <span style="color:#ef4444">↑ '+('High')+'</span>';
+        return ' <span style="color:#10b981">✓ '+('Normal')+'</span>';
     }
-    function interpret(val, low, high, lowMsg, highMsg, normalMsg) {
-        if (val < low) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+lowMsg+'</div>';
-        if (val > high) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ '+highMsg+'</div>';
-        return '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ '+normalMsg+'</div>';
+
+    function interpret(val, low, high, lowMsg, highMsg, normalMsg, lowMsgTR, highMsgTR, normalMsgTR) {
+        var isTR = currentLang === 'tr';
+        var lm = isTR && lowMsgTR ? lowMsgTR : lowMsg;
+        var hm = isTR && highMsgTR ? highMsgTR : highMsg;
+        var nm = isTR && normalMsgTR ? normalMsgTR : normalMsg;
+        if (val < low) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+lm+'</div>';
+        if (val > high) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ '+hm+'</div>';
+        return '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ '+nm+'</div>';
     }
+
     function updateAnnotationsFromCSV(imageIndex) {
         var m = findMeasurementForImage(imageIndex);
         if (!m) return;
+        console.log('ALL KEYS:', JSON.stringify(m));
+
         var zones = document.querySelectorAll('.ann-zone');
         zones.forEach(function(z) {
             var title = z.dataset.title;
             var body = '';
-            if (title === 'Patient Info') { body = '🪪 <strong>'+(m['Name']||m['ID']||'-')+'</strong><br>📏 '+m['Height']+' cm | 🎂 '+m['Age']+' yrs | ⚧ '+m['Gender']+'<br>📅 '+m['Test Date / Time']; }
-            else if (title === 'InBody Score') { var score=numVal(m,'InBody Score'); var sc=score>=80?'#10b981':score>=70?'#f59e0b':'#ef4444'; body='📊 <strong style="color:'+sc+';font-size:1.2rem">'+score+'/100</strong><br><br>👨 Men target: <strong>>80</strong><br>👩 Women target: <strong>>70</strong>'+interpret(score,70,100,'Low score — increase muscle mass','Great score!','Good score, keep it up!'); }
-            else if (title === 'Body Composition Analysis') { var tbw=numVal(m,'TBW (Total Body Water)'),tbwL=numVal(m,'Lower Limit (TBW Normal Range)'),tbwH=numVal(m,'Upper Limit (TBW Normal Range)'); var pro=numVal(m,'Protein'),proL=numVal(m,'Lower Limit (Protein Normal Range)'),proH=numVal(m,'Upper Limit (Protein Normal Range)'); var min=numVal(m,'Minerals'),minL=numVal(m,'Lower Limit (Minerals Normal Range)'),minH=numVal(m,'Upper Limit (Minerals Normal Range)'); var bfm=numVal(m,'BFM (Body Fat Mass)'),bfmL=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH=numVal(m,'Upper Limit (BFM Normal Range)'); var wt=numVal(m,'Weight'),wtL=numVal(m,'Lower Limit (Weight Normal Range)'),wtH=numVal(m,'Upper Limit (Weight Normal Range)'); body='💧 <strong>Body Water:</strong> '+tbw.toFixed(1)+' L ('+tbwL+'–'+tbwH+')'+statusIcon(tbw,tbwL,tbwH)+'<br>🧬 <strong>Protein:</strong> '+pro.toFixed(1)+' kg ('+proL+'–'+proH+')'+statusIcon(pro,proL,proH)+'<br>🦴 <strong>Minerals:</strong> '+min.toFixed(1)+' kg ('+minL+'–'+minH+')'+statusIcon(min,minL,minH)+'<br>🫀 <strong>Body Fat:</strong> '+bfm.toFixed(1)+' kg ('+bfmL+'–'+bfmH+')'+statusIcon(bfm,bfmL,bfmH)+'<br>⚖️ <strong>Weight:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH); }
-            else if (title === 'Muscle-Fat Analysis') { var smm=numVal(m,'SMM (Skeletal Muscle Mass)'),smmL=numVal(m,'Lower Limit (SMM Normal Range)'),smmH=numVal(m,'Upper Limit (SMM Normal Range)'); var bfm2=numVal(m,'BFM (Body Fat Mass)'),bfmL2=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH2=numVal(m,'Upper Limit (BFM Normal Range)'); body='💪 <strong>Muscle (SMM):</strong> '+smm.toFixed(1)+' kg'+statusIcon(smm,smmL,smmH)+'<br>🫀 <strong>Body Fat:</strong> '+bfm2.toFixed(1)+' kg'+statusIcon(bfm2,bfmL2,bfmH2)+interpret(smm,smmL,smmH,'Low muscle mass — increase resistance training','Excellent muscle mass!','Muscle mass is in ideal range'); }
-            else if (title === 'Obesity Analysis') { var bmi=numVal(m,'BMI (Body Mass Index)'),bmiL=numVal(m,'Lower Limit (BMI Normal Range)'),bmiH=numVal(m,'Upper Limit (BMI Normal Range)'); var pbf=numVal(m,'PBF (Percent Body Fat)'),pbfL=numVal(m,'Lower Limit (PBF Normal Range)'),pbfH=numVal(m,'Upper Limit (PBF Normal Range)'); body='📏 <strong>BMI:</strong> '+bmi.toFixed(1)+' kg/m² ('+bmiL+'–'+bmiH+')'+statusIcon(bmi,bmiL,bmiH)+'<br>📉 <strong>Body Fat %:</strong> '+pbf.toFixed(1)+'% ('+pbfL+'–'+pbfH+')'+statusIcon(pbf,pbfL,pbfH)+interpret(pbf,pbfL,pbfH,'Body fat % is low','Body fat % is high — increase cardio','Body fat % is ideal'); }
-            else if (title === 'Visceral Fat Area') { var vfa=numVal(m,'VFA (Visceral Fat Area)'); var vfaStatus=vfa<100?'✅ Excellent! (<100 cm²)':vfa<150?'⚠️ Caution (100–150 cm²)':'🚨 High Risk (>150 cm²)'; body='🫃 <strong>Visceral Fat Area: '+vfa.toFixed(1)+' cm²</strong><br><br>'+vfaStatus+'<br><br>Normal: under 100 cm²'+(vfa>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Abdominal fat may pose metabolic health risks</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Visceral fat is at a healthy level</div>'); }
-            else if (title === 'Weight Control') { var wt2=numVal(m,'Weight'),tgt=numVal(m,'Target Weight'); var wCtrl=numVal(m,'Weight Control'),bfCtrl=numVal(m,'BFM Control'),mCtrl=numVal(m,'FFM Control'); body='🎯 <strong>Current:</strong> '+wt2.toFixed(1)+' kg → <strong>Target:</strong> '+tgt.toFixed(1)+' kg<br><br>Weight Δ: <strong style="color:'+(wCtrl>=0?'#10b981':'#ef4444')+'">'+(wCtrl>=0?'+':'')+wCtrl.toFixed(1)+' kg</strong><br>Fat Δ: <strong style="color:#3b82f6">'+(bfCtrl>=0?'+':'')+bfCtrl.toFixed(1)+' kg</strong><br>Muscle Δ: <strong style="color:#10b981">'+(mCtrl>=0?'+':'')+mCtrl.toFixed(1)+' kg</strong>'+(Math.abs(wt2-tgt)<1?'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Very close to target weight!</div>':wt2>tgt?'<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+(wt2-tgt).toFixed(1)+' kg above target weight</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(59,130,246,0.1);border-radius:8px;font-size:0.75rem;color:#3b82f6">↑ '+(tgt-wt2).toFixed(1)+' kg below target weight</div>'); }
-            else if (title === 'Body Balance Evaluation') { body='⚖️ Body symmetry evaluation:<br><br>Upper: <strong>'+(m['Body Balance Evaluation Upper']||'–')+'</strong><br>Lower: <strong>'+(m['Body Balance Evaluation Lower']||'–')+'</strong>'; }
-            else if (title === 'Segmental Lean Analysis') { var ra=numVal(m,'FFM of Right Arm'),raP=numVal(m,'FFM% of Right Arm'); var la=numVal(m,'FFM of Left Arm'),laP=numVal(m,'FFM% of Left Arm'); var tr=numVal(m,'FFM of Trunk'),trP=numVal(m,'FFM% of Trunk'); var rl=numVal(m,'FFM of Right Leg'),rlP=numVal(m,'FFM% of Right Leg'); var ll=numVal(m,'FFM of Left Leg'),llP=numVal(m,'FFM% of Left Leg'); function pStr(p){return '<span style="color:'+(p>=100?'#10b981':p>=80?'#f59e0b':'#ef4444')+'">'+p.toFixed(1)+'%</span>';} body='🦾 Lean mass per segment (100% = ideal):<br><br>Right Arm: '+ra.toFixed(2)+' kg — '+pStr(raP)+'<br>Left Arm: '+la.toFixed(2)+' kg — '+pStr(laP)+'<br>Trunk: '+tr.toFixed(2)+' kg — '+pStr(trP)+'<br>Right Leg: '+rl.toFixed(2)+' kg — '+pStr(rlP)+'<br>Left Leg: '+ll.toFixed(2)+' kg — '+pStr(llP); }
-            else if (title === 'Segmental Fat Analysis') { var raF=numVal(m,'BFM of Right Arm'),raFP=numVal(m,'BFM% of Right Arm'); var laF=numVal(m,'BFM of Left Arm'),laFP=numVal(m,'BFM% of Left Arm'); var trF=numVal(m,'BFM of Trunk'),trFP=numVal(m,'BFM% of Trunk'); var rlF=numVal(m,'BFM of Right Leg'),rlFP=numVal(m,'BFM% of Right Leg'); var llF=numVal(m,'BFM of Left Leg'),llFP=numVal(m,'BFM% of Left Leg'); body='🫀 Fat per segment:<br><br>Right Arm: '+raF.toFixed(2)+' kg ('+raFP.toFixed(1)+'%)<br>Left Arm: '+laF.toFixed(2)+' kg ('+laFP.toFixed(1)+'%)<br>Trunk: '+trF.toFixed(2)+' kg <span style="color:'+(trFP>100?'#ef4444':'#10b981')+'">('+trFP.toFixed(1)+'%)</span><br>Right Leg: '+rlF.toFixed(2)+' kg ('+rlFP.toFixed(1)+'%)<br>Left Leg: '+llF.toFixed(2)+' kg ('+llFP.toFixed(1)+'%)'+(trFP>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Trunk fat is above ideal</div>':''); }
-            else if (title === 'ECW Ratio Analysis') { var ecw=numVal(m,'ECW/TBW'); body='💦 <strong>ECW/TBW: '+ecw.toFixed(3)+'</strong><br><br>Normal: 0.360–0.390'+interpret(ecw,0.360,0.390,'Intracellular fluid is low','Risk of edema or inflammation — consult a doctor','Fluid balance is normal'); }
-            else if (title === 'Research Parameters') { var bmr=numVal(m,'BMR (Basal Metabolic Rate)'),bmrL=numVal(m,'Lower Limit (BMR Normal Range)'),bmrH=numVal(m,'Upper Limit (BMR Normal Range)'); var whr=numVal(m,'WHR (Waist-Hip Ratio)'),whrL=numVal(m,'Lower Limit (WHR Normal Range)'),whrH=numVal(m,'Upper Limit (WHR Normal Range)'); body='🔬 Research parameters:<br><br>🔥 <strong>BMR:</strong> '+bmr+' kcal'+statusIcon(bmr,bmrL,bmrH)+'<br>📐 <strong>WHR:</strong> '+whr.toFixed(2)+statusIcon(whr,whrL,whrH)+'<br>🧬 <strong>Body Cell Mass:</strong> '+numVal(m,'BCM (Body Cell Mass)').toFixed(1)+' kg<br>📏 <strong>SMI:</strong> '+numVal(m,'SMI (Skeletal Muscle Index)').toFixed(1)+' kg/m²<br>🍽️ <strong>Rec. Calories:</strong> '+numVal(m,'Recommended Calorie Intake')+' kcal'; }
-            else if (title === 'Whole Body Phase Angle') { var pa=numVal(m,'50kHz-Whole Body Phase Angle'); if (!pa) pa=numVal(m,'Whole Body Phase Angle'); body='⚡ <strong>Phase Angle: '+pa.toFixed(1)+'°</strong><br><br>Men normal: 5.0–7.5°<br>Women normal: 4.5–6.5°'+interpret(pa,5.0,7.5,'Weak cell health — improve nutrition and hydration','Excellent cell health!','Cell health is good'); }
-            else if (title === 'Body Composition History') { body='📈 Latest measurement:<br><br>⚖️ <strong>Weight:</strong> '+numVal(m,'Weight').toFixed(1)+' kg<br>💪 <strong>Muscle:</strong> '+numVal(m,'SMM (Skeletal Muscle Mass)').toFixed(1)+' kg<br>🫀 <strong>Body Fat:</strong> '+numVal(m,'PBF (Percent Body Fat)').toFixed(1)+'%'; }
-            else if (title === 'Impedance') { body='📡 Bioelectrical impedance (Ω):<br><br>1kHz RA: '+(m['1kHz-RA Impedance']||'–')+' | LA: '+(m['1kHz-LA Impedance']||'–')+'<br>50kHz RA: '+(m['50kHz-RA Impedance']||'–')+' | LA: '+(m['50kHz-LA Impedance']||'–'); }
+
+            if (title === 'Patient Info') {
+                body = '🪪 <strong>'+(m['Name']||m['ID']||'-')+'</strong><br>📏 '+m['Height']+' cm | 🎂 '+m['Age']+' yrs | ⚧ '+m['Gender']+'<br>📅 '+m['Test Date / Time'];
+            }
+            else if (title === 'InBody Score') {
+                var score = numVal(m,'InBody Score');
+                var sc = score>=80?'#10b981':score>=70?'#f59e0b':'#ef4444';
+                body = '📊 <strong style="color:'+sc+';font-size:1.2rem">'+score+'/100</strong><br><br>';
+                body += '👨 Men target: <strong>>80</strong><br>👩 Women target: <strong>>70</strong>';
+                body += interpret(score,70,100,'Low score — increase muscle mass','Great score!','Good score, keep it up!');
+            }
+            else if (title === 'Body Composition Analysis') {
+                body = '';
+                var tbw=numVal(m,'TBW (Total Body Water)'),tbwL=numVal(m,'Lower Limit (TBW Normal Range)'),tbwH=numVal(m,'Upper Limit (TBW Normal Range)');
+                var pro=numVal(m,'Protein'),proL=numVal(m,'Lower Limit (Protein Normal Range)'),proH=numVal(m,'Upper Limit (Protein Normal Range)');
+                var min=numVal(m,'Minerals'),minL=numVal(m,'Lower Limit (Minerals Normal Range)'),minH=numVal(m,'Upper Limit (Minerals Normal Range)');
+                var bfm=numVal(m,'BFM (Body Fat Mass)'),bfmL=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH=numVal(m,'Upper Limit (BFM Normal Range)');
+                var wt=numVal(m,'Weight'),wtL=numVal(m,'Lower Limit (Weight Normal Range)'),wtH=numVal(m,'Upper Limit (Weight Normal Range)');
+                body  = '💧 <strong>Body Water:</strong> '+tbw.toFixed(1)+' L ('+tbwL+'–'+tbwH+')'+statusIcon(tbw,tbwL,tbwH)+'<br>';
+                body += '🧬 <strong>Protein:</strong> '+pro.toFixed(1)+' kg ('+proL+'–'+proH+')'+statusIcon(pro,proL,proH)+'<br>';
+                body += '🦴 <strong>Minerals:</strong> '+min.toFixed(1)+' kg ('+minL+'–'+minH+')'+statusIcon(min,minL,minH)+'<br>';
+                body += '🫀 <strong>Body Fat:</strong> '+bfm.toFixed(1)+' kg ('+bfmL+'–'+bfmH+')'+statusIcon(bfm,bfmL,bfmH)+'<br>';
+                body += '⚖️ <strong>Weight:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH);
+            }
+            else if (title === 'Muscle-Fat Analysis') {
+                body = '';
+                var smm=numVal(m,'SMM (Skeletal Muscle Mass)'),smmL=numVal(m,'Lower Limit (SMM Normal Range)'),smmH=numVal(m,'Upper Limit (SMM Normal Range)');
+                var bfm2=numVal(m,'BFM (Body Fat Mass)'),bfmL2=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH2=numVal(m,'Upper Limit (BFM Normal Range)');
+                body  = '💪 <strong>Muscle (SMM):</strong> '+smm.toFixed(1)+' kg'+statusIcon(smm,smmL,smmH)+'<br>';
+                body += '🫀 <strong>Body Fat:</strong> '+bfm2.toFixed(1)+' kg'+statusIcon(bfm2,bfmL2,bfmH2);
+                body += interpret(smm,smmL,smmH,'Low muscle mass — increase resistance training','Excellent muscle mass!','Muscle mass is in ideal range');
+            }
+            else if (title === 'Obesity Analysis') {
+                body = '';
+                var bmi=numVal(m,'BMI (Body Mass Index)'),bmiL=numVal(m,'Lower Limit (BMI Normal Range)'),bmiH=numVal(m,'Upper Limit (BMI Normal Range)');
+                var pbf=numVal(m,'PBF (Percent Body Fat)'),pbfL=numVal(m,'Lower Limit (PBF Normal Range)'),pbfH=numVal(m,'Upper Limit (PBF Normal Range)');
+                body  = '📏 <strong>BMI:</strong> '+bmi.toFixed(1)+' kg/m² ('+bmiL+'–'+bmiH+')'+statusIcon(bmi,bmiL,bmiH)+'<br>';
+                body += '📉 <strong>Body Fat %:</strong> '+pbf.toFixed(1)+'% ('+pbfL+'–'+pbfH+')'+statusIcon(pbf,pbfL,pbfH);
+                body += interpret(pbf,pbfL,pbfH,'Body fat % is low','Body fat % is high — increase cardio','Body fat % is ideal');
+            }
+            else if (title === 'Visceral Fat Area') {
+                body = '';
+                var vfa=numVal(m,'VFA (Visceral Fat Area)');
+                var vfaStatus = vfa<100?'✅ Excellent! (<100 cm²)':vfa<150?'⚠️ Caution (100–150 cm²)':'🚨 High Risk (>150 cm²)';
+                body  = '🫃 <strong>Visceral Fat Area: '+vfa.toFixed(1)+' cm²</strong><br><br>';
+                body += vfaStatus+'<br><br>Normal: under 100 cm²';
+                body += vfa>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Abdominal fat may pose metabolic health risks</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Visceral fat is at a healthy level</div>';
+            }
+            else if (title === 'Weight Control') {
+                body = '';
+                var wt2=numVal(m,'Weight'),tgt=numVal(m,'Target Weight');
+                var wCtrl=numVal(m,'Weight Control'),bfCtrl=numVal(m,'BFM Control'),mCtrl=numVal(m,'FFM Control');
+                body  = '🎯 <strong>Current:</strong> '+wt2.toFixed(1)+' kg → <strong>Target:</strong> '+tgt.toFixed(1)+' kg<br><br>';
+                body += 'Weight Δ: <strong style="color:'+(wCtrl>=0?'#10b981':'#ef4444')+'">'+(wCtrl>=0?'+':'')+wCtrl.toFixed(1)+' kg</strong><br>';
+                body += 'Fat Δ: <strong style="color:#3b82f6">'+(bfCtrl>=0?'+':'')+bfCtrl.toFixed(1)+' kg</strong><br>';
+                body += 'Muscle Δ: <strong style="color:#10b981">'+(mCtrl>=0?'+':'')+mCtrl.toFixed(1)+' kg</strong>';
+                if (Math.abs(wt2-tgt)<1) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Very close to target weight!</div>';
+                else if (wt2>tgt) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+(wt2-tgt).toFixed(1)+' kg above target weight</div>';
+                else body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(59,130,246,0.1);border-radius:8px;font-size:0.75rem;color:#3b82f6">↑ '+(tgt-wt2).toFixed(1)+' kg below target weight</div>';
+            }
+            else if (title === 'Body Balance Evaluation') {
+                body  = '⚖️ Body symmetry evaluation:<br><br>';
+                body += 'Upper: <strong>'+(m['Body Balance Evaluation Upper']||'–')+'</strong><br>';
+                body += 'Lower: <strong>'+(m['Body Balance Evaluation Lower']||'–')+'</strong>';
+            }
+            else if (title === 'Segmental Lean Analysis') {
+                body = '';
+                var ra=numVal(m,'FFM of Right Arm'),raP=numVal(m,'FFM% of Right Arm');
+                var la=numVal(m,'FFM of Left Arm'),laP=numVal(m,'FFM% of Left Arm');
+                var tr=numVal(m,'FFM of Trunk'),trP=numVal(m,'FFM% of Trunk');
+                var rl=numVal(m,'FFM of Right Leg'),rlP=numVal(m,'FFM% of Right Leg');
+                var ll=numVal(m,'FFM of Left Leg'),llP=numVal(m,'FFM% of Left Leg');
+                function pStr(p){return '<span style="color:'+(p>=100?'#10b981':p>=80?'#f59e0b':'#ef4444')+'">'+p.toFixed(1)+'%</span>';}
+                body  = '🦾 Lean mass per segment (100% = ideal):<br><br>';
+                body += 'Right Arm: '+ra.toFixed(2)+' kg — '+pStr(raP)+'<br>';
+                body += 'Left Arm: '+la.toFixed(2)+' kg — '+pStr(laP)+'<br>';
+                body += 'Trunk: '+tr.toFixed(2)+' kg — '+pStr(trP)+'<br>';
+                body += 'Right Leg: '+rl.toFixed(2)+' kg — '+pStr(rlP)+'<br>';
+                body += 'Left Leg: '+ll.toFixed(2)+' kg — '+pStr(llP);
+            }
+            else if (title === 'Segmental Fat Analysis') {
+                body = '';
+                var raF=numVal(m,'BFM of Right Arm'),raFP=numVal(m,'BFM% of Right Arm');
+                var laF=numVal(m,'BFM of Left Arm'),laFP=numVal(m,'BFM% of Left Arm');
+                var trF=numVal(m,'BFM of Trunk'),trFP=numVal(m,'BFM% of Trunk');
+                var rlF=numVal(m,'BFM of Right Leg'),rlFP=numVal(m,'BFM% of Right Leg');
+                var llF=numVal(m,'BFM of Left Leg'),llFP=numVal(m,'BFM% of Left Leg');
+                body  = '🫀 Fat per segment:<br><br>';
+                body += 'Right Arm: '+raF.toFixed(2)+' kg ('+raFP.toFixed(1)+'%)<br>';
+                body += 'Left Arm: '+laF.toFixed(2)+' kg ('+laFP.toFixed(1)+'%)<br>';
+                body += 'Trunk: '+trF.toFixed(2)+' kg <span style="color:'+(trFP>100?'#ef4444':'#10b981')+'">('+trFP.toFixed(1)+'%)</span><br>';
+                body += 'Right Leg: '+rlF.toFixed(2)+' kg ('+rlFP.toFixed(1)+'%)<br>';
+                body += 'Left Leg: '+llF.toFixed(2)+' kg ('+llFP.toFixed(1)+'%)';
+                if (trFP>100) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Trunk fat is above ideal</div>';
+            }
+            else if (title === 'ECW Ratio Analysis') {
+                body = '';
+                var ecw=numVal(m,'ECW/TBW');
+                body  = '💦 <strong>ECW/TBW: '+ecw.toFixed(3)+'</strong><br><br>Normal: 0.360–0.390';
+                body += interpret(ecw,0.360,0.390,'Intracellular fluid is low','Risk of edema or inflammation — consult a doctor','Fluid balance is normal');
+            }
+            else if (title === 'Research Parameters') {
+                body = '';
+                var bmr=numVal(m,'BMR (Basal Metabolic Rate)'),bmrL=numVal(m,'Lower Limit (BMR Normal Range)'),bmrH=numVal(m,'Upper Limit (BMR Normal Range)');
+                var whr=numVal(m,'WHR (Waist-Hip Ratio)'),whrL=numVal(m,'Lower Limit (WHR Normal Range)'),whrH=numVal(m,'Upper Limit (WHR Normal Range)');
+                body  = '🔬 Research parameters:<br><br>';
+                body += '🔥 <strong>BMR:</strong> '+bmr+' kcal'+statusIcon(bmr,bmrL,bmrH)+'<br>';
+                body += '📐 <strong>WHR:</strong> '+whr.toFixed(2)+statusIcon(whr,whrL,whrH)+'<br>';
+                body += '🧬 <strong>Body Cell Mass:</strong> '+numVal(m,'BCM (Body Cell Mass)').toFixed(1)+' kg<br>';
+                body += '📏 <strong>SMI:</strong> '+numVal(m,'SMI (Skeletal Muscle Index)').toFixed(1)+' kg/m²<br>';
+                body += '🍽️ <strong>Rec. Calories:</strong> '+numVal(m,'Recommended Calorie Intake')+' kcal';
+            }
+            else if (title === 'Whole Body Phase Angle') {
+                body = '';
+                var pa=numVal(m,'50kHz-Whole Body Phase Angle');
+                if (!pa) pa=numVal(m,'Whole Body Phase Angle');
+                body  = '⚡ <strong>Phase Angle: '+pa.toFixed(1)+'°</strong><br><br>';
+                body += 'Men normal: 5.0–7.5°<br>Women normal: 4.5–6.5°';
+                body += interpret(pa,5.0,7.5,'Weak cell health — improve nutrition and hydration','Excellent cell health!','Cell health is good');
+            }
+            else if (title === 'Body Composition History') {
+                body  = '📈 Latest measurement:<br><br>';
+                body += '⚖️ <strong>Weight:</strong> '+numVal(m,'Weight').toFixed(1)+' kg<br>';
+                body += '💪 <strong>Muscle:</strong> '+numVal(m,'SMM (Skeletal Muscle Mass)').toFixed(1)+' kg<br>';
+                body += '🫀 <strong>Body Fat:</strong> '+numVal(m,'PBF (Percent Body Fat)').toFixed(1)+'%';
+            }
+            else if (title === 'Impedance') {
+                body  = '📡 Bioelectrical impedance (Ω):<br><br>';
+                body += '1kHz RA: '+(m['1kHz-RA Impedance']||'–')+' | LA: '+(m['1kHz-LA Impedance']||'–')+'<br>';
+                body += '50kHz RA: '+(m['50kHz-RA Impedance']||'–')+' | LA: '+(m['50kHz-LA Impedance']||'–');
+            }
+
             if (body) { z.dataset.body = body; z.dataset.hint = body; }
         });
     }
+
+
     function showAnnPreview(e, el) {
         updateAnnotationsFromCSV(currentIndex);
         var box = document.getElementById('ann-preview-box');
@@ -1096,7 +1405,9 @@
         box.style.display = 'block';
         moveAnnPreview(e);
     }
-    function hideAnnPreview() { document.getElementById('ann-preview-box').style.display = 'none'; }
+    function hideAnnPreview() {
+        document.getElementById('ann-preview-box').style.display = 'none';
+    }
     function moveAnnPreview(e) {
         var box = document.getElementById('ann-preview-box');
         var x = e.clientX + 14, y = e.clientY - 80;
@@ -1106,9 +1417,12 @@
     }
     function showAnnPopup(e, title, body) {
         e.stopPropagation();
+        // Her zaman önce güncelle
         updateAnnotationsFromCSV(currentIndex);
         document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
         e.currentTarget.classList.add('active');
+        activeAnnZone = e.currentTarget;
+        // update sonrası dataset.body'yi al
         var freshBody = e.currentTarget.dataset.body || '';
         document.getElementById('ann-popup-title').textContent = title;
         document.getElementById('ann-popup-body').innerHTML = freshBody;
@@ -1133,441 +1447,27 @@
         if (popup && popup.style.display !== 'none' && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
     });
 
-    async function resultsGetirSilent() {
+        async function resultsGetirSilent() {
         await loadAllMeasurements();
         updateAnnotationsFromCSV(currentIndex);
     }
 
-    /* ── GROQ AI ANALYSIS (multi-turn chat) ── */
-    const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-    const GROQ_API_KEY = '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';
-    const GROQ_MODEL   = 'meta-llama/llama-4-scout-17b-16e-instruct';
-
-    const DEFAULT_INBODY_PROMPT = `You are an expert health and body composition specialist. Analyze this InBody measurement report thoroughly and respond entirely in English.
-CRITICAL SYSTEM RULE — MUST EXECUTE FIRST (NO EXCEPTIONS)
-
-You are analyzing an InBody report.
-
-Before performing ANY interpretation, analysis, or explanation, you MUST complete the following validation step.
-
-This step has the highest priority and OVERRIDES all other instructions.
-
-CRITICAL: VISUAL VERIFICATION REQUIRED — NO ASSUMPTIONS ALLOWED
-
-You are analyzing an InBody report image.
-
-Before ANY analysis, you MUST visually locate and read the calibration code from the image.
-You are STRICTLY FORBIDDEN from guessing, assuming, or defaulting the value.
-
-STEP 1 — DEVICE TYPE DETECTION
-Check the report header:
-If it contains "BWA" or "BWA2.0" → continue
-If NOT → skip validation and proceed with analysis
-STEP 2 — MANDATORY VISUAL CODE EXTRACTION
-You MUST visually locate the impedance chart (V-shaped graph on the right side)
-Then locate the small calibration code in the bottom-right corner of that chart
-
-The code format is:
-
-[XXX/XXX/XXX]
-
-You MUST extract the EXACT code from the image
-🚫 HARD RULE — NO GUESSING
-If the code is:
-blurry
-unreadable
-not clearly visible
-or cannot be confidently extracted
-
-→ You MUST treat the measurement as INVALID
-→ DO NOT assume it is [000/000/000]
-
-STEP 3 — VALIDATION LOGIC
-ONLY IF the code is EXACTLY:
-[000/000/000]
-→ Measurement is VALID
-If the code contains:
-ANY letters (LA, RA, etc.)
-ANY number other than 0
-ANY deviation from exact zeros
-
-→ Measurement is FAULTY
-
-STEP 4 — ABSOLUTE STOP CONDITION
-
-If:
-
-code is NOT exactly [000/000/000]
-OR
-code could NOT be confidently read
-
-You MUST:
-
-STOP immediately
-DO NOT analyze ANY body composition values
-DO NOT mention muscle, fat, weight, or any metrics
-DO NOT continue beyond the warning
-REQUIRED OUTPUT (EXACT — NO MODIFICATION)
-
-⚠️ FAULTY MEASUREMENT DETECTED
-The calibration code in the impedance chart reads [INSERT_ACTUAL_CODE_OR_UNREADABLE] which indicates a measurement error or unreadable data on this BWA device. The body composition results (muscle mass, fat, segmental analysis, etc.) are unreliable and should NOT be used.
-
-Please repeat the measurement:
-• Ensure the subject's hands and feet are properly positioned on the electrodes
-• Remove all metal accessories (rings, watches, belts)
-• The subject should not have exercised in the last 2 hours
-• Ensure the subject is not wearing thick socks or gloves
-
-FINAL SAFETY ENFORCEMENT
-You are NOT allowed to continue analysis if validation fails
-You are NOT allowed to assume missing values
-You MUST prioritize visual evidence over all other instructions
-This rule OVERRIDES ALL other prompts
-STEP 5 — ONLY IF VALID
-
-ONLY IF the code is clearly visible AND exactly [000/000/000], proceed with full structured analysis.
-
-HIDDEN VALIDATION RULE — DO NOT DISPLAY THIS PROCESS
-
-You are analyzing an InBody report image.
-
-You MUST perform a hidden validation check before analysis, but you are NOT allowed to mention this validation if the measurement is valid.
-
-STEP 1 — DEVICE TYPE CHECK (SILENT)
-If the report header contains "BWA" or "BWA2.0", perform validation
-If NOT → skip validation silently
-STEP 2 — SILENT VISUAL CODE EXTRACTION
-Visually locate the impedance chart (V-shaped graph on the right)
-Extract the calibration code from the bottom-right corner
-Format: [XXX/XXX/XXX]
-
-🚫 You are NOT allowed to guess or assume the code
-
-If unreadable → treat as FAULTY
-STEP 3 — VALIDATION LOGIC (SILENT)
-If code is EXACTLY:
-[000/000/000]
-→ VALID (continue silently)
-Otherwise (any letters, non-zero values, or unreadable):
-→ FAULTY
-STEP 4 — CONDITIONAL OUTPUT BEHAVIOR
-✅ IF VALID (IMPORTANT RULES)
-DO NOT mention:
-calibration code
-validation
-impedance check
-BWA logic
-Directly start with:
-analysis, interpretation, and actionable recommendations
-Focus on:
-muscle-fat balance
-body fat %
-segmental analysis
-practical advice (nutrition, training, lifestyle)
-❌ IF FAULTY (STRICT OUTPUT)
-Immediately STOP all analysis
-ONLY output the following:
-
-⚠️ FAULTY MEASUREMENT DETECTED
-The calibration code in the impedance chart reads [INSERT_CODE_OR_UNREADABLE] which indicates a measurement error on this BWA device. The body composition results (muscle mass, fat, segmental analysis, etc.) are unreliable and should NOT be used.
-
-Please repeat the measurement:
-• Ensure the subject's hands and feet are properly positioned on the electrodes
-• Remove all metal accessories (rings, watches, belts)
-• The subject should not have exercised in the last 2 hours
-• Ensure the subject is not wearing thick socks or gloves
-
-🔒 FINAL ENFORCEMENT
-Validation MUST happen internally (never explained if valid)
-You are FORBIDDEN from continuing analysis if faulty
-You are FORBIDDEN from assuming missing or unclear codes
-This rule OVERRIDES all other instructions
-
-## 📊 Overall Assessment
-A concise summary of the person's general health and body composition status.
-
-## 💪 Muscle & Fat Status
-Skeletal muscle mass, body fat percentage, and how they compare to ideal ranges for the person's age and gender.
-
-## ⚖️ Weight & Obesity Analysis
-BMI interpretation, visceral fat area assessment, and weight control recommendations.
-
-## 🔬 Values Requiring Attention
-Any parameters outside normal ranges — explain what each means and why it matters.
-
-## 🏃 Exercise Recommendations
-Specific, personalised exercise plan based on the results (type, frequency, duration).
-
-## 🥗 Personalised Diet Plan
-Based on the body composition results, provide a practical weekly diet plan:
-- Daily calorie target (based on BMR and activity level)
-- Macronutrient breakdown (protein / carbs / fat in grams)
-- Sample meals for breakfast, lunch, dinner and snacks
-- Foods to prioritise and foods to limit
-- Hydration recommendation
-
-## ✅ Positive Highlights
-Values that are in a healthy range and habits worth maintaining.
-
-Be motivating, clear and professional. Use bullet points where helpful.`;
-
-    // Conversation history (carries across follow-up turns)
-    var aiConversationHistory = [];
-    var aiCurrentFileName = '';
-
-    // Tab switcher inside apply overlay
-    function applyShowTab(tab) {
-        var isForm = tab === 'form';
-        document.getElementById('apply-panel-form').style.display = isForm ? 'flex' : 'none';
-        document.getElementById('apply-panel-ai').style.display   = isForm ? 'none' : 'flex';
-        var btnForm = document.getElementById('apply-tab-form');
-        var btnAi   = document.getElementById('apply-tab-ai');
-        btnForm.style.background = isForm ? 'var(--surface)' : 'transparent';
-        btnForm.style.color      = isForm ? 'var(--text)' : 'var(--muted)';
-        btnAi.style.background   = isForm ? 'transparent' : 'var(--surface)';
-        btnAi.style.color        = isForm ? 'var(--muted)' : 'var(--text)';
-    }
-
-    function resetAiTab() {
-        aiConversationHistory = [];
-        aiCurrentFileName = '';
-        document.getElementById('ai-pre-upload').style.display = 'flex';
-        document.getElementById('ai-chat-view').style.display  = 'none';
-        document.getElementById('ai-upload-area').style.display = 'block';
-        document.getElementById('ai-status').style.display = 'none';
-        document.getElementById('ai-error').style.display = 'none';
-        document.getElementById('ai-messages').innerHTML = '';
-        document.getElementById('ai-file-input').value = '';
-        var ta = document.getElementById('ai-initial-prompt');
-        if (ta) ta.value = '';
-    }
-
-    function handleAiDrop(e) {
-        e.preventDefault();
-        document.getElementById('ai-upload-area').style.borderColor = 'var(--border)';
-        document.getElementById('ai-upload-area').style.background = 'var(--surface2)';
-        var file = e.dataTransfer.files[0];
-        if (file) handleAiFile(file);
-    }
-
-    async function extractPdfText(file) {
-        if (typeof pdfjsLib === 'undefined') throw new Error('PDF.js not loaded');
-        var arrayBuffer = await file.arrayBuffer();
-        var pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        var fullText = '';
-        for (var i = 1; i <= Math.min(pdf.numPages, 10); i++) {
-            var page = await pdf.getPage(i);
-            var tc = await page.getTextContent();
-            fullText += 'Page ' + i + ':\n' + tc.items.map(function(it){ return it.str; }).join(' ') + '\n\n';
-        }
-        return fullText.trim();
-    }
-
-    async function fileToBase64(file) {
-        return new Promise(function(resolve, reject) {
-            var reader = new FileReader();
-            reader.onload = function() { resolve(reader.result); };
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }
-
-    async function handleAiFile(file) {
-        if (!file) return;
-        if (file.size > 20 * 1024 * 1024) { showAiError('File too large. Max 20MB.'); return; }
-
-        var customPrompt = (document.getElementById('ai-initial-prompt') || {}).value;
-        customPrompt = (customPrompt || '').trim();
-        var userPrompt = customPrompt || DEFAULT_INBODY_PROMPT;
-        var isVisionModel = GROQ_MODEL.includes('llama-4') || GROQ_MODEL.includes('vision');
-        var isPdf   = file.type === 'application/pdf';
-        var isImage = file.type.startsWith('image/');
-
-        aiCurrentFileName = file.name;
-        document.getElementById('ai-upload-area').style.display = 'none';
-        document.getElementById('ai-status').style.display = 'flex';
-        document.getElementById('ai-status-text').textContent = 'Reading file...';
-        document.getElementById('ai-error').style.display = 'none';
-
-        try {
-            var firstMessage;
-
-            if (isPdf) {
-                document.getElementById('ai-status-text').textContent = 'Extracting PDF text...';
-                var pdfText = await extractPdfText(file);
-                if (!pdfText || pdfText.length < 20) throw new Error('Could not extract text from PDF. The file may be scanned. Try uploading as JPG/PNG.');
-                firstMessage = { role: 'user', content: userPrompt + '\n\n--- DOCUMENT CONTENT ---\n' + pdfText.slice(0, 12000) };
-            } else if (isImage && isVisionModel) {
-                document.getElementById('ai-status-text').textContent = 'Preparing image...';
-                var b64 = await fileToBase64(file);
-                firstMessage = { role: 'user', content: [{ type: 'image_url', image_url: { url: b64 } }, { type: 'text', text: userPrompt }] };
-            } else if (isImage && !isVisionModel) {
-                throw new Error('Selected model does not support images. A vision model is pre-configured.');
-            } else {
-                document.getElementById('ai-status-text').textContent = 'Reading file as text...';
-                var textContent = await file.text();
-                firstMessage = { role: 'user', content: userPrompt + '\n\n--- FILE CONTENT ---\n' + textContent.slice(0, 12000) };
-            }
-
-            aiConversationHistory = [firstMessage];
-            document.getElementById('ai-status-text').textContent = '⚡ Analyzing...';
-
-            var reply = await callGroqApi(aiConversationHistory);
-
-            aiConversationHistory.push({ role: 'assistant', content: reply });
-
-            // Switch to chat view
-            document.getElementById('ai-status').style.display = 'none';
-            document.getElementById('ai-pre-upload').style.display = 'none';
-            document.getElementById('ai-chat-view').style.display = 'flex';
-            document.getElementById('ai-chat-file-name').textContent = file.name;
-
-            // Render first message pair
-            appendChatMessage('user', typeof firstMessage.content === 'string' ? '📎 ' + file.name + '\n\n' + (customPrompt || '(default analysis prompt)') : '📎 ' + file.name + ' (image)');
-            appendChatMessage('assistant', reply);
-
-        } catch(e) {
-            console.error('Groq AI error:', e);
-            showAiError(e.message || 'Analysis failed. Please try again.');
-        }
-    }
-
-    async function sendAiFollowup() {
-        var input = document.getElementById('ai-followup-input');
-        var text = input.value.trim();
-        if (!text) return;
-        if (aiConversationHistory.length === 0) return;
-
-        input.value = '';
-        input.style.height = 'auto';
-        var sendBtn = document.getElementById('ai-send-btn');
-        sendBtn.disabled = true;
-        sendBtn.style.opacity = '0.5';
-
-        appendChatMessage('user', text);
-        aiConversationHistory.push({ role: 'user', content: text });
-
-        // Typing indicator
-        var typingId = 'typing-' + Date.now();
-        var typingEl = document.createElement('div');
-        typingEl.id = typingId;
-        typingEl.style.cssText = 'display:flex;gap:10px;align-items:flex-start';
-        typingEl.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0">⚡</div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;border-bottom-left-radius:4px;padding:10px 14px;font-size:0.82rem;color:var(--muted)">Thinking<span class="streaming-cursor"></span></div>';
-        document.getElementById('ai-messages').appendChild(typingEl);
-        scrollAiChat();
-
-        try {
-            var reply = await callGroqApi(aiConversationHistory);
-            aiConversationHistory.push({ role: 'assistant', content: reply });
-            var old = document.getElementById(typingId);
-            if (old) old.remove();
-            appendChatMessage('assistant', reply);
-        } catch(e) {
-            var old2 = document.getElementById(typingId);
-            if (old2) old2.remove();
-            appendChatMessage('error', '❌ ' + (e.message || 'Error. Please try again.'));
-        }
-
-        sendBtn.disabled = false;
-        sendBtn.style.opacity = '1';
-    }
-
-    async function callGroqApi(messages) {
-        var response = await fetch(GROQ_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_API_KEY },
-            body: JSON.stringify({ model: GROQ_MODEL, messages: messages, max_tokens: 2048, temperature: 0.7 })
-        });
-        if (!response.ok) {
-            var errData = await response.json().catch(function(){ return {}; });
-            var errMsg = (errData.error && errData.error.message) || ('HTTP ' + response.status);
-            if (response.status === 401) throw new Error('Invalid API key.');
-            if (response.status === 429) throw new Error('Rate limit exceeded. Please wait a moment.');
-            throw new Error('API error: ' + errMsg);
-        }
-        var data = await response.json();
-        var text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-        if (!text) throw new Error('No response from AI.');
-        return text;
-    }
-
-    function appendChatMessage(role, text) {
-        var wrap = document.getElementById('ai-messages');
-        var el = document.createElement('div');
-
-        if (role === 'user') {
-            el.style.cssText = 'display:flex;justify-content:flex-end';
-            el.innerHTML = '<div style="background:#3b82f6;color:white;border-radius:12px;border-bottom-right-radius:4px;padding:10px 14px;max-width:75%;font-size:0.82rem;line-height:1.6;white-space:pre-wrap">' + escHtml(text) + '</div>';
-        } else if (role === 'error') {
-            el.style.cssText = 'padding:8px 12px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;font-size:0.8rem;color:#ef4444';
-            el.textContent = text;
-        } else {
-            var html = markdownToHtml(text);
-            el.style.cssText = 'display:flex;gap:10px;align-items:flex-start';
-            el.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;margin-top:2px">⚡</div><div class="ai-msg-body" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;border-bottom-left-radius:4px;padding:12px 16px;font-size:0.82rem;color:var(--text);line-height:1.7;flex:1;min-width:0" data-raw="' + escAttr(text) + '">' + html + '</div>';
-        }
-        wrap.appendChild(el);
-        scrollAiChat();
-    }
-
-    function scrollAiChat() {
-        var m = document.getElementById('ai-messages');
-        if (m) setTimeout(function(){ m.scrollTop = m.scrollHeight; }, 50);
-    }
-
-    function copyLastAiResult() {
-        var msgs = document.querySelectorAll('#ai-messages .ai-msg-body');
-        if (!msgs.length) return;
-        var last = msgs[msgs.length - 1];
-        var raw = last.dataset.raw || last.innerText;
-        navigator.clipboard.writeText(raw).then(function() {
-            var btn = document.getElementById('ai-copy-btn');
-            btn.textContent = '✅ Copied!';
-            setTimeout(function(){ btn.textContent = '📋 Copy'; }, 2000);
-        }).catch(function(){ alert('Copy failed. Please select manually.'); });
-    }
-
-    function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-    function escAttr(s) { return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-
-    function markdownToHtml(text) {
-        return text
-            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-            .replace(/^### (.+)$/gm, '<h3 style="color:#f97316;font-weight:700;margin:0.9rem 0 0.4rem;font-size:0.95rem">$1</h3>')
-            .replace(/^## (.+)$/gm, '<h2 style="color:#f97316;font-weight:700;margin:1rem 0 0.5rem;font-size:1.05rem">$1</h2>')
-            .replace(/^# (.+)$/gm, '<h1 style="color:#f97316;font-weight:800;margin:1rem 0 0.5rem;font-size:1.15rem">$1</h1>')
-            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.+?)\*/g, '<em>$1</em>')
-            .replace(/^[\-\*] (.+)$/gm, '<li style="margin-bottom:0.35rem">$1</li>')
-            .replace(/(<li[^>]*>.*<\/li>\n?)+/g, function(m){ return '<ul style="padding-left:1.25rem;margin:0.5rem 0">'+m+'</ul>'; })
-            .replace(/^\d+\. (.+)$/gm, '<li style="margin-bottom:0.35rem">$1</li>')
-            .replace(/\n\n+/g, '</p><p style="margin:0.5rem 0">')
-            .replace(/\n/g, '<br>');
-    }
-
-    function showAiError(msg) {
-        document.getElementById('ai-status').style.display = 'none';
-        document.getElementById('ai-upload-area').style.display = 'block';
-        document.getElementById('ai-error').innerHTML = '❌ ' + msg;
-        document.getElementById('ai-error').style.display = 'block';
-    }
-
-    /* ── RESULTS ── */
-    var RESULT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwustqC4VsB-m41GFYOzvEmEz6XG10sFLuoFuZgl3IJFlRT85tNYbl32cQPPzoQAHbi/exec';
-    var resultData = {}, allMeasurements = [], currentMeasIdx = 0;
-
-    async function loadAllMeasurements() {
+async function loadAllMeasurements() {
         try {
             var res = await fetch(RESULT_WEBAPP_URL + '?_=' + Date.now());
             var data = await res.json();
             allMeasurements = data.measurements || [];
+            console.log('Loaded', allMeasurements.length, 'measurements,', Object.keys(allMeasurements[0]||{}).length, 'keys');
+            if (allMeasurements[0]) console.log('Weight:', allMeasurements[0]['Weight'], 'Score:', allMeasurements[0]['InBody Score']);
         } catch(e) {
-            console.error('loadAllMeasurements failed:', e.message);
+            console.error('fetch failed, trying JSONP:', e.message);
             await new Promise(function(resolve) {
                 var cbName = 'ibcb_' + Date.now();
                 window[cbName] = function(data) {
                     allMeasurements = data.measurements || [];
-                    delete window[cbName]; resolve();
+                    console.log('JSONP loaded', allMeasurements.length, 'measurements');
+                    delete window[cbName];
+                    resolve();
                 };
                 var s = document.createElement('script');
                 s.src = RESULT_WEBAPP_URL + '?callback=' + cbName + '&_=' + Date.now();
@@ -1577,6 +1477,291 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
         }
     }
 
+
+    /* ── AI ANALYSIS ── */
+    var GEMINI_KEY = 'AIzaSyCq6my7K3o4utEZ889ProvsYAIqfVKmKYk';
+    var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
+
+    function initAiTab() {
+        resetAiTab();
+    }
+
+    function resetAiTab() {
+        document.getElementById('ai-upload-area').style.display = 'block';
+        document.getElementById('ai-status').style.display = 'none';
+        document.getElementById('ai-result').style.display = 'none';
+        document.getElementById('ai-error').style.display = 'none';
+        document.getElementById('ai-file-input').value = '';
+    }
+
+    function handleAiDrop(e) {
+        e.preventDefault();
+        document.getElementById('ai-upload-area').style.borderColor = 'var(--border)';
+        var file = e.dataTransfer.files[0];
+        if (file) handleAiFile(file);
+    }
+
+    async function handleAiFile(file) {
+        if (!file) return;
+        if (file.size > 10 * 1024 * 1024) {
+            showAiError('File too large. Max 10MB.');
+            return;
+        }
+
+        document.getElementById('ai-upload-area').style.display = 'none';
+        document.getElementById('ai-status').style.display = 'flex';
+        document.getElementById('ai-status-text').textContent = 'Reading file...';
+        document.getElementById('ai-error').style.display = 'none';
+        document.getElementById('ai-result').style.display = 'none';
+
+        try {
+            // File to base64
+            var base64 = await new Promise(function(resolve, reject) {
+                var reader = new FileReader();
+                reader.onload = function() { resolve(reader.result.split(',')[1]); };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('ai-status-text').textContent = 'Analyzing with Gemini AI...';
+
+            var mimeType = file.type || 'application/pdf';
+            var prompt = 'Analyze this document thoroughly. Provide:\n\n1. **Summary** - What is this document about?\n2. **Key Findings** - Most important information\n3. **Data & Numbers** - Any important metrics or measurements\n4. **Insights** - What conclusions can be drawn?\n5. **Recommendations** - Any actionable suggestions\n\nBe specific, structured, and insightful. Format with clear sections.';
+
+            var res = await fetch(GEMINI_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { inline_data: { mime_type: mimeType, data: base64 } },
+                            { text: prompt }
+                        ]
+                    }]
+                })
+            });
+
+            var data = await res.json();
+
+            if (data.error) throw new Error(data.error.message);
+
+            var text = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text;
+            if (!text) throw new Error('No response from AI');
+
+            // Markdown'ı basit HTML'e çevir
+            text = text
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                .replace(/^\* (.+)$/gm, '<li>$1</li>')
+                .replace(/^- (.+)$/gm, '<li>$1</li>');
+
+            document.getElementById('ai-status').style.display = 'none';
+            document.getElementById('ai-file-name').textContent = file.name;
+            document.getElementById('ai-result-body').innerHTML = text;
+            document.getElementById('ai-result').style.display = 'block';
+
+        } catch(e) {
+            console.error('AI error:', e);
+            showAiError('Analysis failed: ' + e.message);
+        }
+    }
+
+    function showAiError(msg) {
+        document.getElementById('ai-status').style.display = 'none';
+        document.getElementById('ai-upload-area').style.display = 'block';
+        document.getElementById('ai-error').textContent = '❌ ' + msg;
+        document.getElementById('ai-error').style.display = 'block';
+    }
+
+    function logout() {
+        if (!confirm('Sign out?')) return;
+        sessionStorage.removeItem('inbody_auth');
+        location.reload();
+    }
+
+    async function analyzeCurrentReport() {
+        if (!imageLinks[currentIndex]) { alert('No report loaded yet.'); return; }
+        
+        var btn = document.getElementById('inbody-ai-btn');
+        var status = document.getElementById('inbody-ai-status');
+        var result = document.getElementById('inbody-ai-result');
+        var prompt = document.getElementById('inbody-ai-prompt').value.trim();
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+        status.style.display = 'flex';
+        result.style.display = 'none';
+        
+        try {
+            // Mevcut görüntüyü fetch et → base64
+            var imgUrl = 'https://drive.google.com/thumbnail?id=' + imageLinks[currentIndex] + '&sz=w1200';
+            var imgRes = await fetch(imgUrl);
+            var blob = await imgRes.blob();
+            var base64 = await new Promise(function(resolve) {
+                var reader = new FileReader();
+                reader.onload = function() { resolve(reader.result.split(',')[1]); };
+                reader.readAsDataURL(blob);
+            });
+            
+            var userPrompt = prompt || 
+                'Analyze this InBody body composition report in detail. Provide:\n\n' +
+                '1. **Patient Overview** - Basic info and test date\n' +
+                '2. **Key Results** - Most important findings (weight, muscle, fat, InBody score)\n' +
+                '3. **What\'s Good** - Positive aspects of the results\n' +
+                '4. **Areas to Improve** - What needs attention\n' +
+                '5. **Recommendations** - Specific actionable advice (diet, exercise, lifestyle)\n\n' +
+                'Be specific with numbers from the report. Use a professional but friendly tone.';
+            
+            var res = await fetch(GEMINI_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { inline_data: { mime_type: blob.type || 'image/jpeg', data: base64 } },
+                            { text: userPrompt }
+                        ]
+                    }]
+                })
+            });
+            
+            var data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            var text = data.candidates[0].content.parts[0].text;
+            
+            // Markdown → HTML
+            text = text
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                .replace(/^\* (.+)$/gm, '<li>$1</li>')
+                .replace(/^- (.+)$/gm, '<li>$1</li>')
+                .replace(/\n/g, '<br>');
+            
+            status.style.display = 'none';
+            result.innerHTML = text;
+            result.style.display = 'block';
+        } catch(e) {
+            console.error('AI error:', e);
+            status.style.display = 'none';
+            result.innerHTML = '<span style="color:#ef4444">❌ Analysis failed: ' + e.message + '</span>';
+            result.style.display = 'block';
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-brain"></i> Analyze';
+        }
+    }
+
+    // Init
+    applyLang();
+    if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn,300);
+
+    /* CENTERS */
+    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json&gid=538154086';
+    var allApplications = [], currentAppFilter = 'pending', approvedCenters = [];
+
+    function showApplyForm() { var o=document.getElementById('apply-overlay'); if(o){o.style.display='flex';document.body.style.overflow='hidden';} }
+    function hideApplyForm() { var o=document.getElementById('apply-overlay'); if(o){o.style.display='none';document.body.style.overflow='';} }
+    function showPublicCenters() { document.getElementById('applications-panel').style.display='none'; document.getElementById('centers-public').style.display='flex'; }
+    function showApplicationsPanel() { document.getElementById('centers-public').style.display='none'; document.getElementById('applications-panel').style.display='flex'; basviruGetir(); }
+    function filterCenters() { renderCenters(); }
+    function filterApps(f) {
+        currentAppFilter = f;
+        ['pending','approved','rejected','all'].forEach(function(x) {
+            var el = document.getElementById('apptab-'+x);
+            if (!el) return;
+            if (x===f) { el.style.background='var(--surface)'; el.style.color='var(--text)'; }
+            else { el.style.background='transparent'; el.style.color='var(--muted)'; }
+        });
+        renderApplications();
+    }
+    function addAdminCenterBtn() {
+        if (document.getElementById('admin-center-btn')) return;
+        var btn = document.createElement('button');
+        btn.id = 'admin-center-btn'; btn.className = 'btn-icon'; btn.title = 'Applications';
+        btn.innerHTML = '<i class="fas fa-clipboard-list" style="font-size:0.85rem;color:var(--muted)"></i>';
+        btn.onclick = function() { switchTab('centers'); setTimeout(showApplicationsPanel,100); };
+        var th = document.getElementById('theme-btn');
+        if (th) th.parentNode.insertBefore(btn, th);
+    }
+    async function merkezleriGetir() {
+        try {
+            var res = await fetch(FORM_JSON_URL+'&_='+Date.now());
+            var raw = await res.text();
+            var json = JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
+            allApplications = [];
+            if (!json.table||!json.table.rows) { renderCenters(); return; }
+            json.table.rows.forEach(function(row,idx) {
+                if (!row.c||!row.c[0]||!row.c[0].v) return;
+                var date=row.c[0]?row.c[0].v:'', email=row.c[2]?row.c[2].v:'';
+                var key='app_'+(date+'_'+email).replace(/[^a-zA-Z0-9]/g,'_');
+                var st=localStorage.getItem(key+'_status')||'pending';
+                var ml=localStorage.getItem(key+'_map')||'';
+                allApplications.push({idx:idx,key:key,date:date,name:row.c[1]?row.c[1].v:'',email:email,phone:row.c[3]?row.c[3].v:'',company:row.c[4]?row.c[4].v:'',city:row.c[5]?row.c[5].v:'',status:st,mapLink:ml});
+            });
+            approvedCenters = allApplications.filter(function(a){return a.status==='approved';});
+            renderCenters();
+        } catch(e) { console.error('Centers error:',e); }
+    }
+    function renderCenters() {
+        var grid=document.getElementById('centers-grid'), empty=document.getElementById('centers-empty'), countEl=document.getElementById('centers-count');
+        if (!grid) return;
+        var query=''; var s=document.getElementById('center-search'); if(s) query=s.value.toLowerCase();
+        var filtered=approvedCenters.filter(function(c){return !query||c.name.toLowerCase().indexOf(query)>-1||c.city.toLowerCase().indexOf(query)>-1||c.company.toLowerCase().indexOf(query)>-1;});
+        if(countEl) countEl.textContent=filtered.length+(filtered.length!==1?' centers':' center');
+        grid.innerHTML='';
+        if(filtered.length===0){if(empty)empty.style.display='block';return;}
+        if(empty) empty.style.display='none';
+        filtered.forEach(function(c){
+            var card=document.createElement('div');
+            card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.2s';
+            card.onmouseenter=function(){this.style.borderColor='#3b82f6';this.style.transform='translateY(-3px)';};
+            card.onmouseleave=function(){this.style.borderColor='var(--border)';this.style.transform='';};
+            var mapHtml='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--muted)">&#128205;</div>';
+            if(c.mapLink) mapHtml='<iframe src="https://maps.google.com/maps?q='+encodeURIComponent(c.city+' '+c.company)+'&output=embed&z=15" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;pointer-events:none"></iframe>';
+            var mapsBtn=c.mapLink?'<a href="'+c.mapLink+'" target="_blank" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Maps</button></a>':'';
+            card.innerHTML='<div style="height:160px;background:var(--surface2);overflow:hidden">'+mapHtml+'</div><div style="padding:1.25rem"><div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:3px">'+c.name+'</div><div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:10px">'+c.company+'</div><div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">'+c.city+'</div><div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">'+c.phone+'</div><div style="font-size:0.78rem;color:var(--muted)">'+c.email+'</div></div><div style="display:flex;gap:8px;padding:1rem 1.25rem;border-top:1px solid var(--border);background:var(--surface2)">'+mapsBtn+'<a href="mailto:'+c.email+'" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(16,185,129,0.1);color:#10b981;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Contact</button></a></div>';
+            grid.appendChild(card);
+        });
+    }
+    async function basviruGetir() { await merkezleriGetir(); renderApplications(); }
+    function renderApplications() {
+        var list=document.getElementById('app-list');
+        if(!list) return;
+        list.innerHTML='';
+        var filtered=allApplications.filter(function(a){return currentAppFilter==='all'||a.status===currentAppFilter;});
+        if(filtered.length===0){list.innerHTML='<div style="text-align:center;padding:3rem;color:var(--muted)">No applications found.</div>';return;}
+        filtered.forEach(function(a){
+            var sc=a.status==='approved'?'#10b981':a.status==='rejected'?'#ef4444':'#eab308';
+            var sb=a.status==='approved'?'rgba(16,185,129,0.15)':a.status==='rejected'?'rgba(239,68,68,0.15)':'rgba(234,179,8,0.15)';
+            var card=document.createElement('div');
+            card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:1rem';
+            var mapInput=a.status==='pending'?'<div style="margin-top:8px"><input id="mapinput_'+a.idx+'" type="text" value="'+(a.mapLink||'')+'" placeholder="Google Maps link (optional)" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:7px 10px;color:var(--input-color);font-size:0.78rem;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"></div>':'';
+            var adminBtns=a.status==='pending'?'<button onclick="setAppStatus('+a.idx+',\'approved\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(16,185,129,0.1);color:#10b981">Approve</button><button onclick="setAppStatus('+a.idx+',\'rejected\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(239,68,68,0.1);color:#ef4444">Reject</button>':'';
+            card.innerHTML='<div style="flex:1"><div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:3px">'+a.name+'</div><div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:8px">'+a.company+'</div><div style="font-size:0.75rem;color:var(--muted)">'+a.city+' | '+a.phone+' | '+a.email+'</div>'+mapInput+'<div style="font-size:0.68rem;color:var(--muted);margin-top:6px">'+a.date+'</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end"><span style="padding:4px 10px;border-radius:20px;font-size:0.68rem;font-weight:700;text-transform:uppercase;background:'+sb+';color:'+sc+'">'+a.status+'</span>'+adminBtns+'</div>';
+            list.appendChild(card);
+        });
+    }
+    function setAppStatus(idx,status) {
+        var app=allApplications.find(function(a){return a.idx===idx;});
+        if(!app) return;
+        var mi=document.getElementById('mapinput_'+idx);
+        var ml=mi?mi.value.trim():'';
+        localStorage.setItem(app.key+'_status',status);
+        if(ml) localStorage.setItem(app.key+'_map',ml);
+        basviruGetir();
+    }
+
+    /* RESULTS */
+    var RESULT_JSON_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/gviz/tq?tqx=out:json';
+    var RESULT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwustqC4VsB-m41GFYOzvEmEz6XG10sFLuoFuZgl3IJFlRT85tNYbl32cQPPzoQAHbi/exec';
+    var resultData = {};
+
+    var allMeasurements = [], currentMeasIdx = 0;
+
     async function resultsGetir() {
         document.getElementById('results-loading').style.display='flex';
         document.getElementById('results-content').style.display='none';
@@ -1585,8 +1770,11 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
         try {
             await loadAllMeasurements();
             if (allMeasurements.length === 0) { document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; return; }
-            currentMeasIdx=0; resultData=allMeasurements[0];
-            buildMeasurementPills(); renderResults();
+            if(allMeasurements.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
+            currentMeasIdx=0;
+            resultData=allMeasurements[0];
+            buildMeasurementPills();
+            renderResults();
             updateAnnotationsFromCSV(currentIndex);
         } catch(e) { console.error('Results error:',e); document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; }
     }
@@ -1600,31 +1788,63 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
             var pill=document.createElement('div');
             pill.style.cssText='padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:600;cursor:pointer;border:1px solid var(--border);transition:0.15s;'+(i===currentMeasIdx?'background:#3b82f6;color:white;border-color:#3b82f6':'background:var(--surface2);color:var(--muted)');
             pill.textContent=date.length>16?date.slice(0,16):date;
-            pill.onclick=(function(idx,el){ return function(){ currentMeasIdx=idx; resultData=allMeasurements[idx]; document.querySelectorAll('#results-selector-pills > div').forEach(function(p){p.style.background='var(--surface2)';p.style.color='var(--muted)';p.style.borderColor='var(--border)';}); el.style.background='#3b82f6';el.style.color='white';el.style.borderColor='#3b82f6'; renderResults(); }; })(i,pill);
+            pill.onclick=(function(idx,el){
+                return function(){
+                    currentMeasIdx=idx;
+                    resultData=allMeasurements[idx];
+                    document.querySelectorAll('#results-selector-pills > div').forEach(function(p){
+                        p.style.background='var(--surface2)'; p.style.color='var(--muted)'; p.style.borderColor='var(--border)';
+                    });
+                    el.style.background='#3b82f6'; el.style.color='white'; el.style.borderColor='#3b82f6';
+                    renderResults();
+                };
+            })(i,pill);
             pills.appendChild(pill);
         });
         document.getElementById('results-selector').style.display='flex';
     }
-    function rv(key){return parseFloat((resultData[key]||'0').replace(',','.'))||0;}
-    function rs(key){return resultData[key]||'-';}
-    function getTag(val,low,high){if(!low&&!high)return'';if(val<low)return'<span class="res-stat-tag tag-low">&#8595; Low</span>';if(val>high)return'<span class="res-stat-tag tag-high">&#8593; High</span>';return'<span class="res-stat-tag tag-ok">&#10003;</span>';}
+    function rv(key) { return parseFloat((resultData[key]||'0').replace(',','.'))||0; }
+    function rs(key) { return resultData[key]||'-'; }
+    function getTag(val,low,high) {
+        if(!low&&!high) return '';
+        if(val<low) return '<span class="res-stat-tag tag-low">&#8595; Low</span>';
+        if(val>high) return '<span class="res-stat-tag tag-high">&#8593; High</span>';
+        return '<span class="res-stat-tag tag-ok">&#10003;</span>';
+    }
     function scoreColor(s){return s>=80?'#10b981':s>=70?'#f59e0b':'#ef4444';}
     function pctColor(p){return p>=100?'#10b981':p>=80?'#f59e0b':'#ef4444';}
-    function resBar(name,val,low,high,unit){var max=high*1.4,pct=Math.min(val/max*100,100);var nStart=(low/max*100).toFixed(1),nWidth=((high-low)/max*100).toFixed(1);var color=val<low?'#f59e0b':val>high?'#ef4444':'#10b981';return'<div class="res-bar-row"><div class="res-bar-name">'+name+'</div><div class="res-bar-track"><div class="res-bar-normal" style="left:'+nStart+'%;width:'+nWidth+'%"></div><div class="res-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div><div class="res-bar-val">'+val.toFixed(1)+' '+unit+'</div><div class="res-bar-range">Normal: '+low+'&#8211;'+high+' '+unit+'</div></div>';}
-    function resStat(name,val,unit,low,high){var dv=typeof val==='number'?(val%1===0?val:val.toFixed(1)):val;var tag=(low||high)?getTag(parseFloat(val),low,high):'';return'<div class="res-stat">'+tag+'<div class="res-stat-val">'+dv+'<span class="res-stat-unit"> '+unit+'</span></div><div class="res-stat-name">'+name+'</div></div>';}
-    function resSeg(name,kg,pct){var color=pctColor(pct),barW=Math.min(pct,130)/130*100;return'<div class="res-seg"><div class="res-seg-name">'+name+'</div><div class="res-seg-kg">'+kg.toFixed(2)+'<span class="res-seg-unit"> kg</span></div><div class="res-seg-pct" style="color:'+color+'">'+pct.toFixed(1)+'%</div><div class="res-seg-bar"><div class="res-seg-bar-fill" style="width:'+barW+'%;background:'+color+'"></div></div></div>';}
-    function resTab(el,panelId){document.querySelectorAll('.res-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.res-tab-panel').forEach(function(p){p.classList.remove('active');});el.classList.add('active');var panel=document.getElementById(panelId);if(panel)panel.classList.add('active');}
+    function resBar(name,val,low,high,unit){
+        var max=high*1.4, pct=Math.min(val/max*100,100);
+        var nStart=(low/max*100).toFixed(1), nWidth=((high-low)/max*100).toFixed(1);
+        var color=val<low?'#f59e0b':val>high?'#ef4444':'#10b981';
+        return '<div class="res-bar-row"><div class="res-bar-name">'+name+'</div><div class="res-bar-track"><div class="res-bar-normal" style="left:'+nStart+'%;width:'+nWidth+'%"></div><div class="res-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div><div class="res-bar-val">'+val.toFixed(1)+' '+unit+'</div><div class="res-bar-range">Normal: '+low+'&#8211;'+high+' '+unit+'</div></div>';
+    }
+    function resStat(name,val,unit,low,high){
+        var dv=typeof val==='number'?(val%1===0?val:val.toFixed(1)):val;
+        var tag=(low||high)?getTag(parseFloat(val),low,high):'';
+        return '<div class="res-stat">'+tag+'<div class="res-stat-val">'+dv+'<span class="res-stat-unit"> '+unit+'</span></div><div class="res-stat-name">'+name+'</div></div>';
+    }
+    function resSeg(name,kg,pct){
+        var color=pctColor(pct), barW=Math.min(pct,130)/130*100;
+        return '<div class="res-seg"><div class="res-seg-name">'+name+'</div><div class="res-seg-kg">'+kg.toFixed(2)+'<span class="res-seg-unit"> kg</span></div><div class="res-seg-pct" style="color:'+color+'">'+pct.toFixed(1)+'%</div><div class="res-seg-bar"><div class="res-seg-bar-fill" style="width:'+barW+'%;background:'+color+'"></div></div></div>';
+    }
+    function resTab(el,panelId){
+        document.querySelectorAll('.res-tab').forEach(function(t){t.classList.remove('active');});
+        document.querySelectorAll('.res-tab-panel').forEach(function(p){p.classList.remove('active');});
+        el.classList.add('active');
+        var panel=document.getElementById(panelId); if(panel) panel.classList.add('active');
+    }
     function renderResults(){
         document.getElementById('results-loading').style.display='none';
-        var score=rv('InBody Score'),weight=rv('Weight'),wLow=rv('Lower Limit (Weight Normal Range)'),wHigh=rv('Upper Limit (Weight Normal Range)');
-        var tbw=rv('TBW (Total Body Water)'),protein=rv('Protein'),minerals=rv('Minerals');
-        var bfm=rv('BFM (Body Fat Mass)'),ffm=rv('FFM (Fat Free Mass)'),smm=rv('SMM (Skeletal Muscle Mass)');
-        var bmi=rv('BMI (Body Mass Index)'),pbf=rv('PBF (Percent Body Fat)'),bmr=rv('BMR (Basal Metabolic Rate)');
-        var vfa=rv('VFA (Visceral Fat Area)'),ecwR=rv('ECW/TBW'),whr=rv('WHR (Waist-Hip Ratio)');
-        var targetW=rv('Target Weight'),wCtrl=rv('Weight Control'),bfmCtrl=rv('BFM Control'),ffmCtrl=rv('FFM Control');
-        var recCal=rv('Recommended Calorie Intake'),bcm=rv('BCM (Body Cell Mass)'),smi=rv('SMI (Skeletal Muscle Index)');
+        var score=rv('InBody Score'), weight=rv('Weight'), wLow=rv('Lower Limit (Weight Normal Range)'), wHigh=rv('Upper Limit (Weight Normal Range)');
+        var tbw=rv('TBW (Total Body Water)'), protein=rv('Protein'), minerals=rv('Minerals');
+        var bfm=rv('BFM (Body Fat Mass)'), ffm=rv('FFM (Fat Free Mass)'), smm=rv('SMM (Skeletal Muscle Mass)');
+        var bmi=rv('BMI (Body Mass Index)'), pbf=rv('PBF (Percent Body Fat)'), bmr=rv('BMR (Basal Metabolic Rate)');
+        var vfa=rv('VFA (Visceral Fat Area)'), ecwR=rv('ECW/TBW'), whr=rv('WHR (Waist-Hip Ratio)');
+        var targetW=rv('Target Weight'), wCtrl=rv('Weight Control'), bfmCtrl=rv('BFM Control'), ffmCtrl=rv('FFM Control');
+        var recCal=rv('Recommended Calorie Intake'), bcm=rv('BCM (Body Cell Mass)'), smi=rv('SMI (Skeletal Muscle Index)');
         var name=rs('Name')!=='-'?rs('Name'):'ID: '+rs('ID');
-        var testDate=rs('Test Date / Time'),gender=rs('Gender'),age=rs('Age'),height=rs('Height');
+        var testDate=rs('Test Date / Time'), gender=rs('Gender'), age=rs('Age'), height=rs('Height');
         var raKg=rv('FFM of Right Arm'),raPct=rv('FFM% of Right Arm'),laKg=rv('FFM of Left Arm'),laPct=rv('FFM% of Left Arm');
         var trKg=rv('FFM of Trunk'),trPct=rv('FFM% of Trunk'),rlKg=rv('FFM of Right Leg'),rlPct=rv('FFM% of Right Leg');
         var llKg=rv('FFM of Left Leg'),llPct=rv('FFM% of Left Leg');
@@ -1634,7 +1854,8 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
         var bfc=bfmCtrl>=0?'+'+bfmCtrl.toFixed(1):bfmCtrl.toFixed(1);
         var ffc=ffmCtrl>=0?'+'+ffmCtrl.toFixed(1):ffmCtrl.toFixed(1);
         var html='';
-        html+='<div class="res-hero"><div><div class="res-hero-name">'+name+'</div><div class="res-hero-meta"><span>&#128197; '+testDate+'</span><span>&#128207; '+height+' cm</span><span>&#127874; '+age+' yrs</span><span>'+gender+'</span></div></div><div class="res-score-wrap"><div class="res-score-num" style="color:'+sc+'">'+score+'</div><div class="res-score-sub">InBody Score / 100</div><div class="res-score-badge" style="color:'+badge[0]+';background:'+badge[1]+'">'+badge[2]+'</div></div></div>';
+        html+='<div class="res-hero"><div><div class="res-hero-name">'+name+'</div><div class="res-hero-meta"><span>&#128197; '+testDate+'</span><span>&#128207; '+height+' cm</span><span>&#127874; '+age+' yrs</span><span>'+gender+'</span></div></div>';
+        html+='<div class="res-score-wrap"><div class="res-score-num" style="color:'+sc+'">'+score+'</div><div class="res-score-sub">InBody Score / 100</div><div class="res-score-badge" style="color:'+badge[0]+';background:'+badge[1]+'">'+badge[2]+'</div></div></div>';
         html+='<div class="res-tabs"><div class="res-tab active" onclick="resTab(this,\'res-p0\')">Composition</div><div class="res-tab" onclick="resTab(this,\'res-p1\')">Metrics</div><div class="res-tab" onclick="resTab(this,\'res-p2\')">Segments</div><div class="res-tab" onclick="resTab(this,\'res-p3\')">Weight</div><div class="res-tab" onclick="resTab(this,\'res-p4\')">Nutrition</div></div>';
         html+='<div class="res-tab-panel active" id="res-p0"><div class="res-sec-head"><div class="res-sec-title">Body Composition</div><div class="res-sec-line"></div></div>';
         html+=resBar('Total Body Water',tbw,rv('Lower Limit (TBW Normal Range)'),rv('Upper Limit (TBW Normal Range)'),'L');
@@ -1674,425 +1895,25 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
         el.innerHTML=html; el.style.display='flex'; el.style.flexDirection='column'; el.style.padding='0'; el.style.gap='0';
     }
 
-    /* ── CENTERS ── */
-    var FORM_JSON_URL = 'https://docs.google.com/spreadsheets/d/1hvao-9vjFa5lcryYRDbmdKjGxeQN-wWNkgtKBOXuVq0/gviz/tq?tqx=out:json&gid=538154086';
-    var allApplications = [], currentAppFilter = 'pending', approvedCenters = [];
-
-    function showApplyForm() { var o=document.getElementById('apply-overlay'); if(o){o.style.display='flex';document.body.style.overflow='hidden';} }
-    function hideApplyForm() { var o=document.getElementById('apply-overlay'); if(o){o.style.display='none';document.body.style.overflow='';} }
-    function showPublicCenters() { document.getElementById('applications-panel').style.display='none'; document.getElementById('centers-public').style.display='flex'; }
-    function showApplicationsPanel() { document.getElementById('centers-public').style.display='none'; document.getElementById('applications-panel').style.display='flex'; basviruGetir(); }
-    function filterCenters() { renderCenters(); }
-    function filterApps(f) {
-        currentAppFilter = f;
-        ['pending','approved','rejected','all'].forEach(function(x) {
-            var el = document.getElementById('apptab-'+x); if (!el) return;
-            if (x===f) { el.style.background='var(--surface)'; el.style.color='var(--text)'; }
-            else { el.style.background='transparent'; el.style.color='var(--muted)'; }
-        });
-        renderApplications();
-    }
-    function addAdminCenterBtn() {
-        if (document.getElementById('admin-center-btn')) return;
-        var btn = document.createElement('button');
-        btn.id = 'admin-center-btn'; btn.className = 'btn-icon'; btn.title = 'Applications';
-        btn.innerHTML = '<i class="fas fa-clipboard-list" style="font-size:0.85rem;color:var(--muted)"></i>';
-        btn.onclick = function() { switchTab('centers'); setTimeout(showApplicationsPanel,100); };
-        var th = document.getElementById('theme-btn');
-        if (th) th.parentNode.insertBefore(btn, th);
-    }
-    async function merkezleriGetir() {
-        try {
-            var res = await fetch(FORM_JSON_URL+'&_='+Date.now());
-            var raw = await res.text();
-            var json = JSON.parse(raw.slice(raw.indexOf('{'),raw.lastIndexOf('}')+1));
-            allApplications = [];
-            if (!json.table||!json.table.rows) { renderCenters(); return; }
-            json.table.rows.forEach(function(row,idx) {
-                if (!row.c||!row.c[0]||!row.c[0].v) return;
-                var date=row.c[0]?row.c[0].v:'', email=row.c[2]?row.c[2].v:'';
-                var key='app_'+(date+'_'+email).replace(/[^a-zA-Z0-9]/g,'_');
-                var st=localStorage.getItem(key+'_status')||'pending';
-                var ml=localStorage.getItem(key+'_map')||'';
-                allApplications.push({idx:idx,key:key,date:date,name:row.c[1]?row.c[1].v:'',email:email,phone:row.c[3]?row.c[3].v:'',company:row.c[4]?row.c[4].v:'',city:row.c[5]?row.c[5].v:'',status:st,mapLink:ml});
-            });
-            approvedCenters = allApplications.filter(function(a){return a.status==='approved';});
-            renderCenters();
-        } catch(e) { console.error('Centers error:',e); }
-    }
-    function renderCenters() {
-        var grid=document.getElementById('centers-grid'),empty=document.getElementById('centers-empty'),countEl=document.getElementById('centers-count');
-        if (!grid) return;
-        var query=''; var s=document.getElementById('center-search'); if(s) query=s.value.toLowerCase();
-        var filtered=approvedCenters.filter(function(c){return !query||c.name.toLowerCase().indexOf(query)>-1||c.city.toLowerCase().indexOf(query)>-1||c.company.toLowerCase().indexOf(query)>-1;});
-        if(countEl) countEl.textContent=filtered.length+(filtered.length!==1?' centers':' center');
-        grid.innerHTML='';
-        if(filtered.length===0){if(empty)empty.style.display='block';return;}
-        if(empty) empty.style.display='none';
-        filtered.forEach(function(c){
-            var card=document.createElement('div');
-            card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.2s';
-            card.onmouseenter=function(){this.style.borderColor='#3b82f6';this.style.transform='translateY(-3px)';};
-            card.onmouseleave=function(){this.style.borderColor='var(--border)';this.style.transform='';};
-            var mapHtml='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--muted)">&#128205;</div>';
-            if(c.mapLink) mapHtml='<iframe src="https://maps.google.com/maps?q='+encodeURIComponent(c.city+' '+c.company)+'&output=embed&z=15" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;pointer-events:none"></iframe>';
-            var mapsBtn=c.mapLink?'<a href="'+c.mapLink+'" target="_blank" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Maps</button></a>':'';
-            card.innerHTML='<div style="height:160px;background:var(--surface2);overflow:hidden">'+mapHtml+'</div><div style="padding:1.25rem"><div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:3px">'+c.name+'</div><div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:10px">'+c.company+'</div><div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">'+c.city+'</div><div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px">'+c.phone+'</div><div style="font-size:0.78rem;color:var(--muted)">'+c.email+'</div></div><div style="display:flex;gap:8px;padding:1rem 1.25rem;border-top:1px solid var(--border);background:var(--surface2)">'+mapsBtn+'<a href="mailto:'+c.email+'" style="text-decoration:none;flex:1"><button style="width:100%;padding:8px;border-radius:8px;border:none;background:rgba(16,185,129,0.1);color:#10b981;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Contact</button></a></div>';
-            grid.appendChild(card);
-        });
-    }
-    async function basviruGetir() { await merkezleriGetir(); renderApplications(); }
-    function renderApplications() {
-        var list=document.getElementById('app-list'); if(!list) return;
-        list.innerHTML='';
-        var filtered=allApplications.filter(function(a){return currentAppFilter==='all'||a.status===currentAppFilter;});
-        if(filtered.length===0){list.innerHTML='<div style="text-align:center;padding:3rem;color:var(--muted)">No applications found.</div>';return;}
-        filtered.forEach(function(a){
-            var sc=a.status==='approved'?'#10b981':a.status==='rejected'?'#ef4444':'#eab308';
-            var sb=a.status==='approved'?'rgba(16,185,129,0.15)':a.status==='rejected'?'rgba(239,68,68,0.15)':'rgba(234,179,8,0.15)';
-            var card=document.createElement('div');
-            card.style.cssText='background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;display:flex;align-items:flex-start;gap:1rem';
-            var mapInput=a.status==='pending'?'<div style="margin-top:8px"><input id="mapinput_'+a.idx+'" type="text" value="'+(a.mapLink||'')+'" placeholder="Google Maps link (optional)" style="width:100%;background:var(--input-bg);border:1px solid var(--input-border);border-radius:8px;padding:7px 10px;color:var(--input-color);font-size:0.78rem;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"></div>':'';
-            var adminBtns=a.status==='pending'?'<button onclick="setAppStatus('+a.idx+',\'approved\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(16,185,129,0.1);color:#10b981">Approve</button><button onclick="setAppStatus('+a.idx+',\'rejected\')" style="padding:7px 14px;border-radius:8px;border:none;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:rgba(239,68,68,0.1);color:#ef4444">Reject</button>':'';
-            card.innerHTML='<div style="flex:1"><div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:3px">'+a.name+'</div><div style="font-size:0.78rem;color:#3b82f6;font-weight:600;margin-bottom:8px">'+a.company+'</div><div style="font-size:0.75rem;color:var(--muted)">'+a.city+' | '+a.phone+' | '+a.email+'</div>'+mapInput+'<div style="font-size:0.68rem;color:var(--muted);margin-top:6px">'+a.date+'</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;align-items:flex-end"><span style="padding:4px 10px;border-radius:20px;font-size:0.68rem;font-weight:700;text-transform:uppercase;background:'+sb+';color:'+sc+'">'+a.status+'</span>'+adminBtns+'</div>';
-            list.appendChild(card);
-        });
-    }
-    function setAppStatus(idx,status) {
-        var app=allApplications.find(function(a){return a.idx===idx;}); if(!app) return;
-        var mi=document.getElementById('mapinput_'+idx);
-        var ml=mi?mi.value.trim():'';
-        localStorage.setItem(app.key+'_status',status);
-        if(ml) localStorage.setItem(app.key+'_map',ml);
-        basviruGetir();
-    }
-
-    /* ── AI OVERLAY (Login screen) ── */
-    var ai2ConversationHistory = [];
-
-    function showAiOverlay() {
-        var el = document.getElementById('ai-overlay');
-        el.style.display = 'flex';
-    }
-    function hideAiOverlay() {
-        document.getElementById('ai-overlay').style.display = 'none';
-    }
-    function resetAi2Tab() {
-        ai2ConversationHistory = [];
-        document.getElementById('ai2-pre-upload').style.display = 'flex';
-        document.getElementById('ai2-chat-view').style.display = 'none';
-        document.getElementById('ai2-upload-area').style.display = 'block';
-        document.getElementById('ai2-status').style.display = 'none';
-        document.getElementById('ai2-error').style.display = 'none';
-        document.getElementById('ai2-messages').innerHTML = '';
-        document.getElementById('ai2-file-input').value = '';
-        var ta = document.getElementById('ai2-initial-prompt');
-        if (ta) ta.value = '';
-    }
-    function handleAi2Drop(e) {
-        e.preventDefault();
-        document.getElementById('ai2-upload-area').style.borderColor = 'rgba(255,255,255,0.1)';
-        document.getElementById('ai2-upload-area').style.background = '#1a2234';
-        var file = e.dataTransfer.files[0];
-        if (file) handleAi2File(file);
-    }
-    async function handleAi2File(file) {
-        if (!file) return;
-        if (file.size > 20 * 1024 * 1024) { showAi2Error('File too large. Max 20MB.'); return; }
-        var customPrompt = (document.getElementById('ai2-initial-prompt').value || '').trim();
-        var userPrompt = customPrompt || DEFAULT_INBODY_PROMPT;
-        var isVisionModel = GROQ_MODEL.includes('llama-4') || GROQ_MODEL.includes('vision');
-        var isPdf = file.type === 'application/pdf';
-        var isImage = file.type.startsWith('image/');
-        document.getElementById('ai2-upload-area').style.display = 'none';
-        document.getElementById('ai2-status').style.display = 'flex';
-        document.getElementById('ai2-status-text').textContent = 'Reading file...';
-        document.getElementById('ai2-error').style.display = 'none';
-        try {
-            var firstMessage;
-            if (isPdf) {
-                document.getElementById('ai2-status-text').textContent = 'Extracting PDF text...';
-                var pdfText = await extractPdfText(file);
-                if (!pdfText || pdfText.length < 20) throw new Error('Could not extract text from PDF. Try uploading as JPG/PNG.');
-                firstMessage = { role: 'user', content: userPrompt + '\n\n--- DOCUMENT CONTENT ---\n' + pdfText.slice(0, 12000) };
-            } else if (isImage && isVisionModel) {
-                document.getElementById('ai2-status-text').textContent = 'Preparing image...';
-                var b64 = await fileToBase64(file);
-                firstMessage = { role: 'user', content: [{ type: 'image_url', image_url: { url: b64 } }, { type: 'text', text: userPrompt }] };
-            } else if (isImage && !isVisionModel) {
-                throw new Error('Vision model required for images.');
-            } else {
-                var textContent = await file.text();
-                firstMessage = { role: 'user', content: userPrompt + '\n\n--- FILE CONTENT ---\n' + textContent.slice(0, 12000) };
-            }
-            ai2ConversationHistory = [firstMessage];
-            document.getElementById('ai2-status-text').textContent = '⚡ Analyzing...';
-            var reply = await callGroqApi(ai2ConversationHistory);
-            ai2ConversationHistory.push({ role: 'assistant', content: reply });
-            document.getElementById('ai2-status').style.display = 'none';
-            document.getElementById('ai2-pre-upload').style.display = 'none';
-            document.getElementById('ai2-chat-view').style.display = 'flex';
-            document.getElementById('ai2-chat-file-name').textContent = file.name;
-            appendAi2Message('user', typeof firstMessage.content === 'string' ? '📎 ' + file.name + (customPrompt ? '\n\n' + customPrompt : '') : '📎 ' + file.name + ' (image)');
-            appendAi2Message('assistant', reply);
-        } catch(e) {
-            console.error(e);
-            showAi2Error(e.message || 'Analysis failed.');
-        }
-    }
-    async function sendAi2Followup() {
-        var input = document.getElementById('ai2-followup-input');
-        var text = input.value.trim();
-        if (!text || !ai2ConversationHistory.length) return;
-        input.value = ''; input.style.height = 'auto';
-        var btn = document.getElementById('ai2-send-btn');
-        btn.disabled = true; btn.style.opacity = '0.5';
-        appendAi2Message('user', text);
-        ai2ConversationHistory.push({ role: 'user', content: text });
-        var tid = 'ai2typing-' + Date.now();
-        var tel = document.createElement('div');
-        tel.id = tid;
-        tel.style.cssText = 'display:flex;gap:10px;align-items:flex-start';
-        tel.innerHTML = '<div style="width:26px;height:26px;border-radius:50%;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0">⚡</div><div style="background:#1a2234;border:1px solid rgba(255,255,255,0.08);border-radius:12px;border-bottom-left-radius:4px;padding:10px 14px;font-size:0.82rem;color:#64748b">Thinking<span class="streaming-cursor"></span></div>';
-        document.getElementById('ai2-messages').appendChild(tel);
-        scrollAi2Chat();
-        try {
-            var reply = await callGroqApi(ai2ConversationHistory);
-            ai2ConversationHistory.push({ role: 'assistant', content: reply });
-            var old = document.getElementById(tid); if (old) old.remove();
-            appendAi2Message('assistant', reply);
-        } catch(e) {
-            var old2 = document.getElementById(tid); if (old2) old2.remove();
-            appendAi2Message('error', '❌ ' + (e.message || 'Error.'));
-        }
-        btn.disabled = false; btn.style.opacity = '1';
-    }
-    function appendAi2Message(role, text) {
-        var wrap = document.getElementById('ai2-messages');
-        var el = document.createElement('div');
-        if (role === 'user') {
-            el.style.cssText = 'display:flex;justify-content:flex-end';
-            el.innerHTML = '<div style="background:#3b82f6;color:white;border-radius:12px;border-bottom-right-radius:4px;padding:10px 14px;max-width:75%;font-size:0.82rem;line-height:1.6;white-space:pre-wrap">' + escHtml(text) + '</div>';
-        } else if (role === 'error') {
-            el.style.cssText = 'padding:8px 12px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;font-size:0.8rem;color:#ef4444';
-            el.textContent = text;
-        } else {
-            el.style.cssText = 'display:flex;gap:10px;align-items:flex-start';
-            el.innerHTML = '<div style="width:26px;height:26px;border-radius:50%;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;margin-top:2px">⚡</div><div class="ai2-msg-body" style="background:#1a2234;border:1px solid rgba(255,255,255,0.07);border-radius:12px;border-bottom-left-radius:4px;padding:12px 16px;font-size:0.82rem;color:#e2e8f0;line-height:1.7;flex:1;min-width:0" data-raw="' + escAttr(text) + '">' + markdownToHtml(text) + '</div>';
-        }
-        wrap.appendChild(el);
-        scrollAi2Chat();
-    }
-    function scrollAi2Chat() {
-        var m = document.getElementById('ai2-messages');
-        if (m) setTimeout(function(){ m.scrollTop = m.scrollHeight; }, 50);
-    }
-    function copyLastAi2Result() {
-        var msgs = document.querySelectorAll('#ai2-messages .ai2-msg-body');
-        if (!msgs.length) return;
-        var raw = msgs[msgs.length-1].dataset.raw || msgs[msgs.length-1].innerText;
-        navigator.clipboard.writeText(raw).then(function(){
-            var btn = document.getElementById('ai2-copy-btn');
-            btn.textContent = '✅ Copied!';
-            setTimeout(function(){ btn.textContent = '📋 Copy'; }, 2000);
-        }).catch(function(){ alert('Copy failed.'); });
-    }
-    function showAi2Error(msg) {
-        document.getElementById('ai2-status').style.display = 'none';
-        document.getElementById('ai2-upload-area').style.display = 'block';
-        document.getElementById('ai2-error').innerHTML = '❌ ' + msg;
-        document.getElementById('ai2-error').style.display = 'block';
-    }
-
-    // Init
-    applyLang();
-    if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn,300);
 </script>
 
-<!-- APPLY OVERLAY -->
 <div id="apply-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
-    <div style="background:var(--surface);border-radius:20px;width:100%;max-width:900px;height:90vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
-        <!-- Header with tabs -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0;gap:1rem">
-            <div style="display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:3px">
-                <button onclick="applyShowTab('form')" id="apply-tab-form" style="padding:6px 16px;border-radius:7px;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;background:var(--surface);color:var(--text);transition:0.15s"><i class="fas fa-file-alt" style="margin-right:6px"></i>Application Form</button>
-                <button onclick="applyShowTab('ai')" id="apply-tab-ai" style="padding:6px 16px;border-radius:7px;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;background:transparent;color:var(--muted);transition:0.15s"><i class="fas fa-bolt" style="margin-right:6px;color:#f97316"></i>AI Analysis</button>
-            </div>
-            <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;flex-shrink:0">&#x2715;</button>
+    <div style="background:var(--surface);border-radius:20px;width:100%;max-width:640px;height:85vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0">
+            <div style="font-size:1rem;font-weight:700;color:var(--text)">Center Registration Request</div>
+            <button onclick="hideApplyForm()" style="background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer">&#x2715;</button>
         </div>
-
-        <!-- TAB: FORM -->
-        <div id="apply-panel-form" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
-        </div>
-
-        <!-- TAB: AI CHAT -->
-        <div id="apply-panel-ai" style="flex:1;display:none;flex-direction:column;overflow:hidden">
-            <!-- Upload zone (shown before conversation starts) -->
-            <div id="ai-pre-upload" style="flex:1;display:flex;flex-direction:column;padding:1.5rem;gap:1rem;overflow-y:auto">
-                <div style="background:linear-gradient(135deg,#0a0f1e,#180a00);border-radius:16px;padding:1.5rem;border:1px solid rgba(249,115,22,0.2);position:relative;overflow:hidden">
-                    <div style="position:absolute;top:-20px;right:-20px;width:90px;height:90px;background:radial-gradient(circle,rgba(249,115,22,0.15),transparent);border-radius:50%;pointer-events:none"></div>
-                    <div style="font-size:1.3rem;font-weight:800;color:#f1f5f9;margin-bottom:4px">⚡ AI Document Analysis</div>
-                    <div style="font-size:0.8rem;color:rgba(241,245,249,0.5)">Upload an InBody PDF or image and start a conversation</div>
-                </div>
-
-                <div style="display:flex;flex-direction:column;gap:5px">
-                    <label style="font-size:0.68rem;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase">Custom Prompt (optional)</label>
-                    <textarea id="ai-initial-prompt" rows="2" placeholder="Leave blank to use the default InBody analysis prompt..."
-                        style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;padding:10px 14px;color:var(--input-color);font-size:0.82rem;font-family:Inter,sans-serif;outline:none;resize:none;transition:border-color 0.15s"
-                        onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='var(--input-border)'"></textarea>
-                </div>
-
-                <div id="ai-upload-area"
-                     style="border:2px dashed var(--border);border-radius:16px;padding:2.5rem;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2)"
-                     class="ai-upload-area-inner"
-                     onclick="document.getElementById('ai-file-input').click()"
-                     ondragover="event.preventDefault();this.style.borderColor='#f97316';this.style.background='rgba(249,115,22,0.04)'"
-                     ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--surface2)'"
-                     ondrop="handleAiDrop(event)">
-                    <input type="file" id="ai-file-input" accept=".pdf,image/*" style="display:none" onchange="handleAiFile(this.files[0])">
-                    <div style="font-size:2.5rem;margin-bottom:0.75rem">📄</div>
-                    <div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:5px">Drop a file or click to upload</div>
-                    <div style="font-size:0.75rem;color:var(--muted)">PDF · JPG · PNG — max 20MB</div>
-                </div>
-
-                <div id="ai-status" style="display:none;align-items:center;gap:12px;padding:1rem 1.5rem;background:var(--surface2);border-radius:12px;border:1px solid rgba(249,115,22,0.2)">
-                    <div class="spinner" style="width:20px;height:20px;border-width:2px;border-top-color:#f97316;flex-shrink:0"></div>
-                    <div id="ai-status-text" style="font-size:0.85rem;color:var(--muted)">Processing...</div>
-                </div>
-                <div id="ai-error" style="display:none;padding:0.875rem 1.25rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;font-size:0.82rem;color:#ef4444"></div>
-            </div>
-
-            <!-- Conversation view (shown after first analysis) -->
-            <div id="ai-chat-view" style="flex:1;display:none;flex-direction:column;overflow:hidden">
-                <!-- Chat header -->
-                <div style="padding:0.875rem 1.25rem;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-                    <div style="display:flex;align-items:center;gap:10px">
-                        <div id="ai-chat-file-icon" style="width:32px;height:32px;border-radius:8px;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📄</div>
-                        <div>
-                            <div style="font-size:0.85rem;font-weight:700;color:var(--text)" id="ai-chat-file-name">Document</div>
-                            <div style="font-size:0.65rem;color:#f97316">AI Analysis · Multi-turn chat</div>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:6px">
-                        <button onclick="copyLastAiResult()" id="ai-copy-btn" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:8px;cursor:pointer;font-size:0.72rem;font-family:Inter,sans-serif;transition:0.15s">📋 Copy</button>
-                        <button onclick="resetAiTab()" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:8px;cursor:pointer;font-size:0.72rem;font-family:Inter,sans-serif;transition:0.15s">🔄 New</button>
-                    </div>
-                </div>
-
-                <!-- Messages scroll area -->
-                <div id="ai-messages" style="flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:1rem"></div>
-
-                <!-- Input bar -->
-                <div style="padding:0.875rem 1.25rem;border-top:1px solid var(--border);background:var(--surface2);display:flex;gap:8px;align-items:flex-end;flex-shrink:0">
-                    <textarea id="ai-followup-input" rows="1" placeholder="Ask a follow-up question..."
-                        style="flex:1;background:var(--input-bg);border:1px solid var(--input-border);border-radius:10px;padding:10px 14px;color:var(--input-color);font-size:0.85rem;font-family:Inter,sans-serif;outline:none;resize:none;max-height:120px;overflow-y:auto;transition:border-color 0.15s;line-height:1.5"
-                        onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='var(--input-border)'"
-                        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiFollowup()}"
-                        oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
-                    <button onclick="sendAiFollowup()" id="ai-send-btn"
-                        style="background:#f97316;color:white;border:none;border-radius:10px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;transition:0.15s;flex-shrink:0;height:42px;display:flex;align-items:center;gap:6px"
-                        onmouseover="this.style.background='#ea6c0a'" onmouseout="this.style.background='#f97316'">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScRKxMDsfTaTeNLNQxouDn4ahv1outEr4_d7MIQSh0dhEDFuQ/viewform?embedded=true" frameborder="0" style="flex:1;border:none;width:100%"></iframe>
     </div>
 </div>
-
-<!-- AI ANALYSIS OVERLAY (Login screen) -->
-<div id="ai-overlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
-    <div style="background:#111827;border-radius:20px;width:100%;max-width:780px;height:90vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(249,115,22,0.25)">
-        <!-- Header -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0">
-            <div style="display:flex;align-items:center;gap:10px">
-                <div style="width:34px;height:34px;border-radius:10px;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem">⚡</div>
-                <div>
-                    <div style="font-size:0.95rem;font-weight:700;color:#f1f5f9">AI Document Analysis</div>
-                    <div style="font-size:0.65rem;color:#f97316">Upload an InBody PDF or image and chat with AI</div>
-                </div>
-            </div>
-            <button onclick="hideAiOverlay()" style="background:none;border:none;color:#64748b;font-size:1.4rem;cursor:pointer;line-height:1">&#x2715;</button>
-        </div>
-
-        <!-- Pre-upload view -->
-        <div id="ai2-pre-upload" style="flex:1;display:flex;flex-direction:column;padding:1.5rem;gap:1rem;overflow-y:auto">
-            <div style="display:flex;flex-direction:column;gap:5px">
-                <label style="font-size:0.68rem;font-weight:700;color:#64748b;letter-spacing:0.1em;text-transform:uppercase">Custom Prompt (optional)</label>
-                <textarea id="ai2-initial-prompt" rows="2" placeholder="Leave blank to use the default InBody analysis prompt..."
-                    style="background:#1a2234;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-size:0.82rem;font-family:Inter,sans-serif;outline:none;resize:none;transition:border-color 0.15s"
-                    onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'"></textarea>
-            </div>
-
-            <div id="ai2-upload-area"
-                 style="border:2px dashed rgba(255,255,255,0.1);border-radius:16px;padding:3rem;text-align:center;cursor:pointer;transition:all 0.2s;background:#1a2234"
-                 onclick="document.getElementById('ai2-file-input').click()"
-                 ondragover="event.preventDefault();this.style.borderColor='#f97316';this.style.background='rgba(249,115,22,0.04)'"
-                 ondragleave="this.style.borderColor='rgba(255,255,255,0.1)';this.style.background='#1a2234'"
-                 ondrop="handleAi2Drop(event)">
-                <input type="file" id="ai2-file-input" accept=".pdf,image/*" style="display:none" onchange="handleAi2File(this.files[0])">
-                <div style="font-size:2.8rem;margin-bottom:0.75rem">📄</div>
-                <div style="font-size:0.95rem;font-weight:700;color:#f1f5f9;margin-bottom:5px">Drop a file or click to upload</div>
-                <div style="font-size:0.75rem;color:#64748b">PDF · JPG · PNG — max 20MB</div>
-            </div>
-
-            <div id="ai2-status" style="display:none;align-items:center;gap:12px;padding:1rem 1.5rem;background:#1a2234;border-radius:12px;border:1px solid rgba(249,115,22,0.2)">
-                <div style="width:20px;height:20px;border:2px solid rgba(255,255,255,0.1);border-top-color:#f97316;border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0"></div>
-                <div id="ai2-status-text" style="font-size:0.85rem;color:#64748b">Processing...</div>
-            </div>
-            <div id="ai2-error" style="display:none;padding:0.875rem 1.25rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;font-size:0.82rem;color:#ef4444"></div>
-        </div>
-
-        <!-- Chat view -->
-        <div id="ai2-chat-view" style="flex:1;display:none;flex-direction:column;overflow:hidden">
-            <!-- Chat header -->
-            <div style="padding:0.875rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.07);background:#1a2234;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div style="width:28px;height:28px;border-radius:8px;background:rgba(249,115,22,0.15);display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0">📄</div>
-                    <div>
-                        <div style="font-size:0.82rem;font-weight:700;color:#f1f5f9" id="ai2-chat-file-name">Document</div>
-                        <div style="font-size:0.62rem;color:#f97316">AI Analysis · Multi-turn chat</div>
-                    </div>
-                </div>
-                <div style="display:flex;gap:6px">
-                    <button onclick="copyLastAi2Result()" id="ai2-copy-btn" style="background:#111827;border:1px solid rgba(255,255,255,0.08);color:#64748b;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:0.72rem;font-family:Inter,sans-serif">📋 Copy</button>
-                    <button onclick="resetAi2Tab()" style="background:#111827;border:1px solid rgba(255,255,255,0.08);color:#64748b;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:0.72rem;font-family:Inter,sans-serif">🔄 New</button>
-                </div>
-            </div>
-
-            <!-- Messages -->
-            <div id="ai2-messages" style="flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:1rem;background:#0a0f1e"></div>
-
-            <!-- Input bar -->
-            <div style="padding:0.875rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07);background:#111827;display:flex;gap:8px;align-items:flex-end;flex-shrink:0">
-                <textarea id="ai2-followup-input" rows="1" placeholder="Ask a follow-up question..."
-                    style="flex:1;background:#1a2234;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-size:0.85rem;font-family:Inter,sans-serif;outline:none;resize:none;max-height:120px;overflow-y:auto;transition:border-color 0.15s;line-height:1.5"
-                    onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'"
-                    onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAi2Followup()}"
-                    oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
-                <button onclick="sendAi2Followup()" id="ai2-send-btn"
-                    style="background:#f97316;color:white;border:none;border-radius:10px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;flex-shrink:0;height:42px;display:flex;align-items:center;gap:6px"
-                    onmouseover="this.style.background='#ea6c0a'" onmouseout="this.style.background='#f97316'">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ANNOTATION PREVIEW -->
 <div id="ann-preview-box" style="position:fixed;z-index:9998;background:rgba(10,15,30,0.95);border:1px solid rgba(59,130,246,0.35);border-radius:12px;padding:12px 16px;max-width:260px;pointer-events:none;display:none;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,0.4)">
     <div id="ann-preview-title" style="font-size:0.65rem;font-weight:800;letter-spacing:0.1em;color:#3b82f6;text-transform:uppercase;margin-bottom:8px"></div>
     <div id="ann-preview-hint" style="font-size:0.75rem;color:#e2e8f0;line-height:1.5"></div>
 </div>
-
-<!-- ANNOTATION POPUP -->
 <div id="ann-popup" style="position:fixed;z-index:9999;background:rgba(10,15,30,0.97);border:1px solid rgba(59,130,246,0.5);border-radius:14px;padding:14px 18px;width:270px;display:none;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,0.5)">
     <button onclick="closeAnnPopup()" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1">✕</button>
     <div id="ann-popup-title" style="font-size:0.68rem;font-weight:800;letter-spacing:0.12em;color:#3b82f6;margin-bottom:10px;text-transform:uppercase"></div>
     <div id="ann-popup-body" style="font-size:0.82rem;color:#e2e8f0;line-height:1.6"></div>
 </div>
-
 </body>
 </html>
