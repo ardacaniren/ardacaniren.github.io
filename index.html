@@ -1145,30 +1145,9 @@
 
     const DEFAULT_INBODY_PROMPT = `You are an expert health and body composition specialist. Analyze this InBody measurement report thoroughly and respond entirely in English.
 
-IMPORTANT — IMPEDANCE ERROR DETECTION (BWA models only):
-This check applies ONLY to BWA-model InBody devices (any report showing "BWA" or "BWA2.0" in the header).
+Note: The measurement validity check for BWA devices has already been performed before this analysis. You can proceed directly with the full body composition analysis.
 
-Look at the small calibration code printed in the bottom-right corner of the impedance/resistance chart (the graph on the right side showing the V-shaped lines). This code appears in square brackets, for example: [000/000/000] or [LA2/000/000] or [RA4/000/000].
-
-- If the code is exactly [000/000/000] → the measurement is VALID. Do NOT show any error warning. Proceed with the full analysis.
-- If the code contains ANY letters or non-zero characters in any of the three segments (e.g. [LA2/000/000], [RA4/000/000], [LA1/RA2/000], etc.) → the measurement is FAULTY.
-
-If the measurement is FAULTY, start your response with this warning and then STOP — do not provide any analysis of the body composition values as they are unreliable:
-
-⚠️ FAULTY MEASUREMENT DETECTED
-The calibration code in the impedance chart reads [CODE] which indicates a measurement error on this BWA device. The body composition results (muscle mass, fat, segmental analysis, etc.) derived from this reading are unreliable and should NOT be used.
-
-Please repeat the measurement:
-• Ensure the subject's hands and feet are properly positioned on the electrodes
-• Remove all metal accessories (rings, watches, belts)
-• The subject should not have exercised in the last 2 hours
-• Ensure the subject is not wearing thick socks or gloves
-
-If the device is NOT a BWA model, skip this check entirely and do not mention it.
-
----
-
-Now provide a structured analysis with the following sections:
+Provide a structured analysis with the following sections:
 
 ## 📊 Overall Assessment
 A concise summary of the person's general health and body composition status.
@@ -1259,6 +1238,38 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
         });
     }
 
+    /* ── BWA CALIBRATION PRE-CHECK ── */
+    const BWA_PRECHECK_PROMPT = `Look at this InBody measurement report image.
+
+TASK: Determine if this is a BWA-model device AND check the calibration code.
+
+Step 1 — Is this a BWA device?
+Look for "BWA" or "BWA2.0" anywhere in the header/title area of the report.
+If you do NOT see BWA/BWA2.0, answer: NOT_BWA
+
+Step 2 — If it IS a BWA device, find the calibration code.
+Look at the bottom-right corner of the impedance/resistance chart (the V-shaped graph on the right side). There is a small code in square brackets like [000/000/000] or [LA2/000/000].
+Read that code exactly.
+
+Respond with ONLY one of these formats (no other text):
+NOT_BWA
+VALID_000
+FAULTY:[the exact code you see, e.g. LA2/000/000]`;
+
+    async function checkBwaCalibration(file) {
+        // Only works for images (vision model needed)
+        if (!file.type.startsWith('image/')) return 'NOT_IMAGE';
+        var isVisionModel = GROQ_MODEL.includes('llama-4') || GROQ_MODEL.includes('vision');
+        if (!isVisionModel) return 'NOT_IMAGE';
+        var b64 = await fileToBase64(file);
+        var checkMsg = [{ role: 'user', content: [
+            { type: 'image_url', image_url: { url: b64 } },
+            { type: 'text', text: BWA_PRECHECK_PROMPT }
+        ]}];
+        var reply = await callGroqApi(checkMsg);
+        return reply.trim();
+    }
+
     async function handleAiFile(file) {
         if (!file) return;
         if (file.size > 20 * 1024 * 1024) { showAiError('File too large. Max 20MB.'); return; }
@@ -1285,6 +1296,40 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
                 if (!pdfText || pdfText.length < 20) throw new Error('Could not extract text from PDF. The file may be scanned. Try uploading as JPG/PNG.');
                 firstMessage = { role: 'user', content: userPrompt + '\n\n--- DOCUMENT CONTENT ---\n' + pdfText.slice(0, 12000) };
             } else if (isImage && isVisionModel) {
+                // ── BWA CALIBRATION PRE-CHECK ──
+                document.getElementById('ai-status-text').textContent = '🔍 Checking measurement validity...';
+                var bwaResult = await checkBwaCalibration(file);
+                // bwaResult: NOT_BWA | NOT_IMAGE | VALID_000 | FAULTY:xxxxx
+                if (bwaResult.startsWith('FAULTY:')) {
+                    var badCode = bwaResult.slice(7).trim();
+                    // Show faulty result directly — no AI analysis
+                    document.getElementById('ai-status').style.display = 'none';
+                    document.getElementById('ai-pre-upload').style.display = 'none';
+                    document.getElementById('ai-chat-view').style.display = 'flex';
+                    document.getElementById('ai-chat-file-name').textContent = file.name;
+                    appendChatMessage('user', '📎 ' + file.name + ' (image)');
+                    var faultyMsg = '## ⚠️ HATALI ÖLÇÜM / FAULTY MEASUREMENT\n\n' +
+                        '**Bu ölçüm geçersizdir.**\n\n' +
+                        'Direnç tablosunun sağ alt köşesindeki kalibrasyon kodu **[' + badCode + ']** olarak okunmuştur. ' +
+                        'Bu kod, BWA cihazında bir **ölçüm hatası** olduğunu göstermektedir.\n\n' +
+                        'Bu okuma üzerinden türetilen vücut kompozisyonu sonuçları (kas kütlesi, yağ, segmental analiz vb.) **güvenilmez** olup kullanılmamalıdır.\n\n' +
+                        '---\n\n' +
+                        '**The measurement is invalid.**\n\n' +
+                        'The calibration code in the impedance chart reads **[' + badCode + ']**, indicating a measurement error on this BWA device. ' +
+                        'Body composition results derived from this reading are unreliable and should NOT be used.\n\n' +
+                        '### Lütfen ölçümü tekrarlayın / Please repeat the measurement:\n' +
+                        '• Ellerin ve ayakların elektrotlara doğru şekilde yerleştirildiğinden emin olun\n' +
+                        '  *(Ensure hands and feet are properly positioned on the electrodes)*\n' +
+                        '• Tüm metal aksesuarları (yüzük, saat, kemer) çıkarın\n' +
+                        '  *(Remove all metal accessories — rings, watches, belts)*\n' +
+                        '• Son 2 saat içinde egzersiz yapılmamış olmalı\n' +
+                        '  *(The subject should not have exercised in the last 2 hours)*\n' +
+                        '• Kalın çorap veya eldiven giymemeye dikkat edin\n' +
+                        '  *(Ensure the subject is not wearing thick socks or gloves)*';
+                    appendChatMessage('assistant', faultyMsg);
+                    return; // Stop — no further analysis
+                }
+                // Valid (000/000/000) or non-BWA — proceed normally
                 document.getElementById('ai-status-text').textContent = 'Preparing image...';
                 var b64 = await fileToBase64(file);
                 firstMessage = { role: 'user', content: [{ type: 'image_url', image_url: { url: b64 } }, { type: 'text', text: userPrompt }] };
@@ -1703,6 +1748,38 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
                 if (!pdfText || pdfText.length < 20) throw new Error('Could not extract text from PDF. Try uploading as JPG/PNG.');
                 firstMessage = { role: 'user', content: userPrompt + '\n\n--- DOCUMENT CONTENT ---\n' + pdfText.slice(0, 12000) };
             } else if (isImage && isVisionModel) {
+                // ── BWA CALIBRATION PRE-CHECK ──
+                document.getElementById('ai2-status-text').textContent = '🔍 Checking measurement validity...';
+                var bwaResult2 = await checkBwaCalibration(file);
+                if (bwaResult2.startsWith('FAULTY:')) {
+                    var badCode2 = bwaResult2.slice(7).trim();
+                    document.getElementById('ai2-status').style.display = 'none';
+                    document.getElementById('ai2-pre-upload').style.display = 'none';
+                    document.getElementById('ai2-chat-view').style.display = 'flex';
+                    document.getElementById('ai2-chat-file-name').textContent = file.name;
+                    appendAi2Message('user', '📎 ' + file.name + ' (image)');
+                    var faultyMsg2 = '## ⚠️ HATALI ÖLÇÜM / FAULTY MEASUREMENT\n\n' +
+                        '**Bu ölçüm geçersizdir.**\n\n' +
+                        'Direnç tablosunun sağ alt köşesindeki kalibrasyon kodu **[' + badCode2 + ']** olarak okunmuştur. ' +
+                        'Bu kod, BWA cihazında bir **ölçüm hatası** olduğunu göstermektedir.\n\n' +
+                        'Bu okuma üzerinden türetilen vücut kompozisyonu sonuçları (kas kütlesi, yağ, segmental analiz vb.) **güvenilmez** olup kullanılmamalıdır.\n\n' +
+                        '---\n\n' +
+                        '**The measurement is invalid.**\n\n' +
+                        'The calibration code in the impedance chart reads **[' + badCode2 + ']**, indicating a measurement error on this BWA device. ' +
+                        'Body composition results derived from this reading are unreliable and should NOT be used.\n\n' +
+                        '### Lütfen ölçümü tekrarlayın / Please repeat the measurement:\n' +
+                        '• Ellerin ve ayakların elektrotlara doğru şekilde yerleştirildiğinden emin olun\n' +
+                        '  *(Ensure hands and feet are properly positioned on the electrodes)*\n' +
+                        '• Tüm metal aksesuarları (yüzük, saat, kemer) çıkarın\n' +
+                        '  *(Remove all metal accessories — rings, watches, belts)*\n' +
+                        '• Son 2 saat içinde egzersiz yapılmamış olmalı\n' +
+                        '  *(The subject should not have exercised in the last 2 hours)*\n' +
+                        '• Kalın çorap veya eldiven giymemeye dikkat edin\n' +
+                        '  *(Ensure the subject is not wearing thick socks or gloves)*';
+                    appendAi2Message('assistant', faultyMsg2);
+                    return;
+                }
+                // Valid or non-BWA — proceed normally
                 document.getElementById('ai2-status-text').textContent = 'Preparing image...';
                 var b64 = await fileToBase64(file);
                 firstMessage = { role: 'user', content: [{ type: 'image_url', image_url: { url: b64 } }, { type: 'text', text: userPrompt }] };
