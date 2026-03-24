@@ -287,6 +287,12 @@
         .ann-zone { position:absolute;pointer-events:all;cursor:pointer;border-radius:4px;transition:background 0.15s; }
         .ann-zone:hover { background:rgba(59,130,246,0.1);outline:1px solid rgba(59,130,246,0.3); }
         .ann-zone.active { background:rgba(59,130,246,0.15);outline:2px solid rgba(59,130,246,0.6); }
+        /* AI TAB */
+        #ai-upload-area:hover { border-color: #8b5cf6; background: rgba(139,92,246,0.03); }
+        #ai-result-body h1,#ai-result-body h2,#ai-result-body h3 { color:#8b5cf6;font-weight:700;margin:1rem 0 0.5rem; }
+        #ai-result-body strong { color:var(--text); }
+        #ai-result-body ul,#ai-result-body ol { padding-left:1.5rem; }
+        #ai-result-body li { margin-bottom:0.4rem; }
         @media (max-width: 600px) { .inbody-main, .files-main { padding: 1rem; } header { padding: 0.75rem 1rem; } .files-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } }
     </style>
 </head>
@@ -403,6 +409,9 @@
     </div>
     <div class="tab" id="tab-results" onclick="switchTab('results')">
         <i class="fas fa-chart-bar"></i> <span>Results</span>
+    </div>
+    <div class="tab" id="tab-ai" onclick="switchTab('ai')">
+        <i class="fas fa-brain"></i> <span>AI Analysis</span>
     </div>
 </div>
 
@@ -537,6 +546,55 @@
     </div>
 </div>
 
+<!-- PAGE: AI ANALYSIS -->
+<div class="page" id="page-ai">
+    <div style="flex:1;display:flex;flex-direction:column;max-width:900px;margin:0 auto;width:100%;padding:2rem;gap:1.5rem">
+        
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,#0a0f1e,#1a1040);border-radius:20px;padding:2rem;border:1px solid var(--border)">
+            <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.2em;color:#8b5cf6;margin-bottom:8px">POWERED BY GEMINI AI</div>
+            <div style="font-size:1.6rem;font-weight:800;color:#f1f5f9;margin-bottom:6px">AI Document Analysis</div>
+            <div style="font-size:0.85rem;color:rgba(241,245,249,0.55)">Upload any PDF or image — get instant AI-powered insights</div>
+        </div>
+
+        <!-- Upload area -->
+        <div id="ai-upload-area" style="border:2px dashed var(--border);border-radius:16px;padding:3rem;text-align:center;cursor:pointer;transition:0.2s;background:var(--surface)"
+             onclick="document.getElementById('ai-file-input').click()"
+             ondragover="event.preventDefault();this.style.borderColor='#8b5cf6'"
+             ondragleave="this.style.borderColor='var(--border)'"
+             ondrop="handleAiDrop(event)">
+            <input type="file" id="ai-file-input" accept=".pdf,image/*" style="display:none" onchange="handleAiFile(this.files[0])">
+            <div style="font-size:3rem;margin-bottom:1rem">📄</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px">Drop a file or click to upload</div>
+            <div style="font-size:0.78rem;color:var(--muted)">Supports PDF, JPG, PNG — max 10MB</div>
+        </div>
+
+        <!-- Status -->
+        <div id="ai-status" style="display:none;align-items:center;gap:10px;padding:1rem 1.5rem;background:var(--surface);border-radius:12px;border:1px solid var(--border)">
+            <div class="spinner" style="width:24px;height:24px;border-width:2px"></div>
+            <div id="ai-status-text" style="font-size:0.85rem;color:var(--muted)">Analyzing...</div>
+        </div>
+
+        <!-- Result -->
+        <div id="ai-result" style="display:none;background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden">
+            <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(139,92,246,0.15);display:flex;align-items:center;justify-content:center">🧠</div>
+                    <div>
+                        <div style="font-size:0.9rem;font-weight:700;color:var(--text)" id="ai-file-name">Analysis Result</div>
+                        <div style="font-size:0.68rem;color:var(--muted)">Gemini AI Analysis</div>
+                    </div>
+                </div>
+                <button onclick="resetAiTab()" style="background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.75rem;font-family:Inter,sans-serif">New Analysis</button>
+            </div>
+            <div id="ai-result-body" style="padding:1.5rem;font-size:0.875rem;color:var(--text);line-height:1.8;white-space:pre-wrap"></div>
+        </div>
+
+        <!-- Error -->
+        <div id="ai-error" style="display:none;padding:1rem 1.5rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;font-size:0.85rem;color:#ef4444"></div>
+    </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
     <span class="lb-close" onclick="closeLightbox()">✕</span>
@@ -647,6 +705,7 @@
         if (tab==='files' && allFiles.length>0) showFolderGrid();
         if (tab==='centers') merkezleriGetir();
         if (tab==='results') resultsGetir();
+        if (tab==='ai') initAiTab();
     }
 
     /* ── LOGIN ── */
@@ -872,6 +931,7 @@
             if(!json.table||!json.table.rows){renderFiles();return;}
             json.table.rows.forEach(function(row){
                 if(!row.c||!row.c[0]||!row.c[0].v)return;
+                // skip header row
                 if(row.c[0].v==='name')return;
                 allFiles.push({
                     name:      (row.c[0]&&row.c[0].v)?row.c[0].v:'',
@@ -887,6 +947,11 @@
             console.error(e);
             container.innerHTML='<div class="files-empty"><i class="fas fa-exclamation-triangle"></i><p>Could not load files. Make sure AppScript has run at least once.</p></div>';
         }
+    }
+
+    function buildFolderTabs(){
+        // Show folder grid view
+        showFolderGrid();
     }
 
     function showFolderGrid() {
@@ -912,6 +977,7 @@
             container.appendChild(card);
         });
 
+        // Kök klasördeki dosyaları direkt kart olarak göster
         var rootFiles = allFiles.filter(function(f){ return f.folder === '/'; });
         rootFiles.forEach(function(f) {
             var mi = getMimeIcon(f.mime);
@@ -945,6 +1011,8 @@
             container.appendChild(card);
         });
 
+        // If only one folder or there are root files, also show root
+        var rootFiles = allFiles.filter(function(f){ return f.folder === '/'; });
         if (rootFiles.length > 0 && folders.indexOf('/') === -1) {
             var card = document.createElement('div');
             card.className = 'folder-card';
@@ -959,6 +1027,7 @@
 
     function openFolder(folderName) {
         currentFolder = folderName;
+        // Breadcrumb
         var bc = document.getElementById('breadcrumb');
         bc.innerHTML =
             '<span class="breadcrumb-item" onclick="showFolderGrid()"><i class="fas fa-folder-open" style="margin-right:5px"></i>' + t('tab_files') + '</span>' +
@@ -1093,21 +1162,41 @@
         document.body.style.overflow='';
     }
 
-    /* ══════════════════════════════════════════════════════
-       ANNOTATION DATA BINDING
-       ── DEĞİŞİKLİK 1: findMeasurementForImage
-       Tarih karşılaştırması tamamen kaldırıldı.
-       imageIndex doğrudan allMeasurements dizisine map edilir.
-       Her iki liste de en yeniden eskiye sıralı olduğundan
-       index=0 → index=0, index=1 → index=1 şeklinde çalışır.
-    ══════════════════════════════════════════════════════ */
+    /* ── ANNOTATION DATA BINDING ── */
+
+    // imageDates: ["23.03.2026 10:31", "19.03.2026 08:34", ...]
+    // CSV testDate: "20260323103103" formatında
+
+    function csvDateToDisplay(csvDate) {
+        // "20260323103103" → "23.03.2026 10:31"
+        if (!csvDate || csvDate.length < 12) return '';
+        var d = csvDate.replace(/\D/g,'');
+        if (d.length < 12) return '';
+        return d.slice(6,8)+'.'+d.slice(4,6)+'.'+d.slice(0,4)+' '+d.slice(8,10)+':'+d.slice(10,12);
+    }
+
     function findMeasurementForImage(imageIndex) {
         if (!allMeasurements || allMeasurements.length === 0) return null;
-        // Doğrudan index eşleştirmesi — tarih format sorunlarını tamamen ortadan kaldırır
-        if (imageIndex < allMeasurements.length) {
-            return allMeasurements[imageIndex];
+        var imgDate = imageDates[imageIndex];
+        console.log('Finding for imgDate:', imgDate, 'index:', imageIndex);
+        if (!imgDate) return allMeasurements[0];
+
+        // imageDates format: "23.03.2026 10:31"
+        // CSV Test Date / Time format: "20260323103103"
+        var imgPrefix = imgDate.slice(0,13); // "23.03.2026 10"
+
+        for (var i = 0; i < allMeasurements.length; i++) {
+            var m = allMeasurements[i];
+            var csvDate = (m['Test Date / Time'] || '').replace(/\D/g,'');
+            var disp = csvDateToDisplay(csvDate);
+            console.log('CSV disp:', disp, 'prefix:', disp.slice(0,13));
+            if (disp.slice(0,13) === imgPrefix) {
+                console.log('MATCH found at index', i);
+                return m;
+            }
         }
-        return allMeasurements[0]; // fallback: son ölçümü göster
+        console.log('No match, using first measurement');
+        return allMeasurements[0];
     }
 
     function numVal(m, key) {
@@ -1118,20 +1207,26 @@
 
     function statusIcon(val, low, high) {
         if (!low && !high) return '';
-        if (val < low) return ' <span style="color:#f59e0b">↓ Low</span>';
-        if (val > high) return ' <span style="color:#ef4444">↑ High</span>';
-        return ' <span style="color:#10b981">✓ Normal</span>';
+        var isTR = currentLang === 'tr';
+        if (val < low) return ' <span style="color:#f59e0b">↓ '+('Low')+'</span>';
+        if (val > high) return ' <span style="color:#ef4444">↑ '+('High')+'</span>';
+        return ' <span style="color:#10b981">✓ '+('Normal')+'</span>';
     }
 
-    function interpret(val, low, high, lowMsg, highMsg, normalMsg) {
-        if (val < low) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+lowMsg+'</div>';
-        if (val > high) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ '+highMsg+'</div>';
-        return '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ '+normalMsg+'</div>';
+    function interpret(val, low, high, lowMsg, highMsg, normalMsg, lowMsgTR, highMsgTR, normalMsgTR) {
+        var isTR = currentLang === 'tr';
+        var lm = isTR && lowMsgTR ? lowMsgTR : lowMsg;
+        var hm = isTR && highMsgTR ? highMsgTR : highMsg;
+        var nm = isTR && normalMsgTR ? normalMsgTR : normalMsg;
+        if (val < low) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+lm+'</div>';
+        if (val > high) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ '+hm+'</div>';
+        return '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ '+nm+'</div>';
     }
 
     function updateAnnotationsFromCSV(imageIndex) {
         var m = findMeasurementForImage(imageIndex);
         if (!m) return;
+        console.log('ALL KEYS:', JSON.stringify(m));
 
         var zones = document.querySelectorAll('.ann-zone');
         zones.forEach(function(z) {
@@ -1149,6 +1244,7 @@
                 body += interpret(score,70,100,'Low score — increase muscle mass','Great score!','Good score, keep it up!');
             }
             else if (title === 'Body Composition Analysis') {
+                body = '';
                 var tbw=numVal(m,'TBW (Total Body Water)'),tbwL=numVal(m,'Lower Limit (TBW Normal Range)'),tbwH=numVal(m,'Upper Limit (TBW Normal Range)');
                 var pro=numVal(m,'Protein'),proL=numVal(m,'Lower Limit (Protein Normal Range)'),proH=numVal(m,'Upper Limit (Protein Normal Range)');
                 var min=numVal(m,'Minerals'),minL=numVal(m,'Lower Limit (Minerals Normal Range)'),minH=numVal(m,'Upper Limit (Minerals Normal Range)');
@@ -1161,6 +1257,7 @@
                 body += '⚖️ <strong>Weight:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH);
             }
             else if (title === 'Muscle-Fat Analysis') {
+                body = '';
                 var smm=numVal(m,'SMM (Skeletal Muscle Mass)'),smmL=numVal(m,'Lower Limit (SMM Normal Range)'),smmH=numVal(m,'Upper Limit (SMM Normal Range)');
                 var bfm2=numVal(m,'BFM (Body Fat Mass)'),bfmL2=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH2=numVal(m,'Upper Limit (BFM Normal Range)');
                 body  = '💪 <strong>Muscle (SMM):</strong> '+smm.toFixed(1)+' kg'+statusIcon(smm,smmL,smmH)+'<br>';
@@ -1168,6 +1265,7 @@
                 body += interpret(smm,smmL,smmH,'Low muscle mass — increase resistance training','Excellent muscle mass!','Muscle mass is in ideal range');
             }
             else if (title === 'Obesity Analysis') {
+                body = '';
                 var bmi=numVal(m,'BMI (Body Mass Index)'),bmiL=numVal(m,'Lower Limit (BMI Normal Range)'),bmiH=numVal(m,'Upper Limit (BMI Normal Range)');
                 var pbf=numVal(m,'PBF (Percent Body Fat)'),pbfL=numVal(m,'Lower Limit (PBF Normal Range)'),pbfH=numVal(m,'Upper Limit (PBF Normal Range)');
                 body  = '📏 <strong>BMI:</strong> '+bmi.toFixed(1)+' kg/m² ('+bmiL+'–'+bmiH+')'+statusIcon(bmi,bmiL,bmiH)+'<br>';
@@ -1175,6 +1273,7 @@
                 body += interpret(pbf,pbfL,pbfH,'Body fat % is low','Body fat % is high — increase cardio','Body fat % is ideal');
             }
             else if (title === 'Visceral Fat Area') {
+                body = '';
                 var vfa=numVal(m,'VFA (Visceral Fat Area)');
                 var vfaStatus = vfa<100?'✅ Excellent! (<100 cm²)':vfa<150?'⚠️ Caution (100–150 cm²)':'🚨 High Risk (>150 cm²)';
                 body  = '🫃 <strong>Visceral Fat Area: '+vfa.toFixed(1)+' cm²</strong><br><br>';
@@ -1182,6 +1281,7 @@
                 body += vfa>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Abdominal fat may pose metabolic health risks</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Visceral fat is at a healthy level</div>';
             }
             else if (title === 'Weight Control') {
+                body = '';
                 var wt2=numVal(m,'Weight'),tgt=numVal(m,'Target Weight');
                 var wCtrl=numVal(m,'Weight Control'),bfCtrl=numVal(m,'BFM Control'),mCtrl=numVal(m,'FFM Control');
                 body  = '🎯 <strong>Current:</strong> '+wt2.toFixed(1)+' kg → <strong>Target:</strong> '+tgt.toFixed(1)+' kg<br><br>';
@@ -1198,6 +1298,7 @@
                 body += 'Lower: <strong>'+(m['Body Balance Evaluation Lower']||'–')+'</strong>';
             }
             else if (title === 'Segmental Lean Analysis') {
+                body = '';
                 var ra=numVal(m,'FFM of Right Arm'),raP=numVal(m,'FFM% of Right Arm');
                 var la=numVal(m,'FFM of Left Arm'),laP=numVal(m,'FFM% of Left Arm');
                 var tr=numVal(m,'FFM of Trunk'),trP=numVal(m,'FFM% of Trunk');
@@ -1212,6 +1313,7 @@
                 body += 'Left Leg: '+ll.toFixed(2)+' kg — '+pStr(llP);
             }
             else if (title === 'Segmental Fat Analysis') {
+                body = '';
                 var raF=numVal(m,'BFM of Right Arm'),raFP=numVal(m,'BFM% of Right Arm');
                 var laF=numVal(m,'BFM of Left Arm'),laFP=numVal(m,'BFM% of Left Arm');
                 var trF=numVal(m,'BFM of Trunk'),trFP=numVal(m,'BFM% of Trunk');
@@ -1226,11 +1328,13 @@
                 if (trFP>100) body += '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Trunk fat is above ideal</div>';
             }
             else if (title === 'ECW Ratio Analysis') {
+                body = '';
                 var ecw=numVal(m,'ECW/TBW');
                 body  = '💦 <strong>ECW/TBW: '+ecw.toFixed(3)+'</strong><br><br>Normal: 0.360–0.390';
                 body += interpret(ecw,0.360,0.390,'Intracellular fluid is low','Risk of edema or inflammation — consult a doctor','Fluid balance is normal');
             }
             else if (title === 'Research Parameters') {
+                body = '';
                 var bmr=numVal(m,'BMR (Basal Metabolic Rate)'),bmrL=numVal(m,'Lower Limit (BMR Normal Range)'),bmrH=numVal(m,'Upper Limit (BMR Normal Range)');
                 var whr=numVal(m,'WHR (Waist-Hip Ratio)'),whrL=numVal(m,'Lower Limit (WHR Normal Range)'),whrH=numVal(m,'Upper Limit (WHR Normal Range)');
                 body  = '🔬 Research parameters:<br><br>';
@@ -1241,6 +1345,7 @@
                 body += '🍽️ <strong>Rec. Calories:</strong> '+numVal(m,'Recommended Calorie Intake')+' kcal';
             }
             else if (title === 'Whole Body Phase Angle') {
+                body = '';
                 var pa=numVal(m,'50kHz-Whole Body Phase Angle');
                 if (!pa) pa=numVal(m,'Whole Body Phase Angle');
                 body  = '⚡ <strong>Phase Angle: '+pa.toFixed(1)+'°</strong><br><br>';
@@ -1263,6 +1368,7 @@
         });
     }
 
+
     function showAnnPreview(e, el) {
         updateAnnotationsFromCSV(currentIndex);
         var box = document.getElementById('ann-preview-box');
@@ -1283,9 +1389,12 @@
     }
     function showAnnPopup(e, title, body) {
         e.stopPropagation();
+        // Her zaman önce güncelle
         updateAnnotationsFromCSV(currentIndex);
         document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
         e.currentTarget.classList.add('active');
+        activeAnnZone = e.currentTarget;
+        // update sonrası dataset.body'yi al
         var freshBody = e.currentTarget.dataset.body || '';
         document.getElementById('ann-popup-title').textContent = title;
         document.getElementById('ann-popup-body').innerHTML = freshBody;
@@ -1310,22 +1419,25 @@
         if (popup && popup.style.display !== 'none' && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
     });
 
-    async function resultsGetirSilent() {
+        async function resultsGetirSilent() {
         await loadAllMeasurements();
         updateAnnotationsFromCSV(currentIndex);
     }
 
-    async function loadAllMeasurements() {
+async function loadAllMeasurements() {
         try {
             var res = await fetch(RESULT_WEBAPP_URL + '?_=' + Date.now());
             var data = await res.json();
             allMeasurements = data.measurements || [];
+            console.log('Loaded', allMeasurements.length, 'measurements,', Object.keys(allMeasurements[0]||{}).length, 'keys');
+            if (allMeasurements[0]) console.log('Weight:', allMeasurements[0]['Weight'], 'Score:', allMeasurements[0]['InBody Score']);
         } catch(e) {
             console.error('fetch failed, trying JSONP:', e.message);
             await new Promise(function(resolve) {
                 var cbName = 'ibcb_' + Date.now();
                 window[cbName] = function(data) {
                     allMeasurements = data.measurements || [];
+                    console.log('JSONP loaded', allMeasurements.length, 'measurements');
                     delete window[cbName];
                     resolve();
                 };
@@ -1337,6 +1449,103 @@
         }
     }
 
+
+    /* ── AI ANALYSIS ── */
+    var GEMINI_KEY = 'AIzaSyCq6my7K3o4utEZ889ProvsYAIqfVKmKYk';
+    var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
+
+    function initAiTab() {
+        resetAiTab();
+    }
+
+    function resetAiTab() {
+        document.getElementById('ai-upload-area').style.display = 'block';
+        document.getElementById('ai-status').style.display = 'none';
+        document.getElementById('ai-result').style.display = 'none';
+        document.getElementById('ai-error').style.display = 'none';
+        document.getElementById('ai-file-input').value = '';
+    }
+
+    function handleAiDrop(e) {
+        e.preventDefault();
+        document.getElementById('ai-upload-area').style.borderColor = 'var(--border)';
+        var file = e.dataTransfer.files[0];
+        if (file) handleAiFile(file);
+    }
+
+    async function handleAiFile(file) {
+        if (!file) return;
+        if (file.size > 10 * 1024 * 1024) {
+            showAiError('File too large. Max 10MB.');
+            return;
+        }
+
+        document.getElementById('ai-upload-area').style.display = 'none';
+        document.getElementById('ai-status').style.display = 'flex';
+        document.getElementById('ai-status-text').textContent = 'Reading file...';
+        document.getElementById('ai-error').style.display = 'none';
+        document.getElementById('ai-result').style.display = 'none';
+
+        try {
+            // File to base64
+            var base64 = await new Promise(function(resolve, reject) {
+                var reader = new FileReader();
+                reader.onload = function() { resolve(reader.result.split(',')[1]); };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('ai-status-text').textContent = 'Analyzing with Gemini AI...';
+
+            var mimeType = file.type || 'application/pdf';
+            var prompt = 'Analyze this document thoroughly. Provide:\n\n1. **Summary** - What is this document about?\n2. **Key Findings** - Most important information\n3. **Data & Numbers** - Any important metrics or measurements\n4. **Insights** - What conclusions can be drawn?\n5. **Recommendations** - Any actionable suggestions\n\nBe specific, structured, and insightful. Format with clear sections.';
+
+            var res = await fetch(GEMINI_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { inline_data: { mime_type: mimeType, data: base64 } },
+                            { text: prompt }
+                        ]
+                    }]
+                })
+            });
+
+            var data = await res.json();
+
+            if (data.error) throw new Error(data.error.message);
+
+            var text = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text;
+            if (!text) throw new Error('No response from AI');
+
+            // Markdown'ı basit HTML'e çevir
+            text = text
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                .replace(/^\* (.+)$/gm, '<li>$1</li>')
+                .replace(/^- (.+)$/gm, '<li>$1</li>');
+
+            document.getElementById('ai-status').style.display = 'none';
+            document.getElementById('ai-file-name').textContent = file.name;
+            document.getElementById('ai-result-body').innerHTML = text;
+            document.getElementById('ai-result').style.display = 'block';
+
+        } catch(e) {
+            console.error('AI error:', e);
+            showAiError('Analysis failed: ' + e.message);
+        }
+    }
+
+    function showAiError(msg) {
+        document.getElementById('ai-status').style.display = 'none';
+        document.getElementById('ai-upload-area').style.display = 'block';
+        document.getElementById('ai-error').textContent = '❌ ' + msg;
+        document.getElementById('ai-error').style.display = 'block';
+    }
     // Init
     applyLang();
     if (sessionStorage.getItem('inbody_auth')==='1') setTimeout(addAdminCenterBtn,300);
@@ -1441,6 +1650,7 @@
     var RESULT_JSON_URL = 'https://docs.google.com/spreadsheets/d/1Ki9FuABC90HZj2rJKbcyRRQcO8rAEd8s-mh3sYb4E1Y/gviz/tq?tqx=out:json';
     var RESULT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwustqC4VsB-m41GFYOzvEmEz6XG10sFLuoFuZgl3IJFlRT85tNYbl32cQPPzoQAHbi/exec';
     var resultData = {};
+
     var allMeasurements = [], currentMeasIdx = 0;
 
     async function resultsGetir() {
@@ -1451,6 +1661,7 @@
         try {
             await loadAllMeasurements();
             if (allMeasurements.length === 0) { document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; return; }
+            if(allMeasurements.length===0){document.getElementById('results-loading').style.display='none';document.getElementById('results-empty').style.display='flex';return;}
             currentMeasIdx=0;
             resultData=allMeasurements[0];
             buildMeasurementPills();
