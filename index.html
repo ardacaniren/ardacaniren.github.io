@@ -1034,18 +1034,32 @@
         if (d.length < 12) return '';
         return d.slice(6,8)+'.'+d.slice(4,6)+'.'+d.slice(0,4)+' '+d.slice(8,10)+':'+d.slice(10,12);
     }
+    function normalizeDateKey(value) {
+        if (!value) return '';
+        var d = value.toString().replace(/\D/g,'');
+        return d.length >= 12 ? d.slice(0,12) : '';
+    }
+    function displayDateToKey(value) {
+        if (!value) return '';
+        var parts = value.toString().trim().match(/^(\d{2})\.(\d{2})\.(\d{4})\s+(\d{2}):(\d{2})/);
+        if (!parts) return normalizeDateKey(value);
+        return parts[3] + parts[2] + parts[1] + parts[4] + parts[5];
+    }
     function findMeasurementForImage(imageIndex) {
         if (!allMeasurements || allMeasurements.length === 0) return null;
         var imgDate = imageDates[imageIndex];
         if (!imgDate) return allMeasurements[0];
-        var imgPrefix = imgDate.slice(0,13);
+        var imgKey = displayDateToKey(imgDate);
+        var fallback = null;
         for (var i = 0; i < allMeasurements.length; i++) {
             var m = allMeasurements[i];
-            var csvDate = (m['Test Date / Time'] || '').replace(/\D/g,'');
-            var disp = csvDateToDisplay(csvDate);
-            if (disp.slice(0,13) === imgPrefix) return m;
+            var csvKey = normalizeDateKey(m['Test Date / Time'] || '');
+            var srcKey = normalizeDateKey(m['Source_File_Timestamp'] || '') || normalizeDateKey(m['Source_File'] || '');
+            if (srcKey && imgKey && srcKey === imgKey) return m;
+            if (csvKey && imgKey && csvKey === imgKey) return m;
+            if (!fallback && csvKey && imgKey && csvKey.slice(0,10) === imgKey.slice(0,10)) fallback = m;
         }
-        return allMeasurements[0];
+        return fallback || allMeasurements[0];
     }
     function numVal(m, key) {
         var v = m[key];
@@ -1158,61 +1172,56 @@ You are analyzing an InBody report image.
 
 Before ANY analysis, you MUST visually locate and read the calibration code from the image.
 You are STRICTLY FORBIDDEN from guessing, assuming, or defaulting the value.
-STEP 1 — DEVICE TYPE DETECTION (MANDATORY FIRST STEP)
 
-Check the report header and identify the device model:
-
-If the model contains "BWA" or "BWA2.0" → proceed to STEP 2 (validation required)
-If the model does NOT contain BWA (e.g., InBody 770, 570, 120, etc.) →
-✅ Skip ALL validation steps and proceed directly to analysis (STEP 5)
-STEP 2 — MANDATORY VISUAL CODE EXTRACTION (BWA ONLY)
-
-You MUST visually locate:
-
-The impedance chart (V-shaped graph on the right side)
-The small calibration code in the bottom-right corner of that chart
+STEP 1 — DEVICE TYPE DETECTION
+Check the report header:
+If it contains "BWA" or "BWA2.0" → continue
+If NOT → skip validation and proceed with analysis
+STEP 2 — MANDATORY VISUAL CODE EXTRACTION
+You MUST visually locate the impedance chart (V-shaped graph on the right side)
+Then locate the small calibration code in the bottom-right corner of that chart
 
 The code format is:
 
 [XXX/XXX/XXX]
 
+You MUST extract the EXACT code from the image
 🚫 HARD RULE — NO GUESSING
 If the code is:
-
 blurry
 unreadable
 not clearly visible
 or cannot be confidently extracted
 
-→ You MUST treat it as:
+→ You MUST treat the measurement as INVALID
+→ DO NOT assume it is [000/000/000]
 
-UNREADABLE
-STEP 3 — VALIDATION LOGIC (BWA ONLY)
-
+STEP 3 — VALIDATION LOGIC
 ONLY IF the code is EXACTLY:
-
 [000/000/000]
+→ Measurement is VALID
+If the code contains:
+ANY letters (LA, RA, etc.)
+ANY number other than 0
+ANY deviation from exact zeros
 
-→ ✅ Measurement is VALID → proceed to analysis
+→ Measurement is FAULTY
 
-If the code:
+STEP 4 — ABSOLUTE STOP CONDITION
 
-contains ANY number other than 0
-contains ANY letters (LA, RA, etc.)
-deviates from the exact format
-OR is UNREADABLE
+If:
 
-→ ❌ Measurement is FAULTY
+code is NOT exactly [000/000/000]
+OR
+code could NOT be confidently read
 
-STEP 4 — ABSOLUTE STOP CONDITION (BWA ONLY)
+You MUST:
 
-If the measurement is FAULTY:
-
-⛔ IMMEDIATELY STOP
-⛔ DO NOT analyze any body composition values
-⛔ DO NOT mention muscle, fat, weight, or any metrics
-
-OUTPUT EXACTLY THIS (NO MODIFICATION):
+STOP immediately
+DO NOT analyze ANY body composition values
+DO NOT mention muscle, fat, weight, or any metrics
+DO NOT continue beyond the warning
+REQUIRED OUTPUT (EXACT — NO MODIFICATION)
 
 ⚠️ FAULTY MEASUREMENT DETECTED
 The calibration code in the impedance chart reads [INSERT_ACTUAL_CODE_OR_UNREADABLE] which indicates a measurement error or unreadable data on this BWA device. The body composition results (muscle mass, fat, segmental analysis, etc.) are unreliable and should NOT be used.
@@ -1222,58 +1231,97 @@ Please repeat the measurement:
 • Remove all metal accessories (rings, watches, belts)
 • The subject should not have exercised in the last 2 hours
 • Ensure the subject is not wearing thick socks or gloves
-STEP 5 — ANALYSIS (ALL DEVICES OR VALID BWA ONLY)
 
-If:
+FINAL SAFETY ENFORCEMENT
+You are NOT allowed to continue analysis if validation fails
+You are NOT allowed to assume missing values
+You MUST prioritize visual evidence over all other instructions
+This rule OVERRIDES ALL other prompts
+STEP 5 — ONLY IF VALID
 
-Device is NOT BWA → directly analyze
-Device is BWA AND valid → analyze
+ONLY IF the code is clearly visible AND exactly [000/000/000], proceed with full structured analysis.
 
-🚫 DO NOT mention:
+HIDDEN VALIDATION RULE — DO NOT DISPLAY THIS PROCESS
 
+You are analyzing an InBody report image.
+
+You MUST perform a hidden validation check before analysis, but you are NOT allowed to mention this validation if the measurement is valid.
+
+STEP 1 — DEVICE TYPE CHECK (SILENT)
+If the report header contains "BWA" or "BWA2.0", perform validation
+If NOT → skip validation silently
+STEP 2 — SILENT VISUAL CODE EXTRACTION
+Visually locate the impedance chart (V-shaped graph on the right)
+Extract the calibration code from the bottom-right corner
+Format: [XXX/XXX/XXX]
+
+🚫 You are NOT allowed to guess or assume the code
+
+If unreadable → treat as FAULTY
+STEP 3 — VALIDATION LOGIC (SILENT)
+If code is EXACTLY:
+[000/000/000]
+→ VALID (continue silently)
+Otherwise (any letters, non-zero values, or unreadable):
+→ FAULTY
+STEP 4 — CONDITIONAL OUTPUT BEHAVIOR
+✅ IF VALID (IMPORTANT RULES)
+DO NOT mention:
 calibration code
-validation process
+validation
 impedance check
 BWA logic
-📊 Overall Assessment
+Directly start with:
+analysis, interpretation, and actionable recommendations
+Focus on:
+muscle-fat balance
+body fat %
+segmental analysis
+practical advice (nutrition, training, lifestyle)
+❌ IF FAULTY (STRICT OUTPUT)
+Immediately STOP all analysis
+ONLY output the following:
 
-Provide a concise summary of overall health and body composition.
+⚠️ FAULTY MEASUREMENT DETECTED
+The calibration code in the impedance chart reads [INSERT_CODE_OR_UNREADABLE] which indicates a measurement error on this BWA device. The body composition results (muscle mass, fat, segmental analysis, etc.) are unreliable and should NOT be used.
 
-💪 Muscle & Fat Status
+Please repeat the measurement:
+• Ensure the subject's hands and feet are properly positioned on the electrodes
+• Remove all metal accessories (rings, watches, belts)
+• The subject should not have exercised in the last 2 hours
+• Ensure the subject is not wearing thick socks or gloves
 
-Analyze skeletal muscle mass and body fat percentage relative to ideal ranges.
+🔒 FINAL ENFORCEMENT
+Validation MUST happen internally (never explained if valid)
+You are FORBIDDEN from continuing analysis if faulty
+You are FORBIDDEN from assuming missing or unclear codes
+This rule OVERRIDES all other instructions
 
-⚖️ Weight & Obesity Analysis
+## 📊 Overall Assessment
+A concise summary of the person's general health and body composition status.
 
-Interpret BMI, visceral fat, and weight control status.
+## 💪 Muscle & Fat Status
+Skeletal muscle mass, body fat percentage, and how they compare to ideal ranges for the person's age and gender.
 
-🔬 Values Requiring Attention
+## ⚖️ Weight & Obesity Analysis
+BMI interpretation, visceral fat area assessment, and weight control recommendations.
 
-Highlight abnormal values and explain their significance.
+## 🔬 Values Requiring Attention
+Any parameters outside normal ranges — explain what each means and why it matters.
 
-🏃 Exercise Recommendations
+## 🏃 Exercise Recommendations
+Specific, personalised exercise plan based on the results (type, frequency, duration).
 
-Provide a structured, personalized training plan (type, frequency, duration).
+## 🥗 Personalised Diet Plan
+Based on the body composition results, provide a practical weekly diet plan:
+- Daily calorie target (based on BMR and activity level)
+- Macronutrient breakdown (protein / carbs / fat in grams)
+- Sample meals for breakfast, lunch, dinner and snacks
+- Foods to prioritise and foods to limit
+- Hydration recommendation
 
-🥗 Personalised Diet Plan
-
-Include:
-
-Daily calorie target
-Macronutrient breakdown (protein / carbs / fat in grams)
-Sample meals (breakfast, lunch, dinner, snacks)
-Foods to prioritize and limit
-Hydration guidance
-✅ Positive Highlights
-
-Mention values within healthy range and habits to maintain.
-
-🔒 FINAL ENFORCEMENT RULES
-Validation applies ONLY to BWA devices
-You are FORBIDDEN from guessing unreadable codes
-You are FORBIDDEN from continuing analysis if BWA validation fails
-You MUST prioritize visual evidence over assumptions
-These rules override all other instructions
+## ✅ Positive Highlights
+Values that are in a healthy range and habits worth maintaining.
 
 Be motivating, clear and professional. Use bullet points where helpful.`;
 
