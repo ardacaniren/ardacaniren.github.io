@@ -1572,7 +1572,7 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
 
     async function loadAllMeasurements() {
         try {
-            var res = await fetch(RESULT_WEBAPP_URL + '?_=' + Date.now());
+            var res = await fetch(RESULT_WEBAPP_URL + '?refresh=1&_=' + Date.now());
             var data = await res.json();
             allMeasurements = data.measurements || [];
         } catch(e) {
@@ -1584,7 +1584,7 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
                     delete window[cbName]; resolve();
                 };
                 var s = document.createElement('script');
-                s.src = RESULT_WEBAPP_URL + '?callback=' + cbName + '&_=' + Date.now();
+                s.src = RESULT_WEBAPP_URL + '?refresh=1&callback=' + cbName + '&_=' + Date.now();
                 s.onerror = function() { resolve(); };
                 document.head.appendChild(s);
             });
