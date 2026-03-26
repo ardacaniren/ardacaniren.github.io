@@ -577,7 +577,6 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <!-- PDF.js for text extraction from PDFs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <script>
     const INBODY_SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
@@ -793,8 +792,7 @@
     function loadFeatured(index){
         currentIndex=index; showState('loading');
         var img=document.getElementById('featured-img');
-        img.crossOrigin='anonymous';
-        img.onload=function(){showState('image'); setAnnotationDefaults(); prefetchAnnotationInsights(index);}; img.onerror=function(){showState('error');};
+        img.onload=function(){showState('image'); setAnnotationDefaults();}; img.onerror=function(){showState('error');};
         img.src='https://drive.google.com/thumbnail?id='+imageLinks[index]+'&sz=w1200&_='+Date.now();
         document.querySelectorAll('.thumb').forEach(function(el,i){el.classList.toggle('active',i===index);});
         if(index===0&&imageLinks[0]){
