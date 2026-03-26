@@ -408,7 +408,7 @@
     <div class="tab" id="tab-centers" onclick="switchTab('centers')">
         <i class="fas fa-map-marker-alt"></i> <span>Centers</span>
     </div>
-    <div class="tab" id="tab-results" onclick="switchTab('results')">
+    <div class="tab" id="tab-results" onclick="switchTab('results')" style="display:none">
         <i class="fas fa-chart-bar"></i> <span>Results</span>
     </div>
     <div class="tab" id="tab-ai" onclick="switchTab('ai')">
@@ -666,7 +666,6 @@
         if (tab==='files' && allFiles.length===0) dosyalariGetir();
         if (tab==='files' && allFiles.length>0) showFolderGrid();
         if (tab==='centers') merkezleriGetir();
-        if (tab==='results') resultsGetir();
 
     }
 
@@ -781,7 +780,6 @@
             if(ids.length===0)throw new Error('No links');
             imageLinks=ids; imageDates=dates; currentIndex=0;
             loadFeatured(0); buildCarousel();
-            resultsGetirSilent();
             document.getElementById('update-time').textContent=new Date().toLocaleTimeString(currentLang==='tr'?'tr-TR':'en-GB',{hour:'2-digit',minute:'2-digit'});
         } catch(e){console.error(e);showState('error');}
         finally{btn.classList.remove('spinning');btn.disabled=false;}
@@ -794,7 +792,7 @@
     function loadFeatured(index){
         currentIndex=index; showState('loading');
         var img=document.getElementById('featured-img');
-        img.onload=function(){showState('image');}; img.onerror=function(){showState('error');};
+        img.onload=function(){showState('image'); setAnnotationDefaults(); prefetchAnnotationInsights(index);}; img.onerror=function(){showState('error');};
         img.src='https://drive.google.com/thumbnail?id='+imageLinks[index]+'&sz=w1200&_='+Date.now();
         document.querySelectorAll('.thumb').forEach(function(el,i){el.classList.toggle('active',i===index);});
         if(index===0&&imageLinks[0]){
@@ -1028,87 +1026,113 @@
     }
 
     /* ── ANNOTATION ── */
-    function csvDateToDisplay(csvDate) {
-        if (!csvDate || csvDate.length < 12) return '';
-        var d = csvDate.replace(/\D/g,'');
-        if (d.length < 12) return '';
-        return d.slice(6,8)+'.'+d.slice(4,6)+'.'+d.slice(0,4)+' '+d.slice(8,10)+':'+d.slice(10,12);
+    var sectionAiCache = {};
+    var sectionAiPending = {};
+    var sectionHints = {
+        'Patient Info': 'AI extracts the visible identity and exam details from this area.',
+        'Body Composition Analysis': 'AI summarizes water, protein, minerals, body fat, and weight findings from the chart.',
+        'Muscle-Fat Analysis': 'AI comments on the balance between muscle and fat as shown in the graph.',
+        'Obesity Analysis': 'AI interprets BMI and body fat related findings from the printed result.',
+        'Segmental Lean Analysis': 'AI reviews lean mass distribution by arm, leg, and trunk.',
+        'ECW Ratio Analysis': 'AI comments on visible extracellular water balance markers.',
+        'Body Composition History': 'AI summarizes trend or history visuals if they are readable.',
+        'InBody Score': 'AI explains the overall score and what it usually implies.',
+        'Visceral Fat Area': 'AI comments on abdominal fat risk shown in this panel.',
+        'Weight Control': 'AI interprets target weight and recommended change areas from the form.',
+        'Body Balance Evaluation': 'AI comments on symmetry or balance information visible here.',
+        'Segmental Fat Analysis': 'AI summarizes visible regional fat distribution.',
+        'Research Parameters': 'AI explains the advanced metrics visible in this section.',
+        'Whole Body Phase Angle': 'AI comments on cellular health indicators if they are readable.',
+        'Impedance': 'AI explains the impedance table in a simple way.'
+    };
+    function stripHtmlTags(html) {
+        return (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
     }
-    function normalizeDateKey(value) {
-        if (!value) return '';
-        var d = value.toString().replace(/\D/g,'');
-        return d.length >= 12 ? d.slice(0,12) : '';
+    function getCurrentImageAiUrl(index) {
+        return 'https://drive.google.com/thumbnail?id=' + imageLinks[index] + '&sz=w2000&_=' + Date.now();
     }
-    function displayDateToKey(value) {
-        if (!value) return '';
-        var parts = value.toString().trim().match(/^(\d{2})\.(\d{2})\.(\d{4})\s+(\d{2}):(\d{2})/);
-        if (!parts) return normalizeDateKey(value);
-        return parts[3] + parts[2] + parts[1] + parts[4] + parts[5];
+    function setAnnotationDefaults() {
+        document.querySelectorAll('.ann-zone').forEach(function(z) {
+            var title = z.dataset.title || '';
+            z.dataset.body = '';
+            z.dataset.hint = sectionHints[title] || 'Click for AI interpretation.';
+        });
     }
-    function findMeasurementForImage(imageIndex) {
-        if (!allMeasurements || allMeasurements.length === 0) return null;
-        var imgDate = imageDates[imageIndex];
-        if (!imgDate) return allMeasurements[0];
-        var imgKey = displayDateToKey(imgDate);
-        var fallback = null;
-        for (var i = 0; i < allMeasurements.length; i++) {
-            var m = allMeasurements[i];
-            var csvKey = normalizeDateKey(m['Test Date / Time'] || '');
-            var srcKey = normalizeDateKey(m['Source_File_Timestamp'] || '') || normalizeDateKey(m['Source_File'] || '');
-            if (srcKey && imgKey && srcKey === imgKey) return m;
-            if (csvKey && imgKey && csvKey === imgKey) return m;
-            if (!fallback && csvKey && imgKey && csvKey.slice(0,10) === imgKey.slice(0,10)) fallback = m;
-        }
-        return fallback || allMeasurements[0];
+    function getAnnotationPrompt(title) {
+        var langInstruction = currentLang === 'tr'
+            ? 'Yaniti Turkce ver. Kisa, net ve hasta dostu ol.'
+            : 'Respond in English. Keep it concise, clear, and client-friendly.';
+        return [
+            'You are reviewing an InBody result paper image.',
+            'Focus only on the section named: "' + title + '".',
+            'Read only what is visibly present in that section of the image.',
+            'Do not invent values. If a value is unreadable, say it is not clearly readable.',
+            'Give a short interpretation with 2-4 bullet points and one brief takeaway.',
+            'Use plain text/markdown only, no code fences.',
+            langInstruction
+        ].join(' ');
     }
-    function numVal(m, key) {
-        var v = m[key];
-        if (v === undefined || v === '' || v === '-') return 0;
-        return parseFloat(v.replace(',','.'))||0;
+    async function ensureAnnotationInsight(imageIndex, title) {
+        if (!imageLinks[imageIndex] || !title) return null;
+        var cacheKey = imageLinks[imageIndex] + '::' + title + '::' + currentLang;
+        if (sectionAiCache[cacheKey]) return sectionAiCache[cacheKey];
+        if (sectionAiPending[cacheKey]) return sectionAiPending[cacheKey];
+        sectionAiPending[cacheKey] = callGroqApi([{
+            role: 'user',
+            content: [
+                { type: 'image_url', image_url: { url: getCurrentImageAiUrl(imageIndex) } },
+                { type: 'text', text: getAnnotationPrompt(title) }
+            ]
+        }]).then(function(reply) {
+            var html = markdownToHtml(reply);
+            var payload = {
+                raw: reply,
+                html: html,
+                preview: stripHtmlTags(html).slice(0, 180) || (sectionHints[title] || '')
+            };
+            sectionAiCache[cacheKey] = payload;
+            return payload;
+        }).catch(function(err) {
+            var fallbackText = currentLang === 'tr'
+                ? 'Bu bolum icin AI yorumu su anda alinamadi. Lutfen tekrar deneyin.'
+                : 'AI insight for this section is unavailable right now. Please try again.';
+            var payload = {
+                raw: fallbackText,
+                html: '<div style="color:#94a3b8">' + fallbackText + '</div>',
+                preview: fallbackText
+            };
+            sectionAiCache[cacheKey] = payload;
+            return payload;
+        }).finally(function() {
+            delete sectionAiPending[cacheKey];
+        });
+        return sectionAiPending[cacheKey];
     }
-    function statusIcon(val, low, high) {
-        if (!low && !high) return '';
-        if (val < low) return ' <span style="color:#f59e0b">↓ Low</span>';
-        if (val > high) return ' <span style="color:#ef4444">↑ High</span>';
-        return ' <span style="color:#10b981">✓ Normal</span>';
-    }
-    function interpret(val, low, high, lowMsg, highMsg, normalMsg) {
-        if (val < low) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+lowMsg+'</div>';
-        if (val > high) return '<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ '+highMsg+'</div>';
-        return '<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ '+normalMsg+'</div>';
-    }
-    function updateAnnotationsFromCSV(imageIndex) {
-        var m = findMeasurementForImage(imageIndex);
-        if (!m) return;
-        var zones = document.querySelectorAll('.ann-zone');
-        zones.forEach(function(z) {
-            var title = z.dataset.title;
-            var body = '';
-            if (title === 'Patient Info') { body = '🪪 <strong>'+(m['Name']||m['ID']||'-')+'</strong><br>📏 '+m['Height']+' cm | 🎂 '+m['Age']+' yrs | ⚧ '+m['Gender']+'<br>📅 '+m['Test Date / Time']; }
-            else if (title === 'InBody Score') { var score=numVal(m,'InBody Score'); var sc=score>=80?'#10b981':score>=70?'#f59e0b':'#ef4444'; body='📊 <strong style="color:'+sc+';font-size:1.2rem">'+score+'/100</strong><br><br>👨 Men target: <strong>>80</strong><br>👩 Women target: <strong>>70</strong>'+interpret(score,70,100,'Low score — increase muscle mass','Great score!','Good score, keep it up!'); }
-            else if (title === 'Body Composition Analysis') { var tbw=numVal(m,'TBW (Total Body Water)'),tbwL=numVal(m,'Lower Limit (TBW Normal Range)'),tbwH=numVal(m,'Upper Limit (TBW Normal Range)'); var pro=numVal(m,'Protein'),proL=numVal(m,'Lower Limit (Protein Normal Range)'),proH=numVal(m,'Upper Limit (Protein Normal Range)'); var min=numVal(m,'Minerals'),minL=numVal(m,'Lower Limit (Minerals Normal Range)'),minH=numVal(m,'Upper Limit (Minerals Normal Range)'); var bfm=numVal(m,'BFM (Body Fat Mass)'),bfmL=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH=numVal(m,'Upper Limit (BFM Normal Range)'); var wt=numVal(m,'Weight'),wtL=numVal(m,'Lower Limit (Weight Normal Range)'),wtH=numVal(m,'Upper Limit (Weight Normal Range)'); body='💧 <strong>Body Water:</strong> '+tbw.toFixed(1)+' L ('+tbwL+'–'+tbwH+')'+statusIcon(tbw,tbwL,tbwH)+'<br>🧬 <strong>Protein:</strong> '+pro.toFixed(1)+' kg ('+proL+'–'+proH+')'+statusIcon(pro,proL,proH)+'<br>🦴 <strong>Minerals:</strong> '+min.toFixed(1)+' kg ('+minL+'–'+minH+')'+statusIcon(min,minL,minH)+'<br>🫀 <strong>Body Fat:</strong> '+bfm.toFixed(1)+' kg ('+bfmL+'–'+bfmH+')'+statusIcon(bfm,bfmL,bfmH)+'<br>⚖️ <strong>Weight:</strong> '+wt.toFixed(1)+' kg ('+wtL+'–'+wtH+')'+statusIcon(wt,wtL,wtH); }
-            else if (title === 'Muscle-Fat Analysis') { var smm=numVal(m,'SMM (Skeletal Muscle Mass)'),smmL=numVal(m,'Lower Limit (SMM Normal Range)'),smmH=numVal(m,'Upper Limit (SMM Normal Range)'); var bfm2=numVal(m,'BFM (Body Fat Mass)'),bfmL2=numVal(m,'Lower Limit (BFM Normal Range)'),bfmH2=numVal(m,'Upper Limit (BFM Normal Range)'); body='💪 <strong>Muscle (SMM):</strong> '+smm.toFixed(1)+' kg'+statusIcon(smm,smmL,smmH)+'<br>🫀 <strong>Body Fat:</strong> '+bfm2.toFixed(1)+' kg'+statusIcon(bfm2,bfmL2,bfmH2)+interpret(smm,smmL,smmH,'Low muscle mass — increase resistance training','Excellent muscle mass!','Muscle mass is in ideal range'); }
-            else if (title === 'Obesity Analysis') { var bmi=numVal(m,'BMI (Body Mass Index)'),bmiL=numVal(m,'Lower Limit (BMI Normal Range)'),bmiH=numVal(m,'Upper Limit (BMI Normal Range)'); var pbf=numVal(m,'PBF (Percent Body Fat)'),pbfL=numVal(m,'Lower Limit (PBF Normal Range)'),pbfH=numVal(m,'Upper Limit (PBF Normal Range)'); body='📏 <strong>BMI:</strong> '+bmi.toFixed(1)+' kg/m² ('+bmiL+'–'+bmiH+')'+statusIcon(bmi,bmiL,bmiH)+'<br>📉 <strong>Body Fat %:</strong> '+pbf.toFixed(1)+'% ('+pbfL+'–'+pbfH+')'+statusIcon(pbf,pbfL,pbfH)+interpret(pbf,pbfL,pbfH,'Body fat % is low','Body fat % is high — increase cardio','Body fat % is ideal'); }
-            else if (title === 'Visceral Fat Area') { var vfa=numVal(m,'VFA (Visceral Fat Area)'); var vfaStatus=vfa<100?'✅ Excellent! (<100 cm²)':vfa<150?'⚠️ Caution (100–150 cm²)':'🚨 High Risk (>150 cm²)'; body='🫃 <strong>Visceral Fat Area: '+vfa.toFixed(1)+' cm²</strong><br><br>'+vfaStatus+'<br><br>Normal: under 100 cm²'+(vfa>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Abdominal fat may pose metabolic health risks</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Visceral fat is at a healthy level</div>'); }
-            else if (title === 'Weight Control') { var wt2=numVal(m,'Weight'),tgt=numVal(m,'Target Weight'); var wCtrl=numVal(m,'Weight Control'),bfCtrl=numVal(m,'BFM Control'),mCtrl=numVal(m,'FFM Control'); body='🎯 <strong>Current:</strong> '+wt2.toFixed(1)+' kg → <strong>Target:</strong> '+tgt.toFixed(1)+' kg<br><br>Weight Δ: <strong style="color:'+(wCtrl>=0?'#10b981':'#ef4444')+'">'+(wCtrl>=0?'+':'')+wCtrl.toFixed(1)+' kg</strong><br>Fat Δ: <strong style="color:#3b82f6">'+(bfCtrl>=0?'+':'')+bfCtrl.toFixed(1)+' kg</strong><br>Muscle Δ: <strong style="color:#10b981">'+(mCtrl>=0?'+':'')+mCtrl.toFixed(1)+' kg</strong>'+(Math.abs(wt2-tgt)<1?'<div style="margin-top:8px;padding:8px 10px;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.75rem;color:#10b981">✓ Very close to target weight!</div>':wt2>tgt?'<div style="margin-top:8px;padding:8px 10px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:#f59e0b">⚠️ '+(wt2-tgt).toFixed(1)+' kg above target weight</div>':'<div style="margin-top:8px;padding:8px 10px;background:rgba(59,130,246,0.1);border-radius:8px;font-size:0.75rem;color:#3b82f6">↑ '+(tgt-wt2).toFixed(1)+' kg below target weight</div>'); }
-            else if (title === 'Body Balance Evaluation') { body='⚖️ Body symmetry evaluation:<br><br>Upper: <strong>'+(m['Body Balance Evaluation Upper']||'–')+'</strong><br>Lower: <strong>'+(m['Body Balance Evaluation Lower']||'–')+'</strong>'; }
-            else if (title === 'Segmental Lean Analysis') { var ra=numVal(m,'FFM of Right Arm'),raP=numVal(m,'FFM% of Right Arm'); var la=numVal(m,'FFM of Left Arm'),laP=numVal(m,'FFM% of Left Arm'); var tr=numVal(m,'FFM of Trunk'),trP=numVal(m,'FFM% of Trunk'); var rl=numVal(m,'FFM of Right Leg'),rlP=numVal(m,'FFM% of Right Leg'); var ll=numVal(m,'FFM of Left Leg'),llP=numVal(m,'FFM% of Left Leg'); function pStr(p){return '<span style="color:'+(p>=100?'#10b981':p>=80?'#f59e0b':'#ef4444')+'">'+p.toFixed(1)+'%</span>';} body='🦾 Lean mass per segment (100% = ideal):<br><br>Right Arm: '+ra.toFixed(2)+' kg — '+pStr(raP)+'<br>Left Arm: '+la.toFixed(2)+' kg — '+pStr(laP)+'<br>Trunk: '+tr.toFixed(2)+' kg — '+pStr(trP)+'<br>Right Leg: '+rl.toFixed(2)+' kg — '+pStr(rlP)+'<br>Left Leg: '+ll.toFixed(2)+' kg — '+pStr(llP); }
-            else if (title === 'Segmental Fat Analysis') { var raF=numVal(m,'BFM of Right Arm'),raFP=numVal(m,'BFM% of Right Arm'); var laF=numVal(m,'BFM of Left Arm'),laFP=numVal(m,'BFM% of Left Arm'); var trF=numVal(m,'BFM of Trunk'),trFP=numVal(m,'BFM% of Trunk'); var rlF=numVal(m,'BFM of Right Leg'),rlFP=numVal(m,'BFM% of Right Leg'); var llF=numVal(m,'BFM of Left Leg'),llFP=numVal(m,'BFM% of Left Leg'); body='🫀 Fat per segment:<br><br>Right Arm: '+raF.toFixed(2)+' kg ('+raFP.toFixed(1)+'%)<br>Left Arm: '+laF.toFixed(2)+' kg ('+laFP.toFixed(1)+'%)<br>Trunk: '+trF.toFixed(2)+' kg <span style="color:'+(trFP>100?'#ef4444':'#10b981')+'">('+trFP.toFixed(1)+'%)</span><br>Right Leg: '+rlF.toFixed(2)+' kg ('+rlFP.toFixed(1)+'%)<br>Left Leg: '+llF.toFixed(2)+' kg ('+llFP.toFixed(1)+'%)'+(trFP>100?'<div style="margin-top:8px;padding:8px 10px;background:rgba(239,68,68,0.1);border-radius:8px;font-size:0.75rem;color:#ef4444">⚠️ Trunk fat is above ideal</div>':''); }
-            else if (title === 'ECW Ratio Analysis') { var ecw=numVal(m,'ECW/TBW'); body='💦 <strong>ECW/TBW: '+ecw.toFixed(3)+'</strong><br><br>Normal: 0.360–0.390'+interpret(ecw,0.360,0.390,'Intracellular fluid is low','Risk of edema or inflammation — consult a doctor','Fluid balance is normal'); }
-            else if (title === 'Research Parameters') { var bmr=numVal(m,'BMR (Basal Metabolic Rate)'),bmrL=numVal(m,'Lower Limit (BMR Normal Range)'),bmrH=numVal(m,'Upper Limit (BMR Normal Range)'); var whr=numVal(m,'WHR (Waist-Hip Ratio)'),whrL=numVal(m,'Lower Limit (WHR Normal Range)'),whrH=numVal(m,'Upper Limit (WHR Normal Range)'); body='🔬 Research parameters:<br><br>🔥 <strong>BMR:</strong> '+bmr+' kcal'+statusIcon(bmr,bmrL,bmrH)+'<br>📐 <strong>WHR:</strong> '+whr.toFixed(2)+statusIcon(whr,whrL,whrH)+'<br>🧬 <strong>Body Cell Mass:</strong> '+numVal(m,'BCM (Body Cell Mass)').toFixed(1)+' kg<br>📏 <strong>SMI:</strong> '+numVal(m,'SMI (Skeletal Muscle Index)').toFixed(1)+' kg/m²<br>🍽️ <strong>Rec. Calories:</strong> '+numVal(m,'Recommended Calorie Intake')+' kcal'; }
-            else if (title === 'Whole Body Phase Angle') { var pa=numVal(m,'50kHz-Whole Body Phase Angle'); if (!pa) pa=numVal(m,'Whole Body Phase Angle'); body='⚡ <strong>Phase Angle: '+pa.toFixed(1)+'°</strong><br><br>Men normal: 5.0–7.5°<br>Women normal: 4.5–6.5°'+interpret(pa,5.0,7.5,'Weak cell health — improve nutrition and hydration','Excellent cell health!','Cell health is good'); }
-            else if (title === 'Body Composition History') { body='📈 Latest measurement:<br><br>⚖️ <strong>Weight:</strong> '+numVal(m,'Weight').toFixed(1)+' kg<br>💪 <strong>Muscle:</strong> '+numVal(m,'SMM (Skeletal Muscle Mass)').toFixed(1)+' kg<br>🫀 <strong>Body Fat:</strong> '+numVal(m,'PBF (Percent Body Fat)').toFixed(1)+'%'; }
-            else if (title === 'Impedance') { body='📡 Bioelectrical impedance (Ω):<br><br>1kHz RA: '+(m['1kHz-RA Impedance']||'–')+' | LA: '+(m['1kHz-LA Impedance']||'–')+'<br>50kHz RA: '+(m['50kHz-RA Impedance']||'–')+' | LA: '+(m['50kHz-LA Impedance']||'–'); }
-            if (body) { z.dataset.body = body; z.dataset.hint = body; }
+    function prefetchAnnotationInsights(imageIndex) {
+        ['Patient Info','InBody Score','Body Composition Analysis','Weight Control'].forEach(function(title) {
+            ensureAnnotationInsight(imageIndex, title).then(function(payload) {
+                var zone = document.querySelector('.ann-zone[data-title="' + title + '"]');
+                if (zone && payload) {
+                    zone.dataset.body = payload.html;
+                    zone.dataset.hint = payload.preview;
+                }
+            });
         });
     }
     function showAnnPreview(e, el) {
-        updateAnnotationsFromCSV(currentIndex);
         var box = document.getElementById('ann-preview-box');
         document.getElementById('ann-preview-title').textContent = el.dataset.title || '';
-        document.getElementById('ann-preview-hint').innerHTML = el.dataset.body || el.dataset.title || '';
+        document.getElementById('ann-preview-hint').innerHTML = el.dataset.hint || el.dataset.title || '';
         box.style.display = 'block';
         moveAnnPreview(e);
+        ensureAnnotationInsight(currentIndex, el.dataset.title).then(function(payload) {
+            if (!payload) return;
+            el.dataset.body = payload.html;
+            el.dataset.hint = payload.preview;
+            if (document.getElementById('ann-preview-title').textContent === (el.dataset.title || '')) {
+                document.getElementById('ann-preview-hint').innerHTML = payload.preview;
+            }
+        });
     }
     function hideAnnPreview() { document.getElementById('ann-preview-box').style.display = 'none'; }
     function moveAnnPreview(e) {
@@ -1118,14 +1142,12 @@
         if (y < 8) y = e.clientY + 14;
         box.style.left = x + 'px'; box.style.top = y + 'px';
     }
-    function showAnnPopup(e, title, body) {
+    async function showAnnPopup(e, title, body) {
         e.stopPropagation();
-        updateAnnotationsFromCSV(currentIndex);
         document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
         e.currentTarget.classList.add('active');
-        var freshBody = e.currentTarget.dataset.body || '';
         document.getElementById('ann-popup-title').textContent = title;
-        document.getElementById('ann-popup-body').innerHTML = freshBody;
+        document.getElementById('ann-popup-body').innerHTML = '<div style="color:#94a3b8">Analyzing this section with AI...</div>';
         var popup = document.getElementById('ann-popup');
         popup.style.display = 'block';
         hideAnnPreview();
@@ -1137,6 +1159,12 @@
         if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
         if (top < 8) top = rect.bottom + 10;
         popup.style.left = left + 'px'; popup.style.top = top + 'px';
+        var payload = await ensureAnnotationInsight(currentIndex, title);
+        if (payload && document.getElementById('ann-popup-title').textContent === title) {
+            e.currentTarget.dataset.body = payload.html;
+            e.currentTarget.dataset.hint = payload.preview;
+            document.getElementById('ann-popup-body').innerHTML = payload.html;
+        }
     }
     function closeAnnPopup() {
         document.getElementById('ann-popup').style.display = 'none';
@@ -1147,10 +1175,7 @@
         if (popup && popup.style.display !== 'none' && !popup.contains(e.target) && !e.target.closest('.ann-zone')) closeAnnPopup();
     });
 
-    async function resultsGetirSilent() {
-        await loadAllMeasurements();
-        updateAnnotationsFromCSV(currentIndex);
-    }
+    async function resultsGetirSilent() {}
 
     /* ── GROQ AI ANALYSIS (multi-turn chat) ── */
     const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
@@ -1601,7 +1626,7 @@ Be motivating, clear and professional. Use bullet points where helpful.`;
             if (allMeasurements.length === 0) { document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; return; }
             currentMeasIdx=0; resultData=allMeasurements[0];
             buildMeasurementPills(); renderResults();
-            updateAnnotationsFromCSV(currentIndex);
+            setAnnotationDefaults();
         } catch(e) { console.error('Results error:',e); document.getElementById('results-loading').style.display='none'; document.getElementById('results-empty').style.display='flex'; }
     }
 
