@@ -1051,6 +1051,26 @@
     function getCurrentImageAiUrl(index) {
         return 'https://drive.google.com/thumbnail?id=' + imageLinks[index] + '&sz=w2000&_=' + Date.now();
     }
+    async function urlToBase64(url) {
+        var response = await fetch(url);
+        if (!response.ok) throw new Error('Image fetch failed: HTTP ' + response.status);
+        var blob = await response.blob();
+        return await fileToBase64(blob);
+    }
+    async function getCurrentImageAiDataUrl(index) {
+        var featured = document.getElementById('featured-img');
+        var directSrc = featured && featured.src ? featured.src : '';
+        var candidates = [directSrc, getCurrentImageAiUrl(index)].filter(Boolean);
+        var lastError = null;
+        for (var i = 0; i < candidates.length; i++) {
+            try {
+                return await urlToBase64(candidates[i]);
+            } catch (err) {
+                lastError = err;
+            }
+        }
+        throw lastError || new Error('Image could not be prepared for AI analysis.');
+    }
     function setAnnotationDefaults() {
         document.querySelectorAll('.ann-zone').forEach(function(z) {
             var title = z.dataset.title || '';
@@ -1067,6 +1087,9 @@
             'Focus only on the section named: "' + title + '".',
             'Read only what is visibly present in that section of the image.',
             'Do not invent values. If a value is unreadable, say it is not clearly readable.',
+            'When possible, list the visible values first.',
+            'Then say whether the visible findings look good, normal, need attention, or are unclear.',
+            'Include practical feedback such as good / caution / needs improvement based only on what can be read.',
             'Give a short interpretation with 2-4 bullet points and one brief takeaway.',
             'Use plain text/markdown only, no code fences.',
             langInstruction
@@ -1077,13 +1100,15 @@
         var cacheKey = imageLinks[imageIndex] + '::' + title + '::' + currentLang;
         if (sectionAiCache[cacheKey]) return sectionAiCache[cacheKey];
         if (sectionAiPending[cacheKey]) return sectionAiPending[cacheKey];
-        sectionAiPending[cacheKey] = callGroqApi([{
-            role: 'user',
-            content: [
-                { type: 'image_url', image_url: { url: getCurrentImageAiUrl(imageIndex) } },
-                { type: 'text', text: getAnnotationPrompt(title) }
-            ]
-        }]).then(function(reply) {
+        sectionAiPending[cacheKey] = getCurrentImageAiDataUrl(imageIndex).then(function(dataUrl) {
+            return callGroqApi([{
+                role: 'user',
+                content: [
+                    { type: 'image_url', image_url: { url: dataUrl } },
+                    { type: 'text', text: getAnnotationPrompt(title) }
+                ]
+            }]);
+        }).then(function(reply) {
             var html = markdownToHtml(reply);
             var payload = {
                 raw: reply,
@@ -1093,9 +1118,10 @@
             sectionAiCache[cacheKey] = payload;
             return payload;
         }).catch(function(err) {
+            console.error('Section AI failed for', title, err);
             var fallbackText = currentLang === 'tr'
-                ? 'Bu bolum icin AI yorumu su anda alinamadi. Lutfen tekrar deneyin.'
-                : 'AI insight for this section is unavailable right now. Please try again.';
+                ? 'Bu bolum su anda analiz edilemedi. Gorsel okunamadi veya AI servisi yanit vermedi. Lutfen tekrar deneyin.'
+                : 'This section could not be analyzed right now. The image was unreadable or the AI service did not respond. Please try again.';
             var payload = {
                 raw: fallbackText,
                 html: '<div style="color:#94a3b8">' + fallbackText + '</div>',
@@ -1147,7 +1173,7 @@
         document.querySelectorAll('.ann-zone').forEach(function(z){ z.classList.remove('active'); });
         e.currentTarget.classList.add('active');
         document.getElementById('ann-popup-title').textContent = title;
-        document.getElementById('ann-popup-body').innerHTML = '<div style="color:#94a3b8">Analyzing this section with AI...</div>';
+        document.getElementById('ann-popup-body').innerHTML = '<div style="color:#94a3b8">' + (currentLang === 'tr' ? 'Bu bolum AI ile analiz ediliyor...' : 'Analyzing this section with AI...') + '</div>';
         var popup = document.getElementById('ann-popup');
         popup.style.display = 'block';
         hideAnnPreview();
