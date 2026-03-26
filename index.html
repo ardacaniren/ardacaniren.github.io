@@ -577,6 +577,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <!-- PDF.js for text extraction from PDFs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <script>
     const INBODY_SHEET_ID = '11DTz5vnxgaTcYl3yTDRUW6PyOrXhnXWOgBovZxMVicY';
@@ -1028,6 +1029,8 @@
     /* ── ANNOTATION ── */
     var sectionAiCache = {};
     var sectionAiPending = {};
+    var sectionOcrCache = {};
+    var sectionOcrPending = {};
     var sectionHints = {
         'Patient Info': 'AI extracts the visible identity and exam details from this area.',
         'Body Composition Analysis': 'AI summarizes water, protein, minerals, body fat, and weight findings from the chart.',
@@ -1047,6 +1050,9 @@
     };
     function stripHtmlTags(html) {
         return (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+    function escInlineHtml(text) {
+        return (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
     function getCurrentImageAiUrl(index) {
         return 'https://drive.google.com/thumbnail?id=' + imageLinks[index] + '&sz=w2000&_=' + Date.now();
@@ -1077,6 +1083,135 @@
             z.dataset.body = '';
             z.dataset.hint = sectionHints[title] || 'Click for AI interpretation.';
         });
+    }
+    function parsePercentStyle(styleText, key) {
+        var match = (styleText || '').match(new RegExp(key + '\\s*:\\s*([\\d.]+)%', 'i'));
+        return match ? parseFloat(match[1]) : 0;
+    }
+    async function getSectionCropDataUrl(imageIndex, title) {
+        var cacheKey = imageLinks[imageIndex] + '::crop::' + title;
+        if (sectionOcrCache[cacheKey] && sectionOcrCache[cacheKey].crop) return sectionOcrCache[cacheKey].crop;
+        var zone = document.querySelector('.ann-zone[data-title="' + title + '"]');
+        if (!zone) throw new Error('Zone not found');
+        var src = await getCurrentImageAiDataUrl(imageIndex);
+        var img = new Image();
+        await new Promise(function(resolve, reject) {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = src;
+        });
+        var styleText = zone.getAttribute('style') || '';
+        var leftPct = parsePercentStyle(styleText, 'left');
+        var rightPct = parsePercentStyle(styleText, 'right');
+        var topPct = parsePercentStyle(styleText, 'top');
+        var widthPct = parsePercentStyle(styleText, 'width');
+        var heightPct = parsePercentStyle(styleText, 'height');
+        var sx = leftPct ? img.width * leftPct / 100 : img.width * (100 - rightPct - widthPct) / 100;
+        var sy = img.height * topPct / 100;
+        var sw = img.width * widthPct / 100;
+        var sh = img.height * heightPct / 100;
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.max(200, Math.round(sw * 2));
+        canvas.height = Math.max(120, Math.round(sh * 2));
+        var ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.filter = 'contrast(1.25) grayscale(1)';
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+        var dataUrl = canvas.toDataURL('image/png');
+        sectionOcrCache[cacheKey] = sectionOcrCache[cacheKey] || {};
+        sectionOcrCache[cacheKey].crop = dataUrl;
+        return dataUrl;
+    }
+    function normalizeOcrText(text) {
+        return (text || '')
+            .replace(/[|]/g, ' ')
+            .replace(/[^\S\r\n]+/g, ' ')
+            .replace(/\n{2,}/g, '\n')
+            .trim();
+    }
+    function findFirstNumber(text, pattern) {
+        var match = text.match(pattern);
+        return match ? match[1] : '';
+    }
+    function scoreLabel(value, goodMin, warnMin) {
+        if (!value && value !== 0) return currentLang === 'tr' ? 'Belirsiz' : 'Unclear';
+        if (value >= goodMin) return currentLang === 'tr' ? 'Iyi' : 'Good';
+        if (value >= warnMin) return currentLang === 'tr' ? 'Normal / takip edilmeli' : 'Normal / monitor';
+        return currentLang === 'tr' ? 'Dikkat gerekli' : 'Needs attention';
+    }
+    function buildOcrInsight(title, text) {
+        var clean = normalizeOcrText(text);
+        var lines = clean.split('\n').map(function(x){ return x.trim(); }).filter(Boolean);
+        var html = '';
+        if (title === 'Patient Info') {
+            var id = findFirstNumber(clean, /(?:Kimlik|ID)\s*([A-Za-z0-9-]+)/i);
+            var height = findFirstNumber(clean, /(\d{2,3})\s*cm/i);
+            var age = findFirstNumber(clean, /(?:Ya[şs]|Age)\s*(\d{1,3})/i);
+            var gender = /Erkek|Male/i.test(clean) ? (currentLang === 'tr' ? 'Erkek' : 'Male') : (/Kad[ıi]n|Female/i.test(clean) ? (currentLang === 'tr' ? 'Kadin' : 'Female') : '');
+            var dateMatch = clean.match(/(\d{2}\.\d{2}\.\d{4})\s*(\d{1,2}:\d{2})?/);
+            html = '<strong>' + (currentLang === 'tr' ? 'Hasta Bilgileri' : 'Patient Info') + '</strong><br>' +
+                (id ? 'ID: ' + escInlineHtml(id) + '<br>' : '') +
+                (height ? (currentLang === 'tr' ? 'Boy' : 'Height') + ': ' + escInlineHtml(height) + ' cm<br>' : '') +
+                (age ? (currentLang === 'tr' ? 'Yas' : 'Age') + ': ' + escInlineHtml(age) + '<br>' : '') +
+                (gender ? (currentLang === 'tr' ? 'Cinsiyet' : 'Gender') + ': ' + escInlineHtml(gender) + '<br>' : '') +
+                (dateMatch ? (currentLang === 'tr' ? 'Test' : 'Test') + ': ' + escInlineHtml(dateMatch[0]) + '<br>' : '') +
+                '<div style="margin-top:8px;color:#94a3b8">' + (currentLang === 'tr' ? 'Gorunen bilgiler rapor ustunden okundu.' : 'Visible details were read from the report image.') + '</div>';
+        } else if (title === 'InBody Score') {
+            var score = parseFloat(findFirstNumber(clean, /(\d{2,3}(?:[.,]\d+)?)\s*\/\s*100/i).replace(',','.'));
+            html = '<strong>InBody Score</strong><br>' +
+                (score ? 'Score: <strong>' + score + '/100</strong><br>' : '') +
+                '<div style="margin-top:8px;color:' + (score >= 80 ? '#10b981' : score >= 70 ? '#f59e0b' : '#ef4444') + '">' +
+                scoreLabel(score, 80, 70) + '</div>';
+        } else if (title === 'Obesity Analysis' || title === 'Weight Control') {
+            var bmi = parseFloat(findFirstNumber(clean, /(?:BKI|BMI)[^\d]*(\d{1,2}[.,]\d)/i).replace(',','.'));
+            var pbf = parseFloat(findFirstNumber(clean, /(?:VYO|PBF)[^\d]*(\d{1,2}[.,]\d)/i).replace(',','.'));
+            var weight = parseFloat(findFirstNumber(clean, /(?:A[gğ]irlik|Weight)[^\d]*(\d{2,3}[.,]\d)/i).replace(',','.'));
+            var target = parseFloat(findFirstNumber(clean, /Hedef A[gğ]irlik[^\d]*(\d{2,3}[.,]\d)/i).replace(',','.'));
+            html = '<strong>' + escInlineHtml(title) + '</strong><br>' +
+                (weight ? ((currentLang === 'tr' ? 'Kilo' : 'Weight') + ': <strong>' + weight + ' kg</strong><br>') : '') +
+                (target ? ((currentLang === 'tr' ? 'Hedef' : 'Target') + ': ' + target + ' kg<br>') : '') +
+                (bmi ? ('BMI: <strong>' + bmi + '</strong> - <span style="color:' + (bmi < 18.5 ? '#f59e0b' : bmi < 25 ? '#10b981' : bmi < 30 ? '#f59e0b' : '#ef4444') + '">' + (bmi < 18.5 ? (currentLang === 'tr' ? 'Dusuk' : 'Low') : bmi < 25 ? (currentLang === 'tr' ? 'Normal' : 'Normal') : bmi < 30 ? (currentLang === 'tr' ? 'Biraz yuksek' : 'Slightly high') : (currentLang === 'tr' ? 'Yuksek' : 'High')) + '</span><br>') : '') +
+                (pbf ? ((currentLang === 'tr' ? 'Yag orani' : 'Body fat') + ': <strong>' + pbf + '%</strong><br>') : '') +
+                '<div style="margin-top:8px;color:#94a3b8">' + (currentLang === 'tr' ? 'Bu yorum gorunen BMI/kilo alanina gore olusturuldu.' : 'This summary is based on the visible BMI/weight section.') + '</div>';
+        } else if (title === 'Body Composition Analysis') {
+            var water = parseFloat(findFirstNumber(clean, /(?:Toplam Vucut Suyu|Body Water|Vucut suyu)[^\d]*(\d{1,2}[.,]\d)/i).replace(',','.'));
+            var protein = parseFloat(findFirstNumber(clean, /Protein[^\d]*(\d{1,2}[.,]\d)/i).replace(',','.'));
+            var mineral = parseFloat(findFirstNumber(clean, /Mineral[^\d]*(\d{1,2}[.,]\d)/i).replace(',','.'));
+            var fatMass = parseFloat(findFirstNumber(clean, /(?:Vucut Ya[gğ] A[gğ]irli[gğ]i|Body Fat Mass)[^\d]*(\d{1,2}[.,]\d)/i).replace(',','.'));
+            var totalWeight = parseFloat(findFirstNumber(clean, /(?:A[gğ]irlik|Weight)[^\d]*(\d{2,3}[.,]\d)/i).replace(',','.'));
+            html = '<strong>' + (currentLang === 'tr' ? 'Vucut Kompozisyonu' : 'Body Composition') + '</strong><br>' +
+                (water ? (currentLang === 'tr' ? 'Su' : 'Water') + ': ' + water + ' L<br>' : '') +
+                (protein ? (currentLang === 'tr' ? 'Protein' : 'Protein') + ': ' + protein + ' kg<br>' : '') +
+                (mineral ? (currentLang === 'tr' ? 'Mineral' : 'Mineral') + ': ' + mineral + ' kg<br>' : '') +
+                (fatMass ? (currentLang === 'tr' ? 'Yag kutlesi' : 'Fat mass') + ': ' + fatMass + ' kg<br>' : '') +
+                (totalWeight ? (currentLang === 'tr' ? 'Kilo' : 'Weight') + ': ' + totalWeight + ' kg<br>' : '') +
+                '<div style="margin-top:8px;color:#94a3b8">' + (currentLang === 'tr' ? 'Net yorum icin AI ve OCR birlikte kullanildi.' : 'This section uses OCR-first extraction for fast reading.') + '</div>';
+        } else {
+            html = '<strong>' + escInlineHtml(title) + '</strong><br><div style="font-size:0.78rem;line-height:1.6">' + escInlineHtml(lines.slice(0, 8).join(' | ')) + '</div>';
+        }
+        return {
+            raw: clean,
+            html: html,
+            preview: stripHtmlTags(html).slice(0, 180) || (sectionHints[title] || '')
+        };
+    }
+    async function ensureSectionOcrInsight(imageIndex, title) {
+        var cacheKey = imageLinks[imageIndex] + '::ocr::' + title + '::' + currentLang;
+        if (sectionOcrCache[cacheKey] && sectionOcrCache[cacheKey].payload) return sectionOcrCache[cacheKey].payload;
+        if (sectionOcrPending[cacheKey]) return sectionOcrPending[cacheKey];
+        sectionOcrPending[cacheKey] = getSectionCropDataUrl(imageIndex, title).then(function(cropDataUrl) {
+            if (typeof Tesseract === 'undefined') throw new Error('Tesseract not loaded');
+            return Tesseract.recognize(cropDataUrl, 'eng', {
+                logger: function(){},
+            });
+        }).then(function(result) {
+            var payload = buildOcrInsight(title, (result.data && result.data.text) || '');
+            sectionOcrCache[cacheKey] = { payload: payload };
+            return payload;
+        }).finally(function() {
+            delete sectionOcrPending[cacheKey];
+        });
+        return sectionOcrPending[cacheKey];
     }
     function getAnnotationPrompt(title) {
         var langInstruction = currentLang === 'tr'
@@ -1119,16 +1254,19 @@
             return payload;
         }).catch(function(err) {
             console.error('Section AI failed for', title, err);
-            var fallbackText = currentLang === 'tr'
-                ? 'Bu bolum su anda analiz edilemedi. Gorsel okunamadi veya AI servisi yanit vermedi. Lutfen tekrar deneyin.'
-                : 'This section could not be analyzed right now. The image was unreadable or the AI service did not respond. Please try again.';
-            var payload = {
-                raw: fallbackText,
-                html: '<div style="color:#94a3b8">' + fallbackText + '</div>',
-                preview: fallbackText
-            };
-            sectionAiCache[cacheKey] = payload;
-            return payload;
+            return ensureSectionOcrInsight(imageIndex, title).catch(function(ocrErr) {
+                console.error('Section OCR failed for', title, ocrErr);
+                var fallbackText = currentLang === 'tr'
+                    ? 'Bu bolum su anda analiz edilemedi. AI ve OCR okumasi basarisiz oldu.'
+                    : 'This section could not be analyzed right now. Both AI and OCR failed.';
+                var payload = {
+                    raw: fallbackText,
+                    html: '<div style="color:#94a3b8">' + fallbackText + '</div>',
+                    preview: fallbackText
+                };
+                sectionAiCache[cacheKey] = payload;
+                return payload;
+            });
         }).finally(function() {
             delete sectionAiPending[cacheKey];
         });
