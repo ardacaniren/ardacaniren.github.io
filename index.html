@@ -793,6 +793,7 @@
     function loadFeatured(index){
         currentIndex=index; showState('loading');
         var img=document.getElementById('featured-img');
+        img.crossOrigin='anonymous';
         img.onload=function(){showState('image'); setAnnotationDefaults(); prefetchAnnotationInsights(index);}; img.onerror=function(){showState('error');};
         img.src='https://drive.google.com/thumbnail?id='+imageLinks[index]+'&sz=w1200&_='+Date.now();
         document.querySelectorAll('.thumb').forEach(function(el,i){el.classList.toggle('active',i===index);});
@@ -1093,13 +1094,17 @@
         if (sectionOcrCache[cacheKey] && sectionOcrCache[cacheKey].crop) return sectionOcrCache[cacheKey].crop;
         var zone = document.querySelector('.ann-zone[data-title="' + title + '"]');
         if (!zone) throw new Error('Zone not found');
-        var src = await getCurrentImageAiDataUrl(imageIndex);
-        var img = new Image();
-        await new Promise(function(resolve, reject) {
-            img.onload = resolve;
-            img.onerror = reject;
-            img.src = src;
-        });
+        var featured = document.getElementById('featured-img');
+        var img = featured;
+        if (!img || !img.naturalWidth || !img.naturalHeight) {
+            var src = await getCurrentImageAiDataUrl(imageIndex);
+            img = new Image();
+            await new Promise(function(resolve, reject) {
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = src;
+            });
+        }
         var styleText = zone.getAttribute('style') || '';
         var leftPct = parsePercentStyle(styleText, 'left');
         var rightPct = parsePercentStyle(styleText, 'right');
@@ -1117,7 +1122,21 @@
         ctx.imageSmoothingEnabled = false;
         ctx.filter = 'contrast(1.25) grayscale(1)';
         ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-        var dataUrl = canvas.toDataURL('image/png');
+        var dataUrl = '';
+        try {
+            dataUrl = canvas.toDataURL('image/png');
+        } catch (err) {
+            var src2 = await getCurrentImageAiDataUrl(imageIndex);
+            var tmp = new Image();
+            await new Promise(function(resolve, reject) {
+                tmp.onload = resolve;
+                tmp.onerror = reject;
+                tmp.src = src2;
+            });
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.drawImage(tmp, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+            dataUrl = canvas.toDataURL('image/png');
+        }
         sectionOcrCache[cacheKey] = sectionOcrCache[cacheKey] || {};
         sectionOcrCache[cacheKey].crop = dataUrl;
         return dataUrl;
@@ -1218,9 +1237,9 @@
             ? 'Yaniti Turkce ver. Kisa, net ve hasta dostu ol.'
             : 'Respond in English. Keep it concise, clear, and client-friendly.';
         return [
-            'You are reviewing an InBody result paper image.',
-            'Focus only on the section named: "' + title + '".',
-            'Read only what is visibly present in that section of the image.',
+            'You are reviewing a cropped section from an InBody result paper.',
+            'The image already contains only the section named: "' + title + '".',
+            'Read only what is visibly present in this cropped section.',
             'Do not invent values. If a value is unreadable, say it is not clearly readable.',
             'When possible, list the visible values first.',
             'Then say whether the visible findings look good, normal, need attention, or are unclear.',
@@ -1235,7 +1254,7 @@
         var cacheKey = imageLinks[imageIndex] + '::' + title + '::' + currentLang;
         if (sectionAiCache[cacheKey]) return sectionAiCache[cacheKey];
         if (sectionAiPending[cacheKey]) return sectionAiPending[cacheKey];
-        sectionAiPending[cacheKey] = getCurrentImageAiDataUrl(imageIndex).then(function(dataUrl) {
+        sectionAiPending[cacheKey] = getSectionCropDataUrl(imageIndex, title).then(function(dataUrl) {
             return callGroqApi([{
                 role: 'user',
                 content: [
