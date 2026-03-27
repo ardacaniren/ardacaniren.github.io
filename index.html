@@ -1028,8 +1028,6 @@
     /* ── ANNOTATION ── */
     var sectionAiCache = {};
     var sectionAiPending = {};
-    var sectionOcrCache = {};
-    var sectionOcrPending = {};
     var sectionHints = {
         'Patient Info': 'AI extracts the visible identity and exam details from this area.',
         'Body Composition Analysis': 'AI summarizes water, protein, minerals, body fat, and weight findings from the chart.',
@@ -1053,28 +1051,13 @@
     function escInlineHtml(text) {
         return (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
-    function getCurrentImageAiUrl(index) {
-        return 'https://drive.google.com/thumbnail?id=' + imageLinks[index] + '&sz=w2000&_=' + Date.now();
-    }
-    async function urlToBase64(url) {
-        var response = await fetch(url);
-        if (!response.ok) throw new Error('Image fetch failed: HTTP ' + response.status);
-        var blob = await response.blob();
-        return await fileToBase64(blob);
-    }
     async function getCurrentImageAiDataUrl(index) {
-        var featured = document.getElementById('featured-img');
-        var directSrc = featured && featured.src ? featured.src : '';
-        var candidates = [directSrc, getCurrentImageAiUrl(index)].filter(Boolean);
-        var lastError = null;
-        for (var i = 0; i < candidates.length; i++) {
-            try {
-                return await urlToBase64(candidates[i]);
-            } catch (err) {
-                lastError = err;
-            }
-        }
-        throw lastError || new Error('Image could not be prepared for AI analysis.');
+        var fileId = imageLinks[index];
+        if (!fileId) throw new Error('Image file id not found.');
+        var response = await fetch(DRIVE_IMAGE_PROXY_URL + '?action=image&id=' + encodeURIComponent(fileId) + '&_=' + Date.now());
+        var data = await response.json();
+        if (!data.ok || !data.dataUrl) throw new Error(data.error || 'Proxy image load failed.');
+        return data.dataUrl;
     }
     function setAnnotationDefaults() {
         document.querySelectorAll('.ann-zone').forEach(function(z) {
@@ -1088,21 +1071,17 @@
         return match ? parseFloat(match[1]) : 0;
     }
     async function getSectionCropDataUrl(imageIndex, title) {
-        var cacheKey = imageLinks[imageIndex] + '::crop::' + title;
-        if (sectionOcrCache[cacheKey] && sectionOcrCache[cacheKey].crop) return sectionOcrCache[cacheKey].crop;
+        var cacheKey = imageLinks[imageIndex] + '::crop::' + title + '::' + currentLang;
+        if (sectionAiCache[cacheKey] && sectionAiCache[cacheKey].cropDataUrl) return sectionAiCache[cacheKey].cropDataUrl;
         var zone = document.querySelector('.ann-zone[data-title="' + title + '"]');
         if (!zone) throw new Error('Zone not found');
-        var featured = document.getElementById('featured-img');
-        var img = featured;
-        if (!img || !img.naturalWidth || !img.naturalHeight) {
-            var src = await getCurrentImageAiDataUrl(imageIndex);
-            img = new Image();
-            await new Promise(function(resolve, reject) {
-                img.onload = resolve;
-                img.onerror = reject;
-                img.src = src;
-            });
-        }
+        var src = await getCurrentImageAiDataUrl(imageIndex);
+        var img = new Image();
+        await new Promise(function(resolve, reject) {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = src;
+        });
         var styleText = zone.getAttribute('style') || '';
         var leftPct = parsePercentStyle(styleText, 'left');
         var rightPct = parsePercentStyle(styleText, 'right');
@@ -1114,30 +1093,13 @@
         var sw = img.width * widthPct / 100;
         var sh = img.height * heightPct / 100;
         var canvas = document.createElement('canvas');
-        canvas.width = Math.max(200, Math.round(sw * 2));
-        canvas.height = Math.max(120, Math.round(sh * 2));
+        canvas.width = Math.max(320, Math.round(sw * 2.2));
+        canvas.height = Math.max(180, Math.round(sh * 2.2));
         var ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
-        ctx.filter = 'contrast(1.25) grayscale(1)';
+        ctx.filter = 'contrast(1.2) saturate(1.05)';
         ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-        var dataUrl = '';
-        try {
-            dataUrl = canvas.toDataURL('image/png');
-        } catch (err) {
-            var src2 = await getCurrentImageAiDataUrl(imageIndex);
-            var tmp = new Image();
-            await new Promise(function(resolve, reject) {
-                tmp.onload = resolve;
-                tmp.onerror = reject;
-                tmp.src = src2;
-            });
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.drawImage(tmp, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-            dataUrl = canvas.toDataURL('image/png');
-        }
-        sectionOcrCache[cacheKey] = sectionOcrCache[cacheKey] || {};
-        sectionOcrCache[cacheKey].crop = dataUrl;
-        return dataUrl;
+        return canvas.toDataURL('image/png');
     }
     function normalizeOcrText(text) {
         return (text || '')
@@ -1213,92 +1175,56 @@
         };
     }
     async function ensureSectionOcrInsight(imageIndex, title) {
-        var cacheKey = imageLinks[imageIndex] + '::ocr::' + title + '::' + currentLang;
-        if (sectionOcrCache[cacheKey] && sectionOcrCache[cacheKey].payload) return sectionOcrCache[cacheKey].payload;
-        if (sectionOcrPending[cacheKey]) return sectionOcrPending[cacheKey];
-        sectionOcrPending[cacheKey] = getSectionCropDataUrl(imageIndex, title).then(function(cropDataUrl) {
-            if (typeof Tesseract === 'undefined') throw new Error('Tesseract not loaded');
-            return Tesseract.recognize(cropDataUrl, 'eng', {
-                logger: function(){},
-            });
-        }).then(function(result) {
-            var payload = buildOcrInsight(title, (result.data && result.data.text) || '');
-            sectionOcrCache[cacheKey] = { payload: payload };
-            return payload;
-        }).finally(function() {
-            delete sectionOcrPending[cacheKey];
-        });
-        return sectionOcrPending[cacheKey];
+        throw new Error('OCR fallback disabled');
     }
     function getAnnotationPrompt(title) {
         var langInstruction = currentLang === 'tr'
-            ? 'Yaniti Turkce ver. Kisa, net ve hasta dostu ol.'
-            : 'Respond in English. Keep it concise, clear, and client-friendly.';
+            ? 'Yaniti Turkce ver. Kisa, net, hasta dostu ve aciklayici ol.'
+            : 'Respond in English. Keep it concise, clear, and patient-friendly.';
         return [
-            'You are reviewing a cropped section from an InBody result paper.',
-            'The image already contains only the section named: "' + title + '".',
-            'Read only what is visibly present in this cropped section.',
-            'Do not invent values. If a value is unreadable, say it is not clearly readable.',
-            'When possible, list the visible values first.',
-            'Then say whether the visible findings look good, normal, need attention, or are unclear.',
-            'Include practical feedback such as good / caution / needs improvement based only on what can be read.',
-            'Give a short interpretation with 2-4 bullet points and one brief takeaway.',
-            'Use plain text/markdown only, no code fences.',
+            'You are analyzing a cropped InBody report section.',
+            'The image contains only this section: "' + title + '".',
+            'Read only what is visible.',
+            'Do not invent values.',
+            'If values are readable, list them first.',
+            'Then interpret them as good, normal, caution, or needs attention.',
+            'Give practical feedback in 3 to 5 bullet points.',
+            'Use plain markdown only.',
             langInstruction
         ].join(' ');
     }
     async function ensureAnnotationInsight(imageIndex, title) {
         if (!imageLinks[imageIndex] || !title) return null;
         var cacheKey = imageLinks[imageIndex] + '::' + title + '::' + currentLang;
-        if (sectionAiCache[cacheKey]) return sectionAiCache[cacheKey];
+        if (sectionAiCache[cacheKey] && sectionAiCache[cacheKey].html) return sectionAiCache[cacheKey];
         if (sectionAiPending[cacheKey]) return sectionAiPending[cacheKey];
-        sectionAiPending[cacheKey] = getSectionCropDataUrl(imageIndex, title).then(function(dataUrl) {
-            return callGroqApi([{
+        sectionAiPending[cacheKey] = (async function() {
+            var cropDataUrl = await getSectionCropDataUrl(imageIndex, title);
+            var reply = await callGroqApi([{
                 role: 'user',
                 content: [
-                    { type: 'image_url', image_url: { url: dataUrl } },
+                    { type: 'image_url', image_url: { url: cropDataUrl } },
                     { type: 'text', text: getAnnotationPrompt(title) }
                 ]
             }]);
-        }).then(function(reply) {
             var html = markdownToHtml(reply);
             var payload = {
                 raw: reply,
                 html: html,
-                preview: stripHtmlTags(html).slice(0, 180) || (sectionHints[title] || '')
+                preview: stripHtmlTags(html).slice(0, 180) || (sectionHints[title] || ''),
+                cropDataUrl: cropDataUrl
             };
             sectionAiCache[cacheKey] = payload;
-            return payload;
-        }).catch(function(err) {
-            console.error('Section AI failed for', title, err);
-            return ensureSectionOcrInsight(imageIndex, title).catch(function(ocrErr) {
-                console.error('Section OCR failed for', title, ocrErr);
-                var fallbackText = currentLang === 'tr'
-                    ? 'Bu bolum su anda analiz edilemedi. AI ve OCR okumasi basarisiz oldu.'
-                    : 'This section could not be analyzed right now. Both AI and OCR failed.';
-                var payload = {
-                    raw: fallbackText,
-                    html: '<div style="color:#94a3b8">' + fallbackText + '</div>',
-                    preview: fallbackText
-                };
-                sectionAiCache[cacheKey] = payload;
-                return payload;
-            });
-        }).finally(function() {
             delete sectionAiPending[cacheKey];
+            return payload;
+        })().catch(function(err) {
+            delete sectionAiPending[cacheKey];
+            throw err;
         });
         return sectionAiPending[cacheKey];
     }
     function prefetchAnnotationInsights(imageIndex) {
-        ['Patient Info','InBody Score','Body Composition Analysis','Weight Control'].forEach(function(title) {
-            ensureAnnotationInsight(imageIndex, title).then(function(payload) {
-                var zone = document.querySelector('.ann-zone[data-title="' + title + '"]');
-                if (zone && payload) {
-                    zone.dataset.body = payload.html;
-                    zone.dataset.hint = payload.preview;
-                }
-            });
-        });
+        return;
     }
     function showAnnPreview(e, el) {
         var box = document.getElementById('ann-preview-box');
@@ -1306,14 +1232,6 @@
         document.getElementById('ann-preview-hint').innerHTML = el.dataset.hint || el.dataset.title || '';
         box.style.display = 'block';
         moveAnnPreview(e);
-        ensureAnnotationInsight(currentIndex, el.dataset.title).then(function(payload) {
-            if (!payload) return;
-            el.dataset.body = payload.html;
-            el.dataset.hint = payload.preview;
-            if (document.getElementById('ann-preview-title').textContent === (el.dataset.title || '')) {
-                document.getElementById('ann-preview-hint').innerHTML = payload.preview;
-            }
-        });
     }
     function hideAnnPreview() { document.getElementById('ann-preview-box').style.display = 'none'; }
     function moveAnnPreview(e) {
@@ -1340,11 +1258,21 @@
         if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
         if (top < 8) top = rect.bottom + 10;
         popup.style.left = left + 'px'; popup.style.top = top + 'px';
-        var payload = await ensureAnnotationInsight(currentIndex, title);
-        if (payload && document.getElementById('ann-popup-title').textContent === title) {
-            e.currentTarget.dataset.body = payload.html;
-            e.currentTarget.dataset.hint = payload.preview;
-            document.getElementById('ann-popup-body').innerHTML = payload.html;
+        try {
+            var payload = await ensureAnnotationInsight(currentIndex, title);
+            if (payload && document.getElementById('ann-popup-title').textContent === title) {
+                e.currentTarget.dataset.body = payload.html;
+                e.currentTarget.dataset.hint = payload.preview;
+                document.getElementById('ann-popup-body').innerHTML = payload.html;
+            }
+        } catch (err) {
+            console.error('Section popup failed for', title, err);
+            document.getElementById('ann-popup-body').innerHTML =
+                '<div style="color:#ef4444">' +
+                (currentLang === 'tr'
+                    ? 'Bu bolum analiz edilemedi. Proxy URL veya Groq baglantisini kontrol et.'
+                    : 'This section could not be analyzed. Check proxy URL or Groq connection.') +
+                '</div>';
         }
     }
     function closeAnnPopup() {
@@ -1362,6 +1290,7 @@
     const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
     const GROQ_API_KEY = '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';
     const GROQ_MODEL   = 'meta-llama/llama-4-scout-17b-16e-instruct';
+    const DRIVE_IMAGE_PROXY_URL = 'https://script.google.com/macros/s/AKfycbySLF3CZAC2NaKQpx0ST2BEPjLylX16AKEpe8XYtIVp5lwrnMex9aexTZ50qziQnIPppA/exec';
 
     const DEFAULT_INBODY_PROMPT = `You are an expert health and body composition specialist. Analyze this InBody measurement report thoroughly and respond entirely in English.
 CRITICAL SYSTEM RULE — MUST EXECUTE FIRST (NO EXCEPTIONS)
